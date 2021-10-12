@@ -8,6 +8,7 @@ import {
   useQueryErrorResetBoundary,
 } from "blitz"
 import LoginForm from "app/auth/components/LoginForm"
+import CssBaseline from "@mui/material/CssBaseline"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -17,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
       FallbackComponent={RootErrorFallback}
       onReset={useQueryErrorResetBoundary().reset}
     >
+      <CssBaseline />
       {getLayout(<Component {...pageProps} />)}
     </ErrorBoundary>
   )
