@@ -32,6 +32,9 @@ const Navbar = () => {
         <Link href="/questions" passHref>
           <Button color="inherit">Questions</Button>
         </Link>
+        <Link href="/persons" passHref>
+          <Button color="inherit">People</Button>
+        </Link>
       </Toolbar>
     </AppBar>
   )

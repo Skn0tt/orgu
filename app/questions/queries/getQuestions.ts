@@ -1,7 +1,6 @@
-import { Ctx } from "blitz"
 import db from "db"
 
-export default async function getQuestions(_ = null, ctx: Ctx) {
+export default async function getQuestions(_ = null) {
   const questions = await db.question.findMany({
     include: {
       assignedToPerson: true,
