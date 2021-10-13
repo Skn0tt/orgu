@@ -3,6 +3,7 @@ import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form
 import { z } from "zod"
 import { validateZodSchema } from "blitz"
 export { FORM_ERROR } from "final-form"
+import Button from "@mui/material/Button"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -28,7 +29,7 @@ export function Form<S extends z.ZodType<any, any>>({
       initialValues={initialValues}
       validate={validateZodSchema(schema)}
       onSubmit={onSubmit}
-      render={({ handleSubmit, submitting, submitError }) => (
+      render={({ handleSubmit, submitting, invalid, submitError }) => (
         <form onSubmit={handleSubmit} className="form" {...props}>
           {/* Form fields supplied as children are rendered here */}
           {children}
@@ -40,16 +41,15 @@ export function Form<S extends z.ZodType<any, any>>({
           )}
 
           {submitText && (
-            <button type="submit" disabled={submitting}>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={submitting || invalid}
+              sx={{ mt: 2 }}
+            >
               {submitText}
-            </button>
+            </Button>
           )}
-
-          <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
         </form>
       )}
     />
