@@ -1,5 +1,5 @@
 import { forwardRef, PropsWithoutRef } from "react"
-import { useField, UseFieldConfig } from "react-final-form"
+import { useField } from "react-final-form"
 import MuiTextField from "@mui/material/TextField"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
@@ -10,11 +10,10 @@ interface TextFieldProps extends PropsWithoutRef<JSX.IntrinsicElements["input"]>
   name: string
   label: string
   type?: "text" | "password" | "email" | "number"
-  fieldProps?: UseFieldConfig<string>
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ name, label, fieldProps, ...props }, ref) => {
+  ({ name, label, ...props }, ref) => {
     const {
       input,
       meta: { error, submitError, submitting },
@@ -24,14 +23,13 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           ? (Number as any)
           : // Converting `""` to `null` ensures empty values will be set to null in the DB
             (v) => (v === "" ? null : v),
-      ...fieldProps,
     })
 
     const normalizedError = Array.isArray(error) ? error.join(", ") : error || submitError
 
     return (
       <MuiTextField
-        type={props.type}
+        type={props.type ?? "text"}
         name={input.name}
         value={input.value}
         onChange={input.onChange}
@@ -60,7 +58,7 @@ interface SelectProps {
   items: SelectItem[]
 }
 
-export const Select = forwardRef<HTMLInputElement, SelectProps>(({ name, label, items }, ref) => {
+export const Select = ({ name, label, items }: SelectProps) => {
   const { input, meta } = useField(name)
 
   return (
@@ -70,7 +68,6 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(({ name, label, 
         name={name}
         value={input.value}
         onChange={input.onChange}
-        ref={ref}
         disabled={meta.submitting}
         label={label}
       >
@@ -82,4 +79,4 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(({ name, label, 
       </MuiSelect>
     </FormControl>
   )
-})
+}
