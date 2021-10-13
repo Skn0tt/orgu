@@ -4,6 +4,7 @@ import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"
 import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
+import QuestionForm from "../../components/QuestionForm"
 
 const QuestionsList = () => {
   const [questions] = useQuery(getQuestions, null)
@@ -25,6 +26,7 @@ const Questions: BlitzPage = () => {
   return (
     <Box>
       <h1>Questions</h1>
+      <QuestionForm />
       <Suspense fallback={<CircularProgress />}>
         <QuestionsList />
       </Suspense>
