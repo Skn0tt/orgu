@@ -1,7 +1,16 @@
-import { Ctx } from "blitz"
 import db from "db"
+import { NotFoundError } from "blitz"
 
-export default async function getPerson(personId: number) {
-  const person = await db.person.findFirst({ where: { id: personId } })
+export default async function getPerson(personId: number | undefined) {
+  if (personId === undefined) {
+    throw new NotFoundError()
+  }
+  const person = await db.person.findFirst({
+    where: { id: personId },
+    include: { assignedQuestions: { include: { answers: true } } },
+  })
+  if (person === null) {
+    throw new NotFoundError()
+  }
   return person
 }
