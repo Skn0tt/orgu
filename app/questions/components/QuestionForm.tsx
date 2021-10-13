@@ -6,7 +6,7 @@ import { useMutation } from "blitz"
 import createQuestion from "../mutations/createQuestion"
 import { Form } from "app/core/components/Form"
 import LabeledTextField from "app/core/components/LabeledTextField"
-import { CreateQuestion } from "../types"
+import { CreateQuestion, CreateQuestionSchema } from "../types"
 import { Field } from "react-final-form"
 
 export const QuestionForm = () => {
@@ -15,12 +15,14 @@ export const QuestionForm = () => {
   return (
     <Form
       submitText="Create Question"
-      schema={CreateQuestion}
-      initialValues={{
-        title: "",
-        status: "unanswered",
-        assignedToPersonId: 1,
-      }}
+      schema={CreateQuestionSchema}
+      initialValues={
+        {
+          title: "",
+          status: "unanswered",
+          assignedToPersonId: 1,
+        } as CreateQuestion
+      }
       onSubmit={async (values) => {
         try {
           const res = await createQuestionMutation(values)

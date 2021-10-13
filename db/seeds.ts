@@ -1,11 +1,12 @@
-import { NewAnswer, NewPerson, NewQuestion } from "app/questions/types"
+import { CreateAnswer, CreatePerson, CreateQuestion } from "app/questions/types"
 import db from "./index"
 
-interface SeedPerson extends NewPerson {
+interface SeedPerson extends CreatePerson {
   id: number
 }
-interface SeedQuestion extends Omit<NewQuestion, "answers"> {
-  answers: Omit<NewAnswer, "questionId">[]
+
+interface SeedQuestion extends CreateQuestion {
+  answers: Omit<CreateAnswer, "questionId">[]
 }
 
 const persons: SeedPerson[] = [
