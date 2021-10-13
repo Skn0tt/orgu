@@ -1,4 +1,4 @@
-import { useMutation } from "blitz"
+import { useMutation, useRouter } from "blitz"
 import createQuestion from "../mutations/createQuestion"
 import { Form } from "app/core/components/Form"
 import { TextField, Select } from "app/core/components/Fields"
@@ -6,6 +6,7 @@ import { CreateQuestion, CreateQuestionSchema } from "../types"
 
 export const QuestionForm = () => {
   const [createQuestionMutation] = useMutation(createQuestion)
+  const router = useRouter()
 
   return (
     <Form
@@ -20,8 +21,8 @@ export const QuestionForm = () => {
       }
       onSubmit={async (values) => {
         try {
-          const res = await createQuestionMutation(values)
-          console.log(res)
+          await createQuestionMutation(values)
+          router.reload()
         } catch (error: any) {
           console.log(error)
         }
