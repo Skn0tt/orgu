@@ -30,6 +30,7 @@ Make sure docker is running. Run:
 
 ```
 npm run predev
+npm run db:reset
 ```
 
 ## Start
