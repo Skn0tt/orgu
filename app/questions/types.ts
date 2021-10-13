@@ -1,32 +1,28 @@
-export type QuestionStatus = "answered" | "unanswered" | "ongoing"
+import * as z from "zod"
 
-export interface Person {
-  id: number
-  name: string
-  description: string
-  assignedQuestions: Question[]
-}
+const id = z.number().int().positive()
 
-export interface NewPerson extends Omit<Person, "id" | "assignedQuestions"> {}
+export const CreatePersonSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+})
 
-export interface Question {
-  id: number
-  title: string
-  status: QuestionStatus
-  assignedToPersonId: number
-  assignedToPerson: Omit<Person, "assignedQuestions">
-  answers: Omit<Answer, "question" | "person">[]
-}
+export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 
-export interface NewQuestion extends Omit<Question, "id" | "assignedToPerson" | "answers"> {}
+const QuestionStatusEnum = z.enum(["answered", "unanswered", "ongoing"])
 
-export interface Answer {
-  id: number
-  description: string
-  questionId: number
-  question: Question
-  personId: number
-  person: Person
-}
+export const CreateQuestionSchema = z.object({
+  title: z.string().min(1),
+  status: QuestionStatusEnum,
+  assignedToPersonId: id,
+})
 
-export interface NewAnswer extends Omit<Answer, "id" | "person" | "question"> {}
+export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>
+
+export const CreateAnswerSchema = z.object({
+  description: z.string().min(1),
+  personId: id,
+  questionId: id,
+})
+
+export type CreateAnswer = z.TypeOf<typeof CreateAnswerSchema>

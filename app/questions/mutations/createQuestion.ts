@@ -1,9 +1,8 @@
+import { resolver } from "blitz"
 import db from "db"
-import { NewQuestion } from "../types"
+import { CreateQuestionSchema } from "../types"
 
-export default async function createQuestion(newQuestion: NewQuestion) {
-  const createdQuestion = await db.question.create({
-    data: newQuestion,
-  })
-  return { questionId: createdQuestion.id }
-}
+export default resolver.pipe(resolver.zod(CreateQuestionSchema), async (question) => {
+  const createdQuestion = await db.question.create({ data: question })
+  return createdQuestion
+})
