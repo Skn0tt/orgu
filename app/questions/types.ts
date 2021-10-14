@@ -9,6 +9,12 @@ export const CreatePersonSchema = z.object({
 
 export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 
+export const UpdatePersonSchema = CreatePersonSchema.extend({
+  id: id,
+})
+
+export type UpdatePerson = z.TypeOf<typeof UpdatePersonSchema>
+
 const QuestionStatusEnum = z.enum(["answered", "unanswered", "ongoing"])
 
 export const CreateQuestionSchema = z.object({
