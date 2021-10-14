@@ -51,7 +51,7 @@ const PersonsList = () => {
   )
 }
 
-const Persons: BlitzPage = () => {
+const PersonsPage: BlitzPage = () => {
   return (
     <Box>
       <h1>People</h1>
@@ -62,7 +62,7 @@ const Persons: BlitzPage = () => {
   )
 }
 
-Persons.suppressFirstRenderFlicker = true
-Persons.getLayout = (page) => <Layout>{page}</Layout>
+PersonsPage.suppressFirstRenderFlicker = true
+PersonsPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default Persons
+export default PersonsPage

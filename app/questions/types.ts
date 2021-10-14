@@ -19,6 +19,12 @@ export const CreateQuestionSchema = z.object({
 
 export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>
 
+export const UpdateQuestionSchema = CreateQuestionSchema.extend({
+  id: id,
+})
+
+export type UpdateQuestion = z.TypeOf<typeof UpdateQuestionSchema>
+
 export const CreateAnswerSchema = z.object({
   description: z.string().min(1),
   personId: id,

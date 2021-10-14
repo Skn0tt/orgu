@@ -6,14 +6,14 @@ import { CreateQuestion } from "app/questions/types"
 import { useMutation, useRouter } from "blitz"
 import createQuestion from "app/questions/mutations/createQuestion"
 
-const NewQuestion: BlitzPage = () => {
+const NewQuestionPage: BlitzPage = () => {
   const [createQuestionMutation] = useMutation(createQuestion)
   const router = useRouter()
 
   const onSubmit = async (question: CreateQuestion) => {
     try {
-      await createQuestionMutation(question)
-      router.push("/questions")
+      const createdQuestion = await createQuestionMutation(question)
+      router.push("/questions/" + createdQuestion.id)
     } catch (e: any) {
       console.log(e)
     }
@@ -34,7 +34,7 @@ const NewQuestion: BlitzPage = () => {
   )
 }
 
-NewQuestion.suppressFirstRenderFlicker = true
-NewQuestion.getLayout = (page) => <Layout>{page}</Layout>
+NewQuestionPage.suppressFirstRenderFlicker = true
+NewQuestionPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default NewQuestion
+export default NewQuestionPage
