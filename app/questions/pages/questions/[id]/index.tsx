@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, useParam, Link } from "blitz"
+import { BlitzPage, useQuery, useParam, Link, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import { Suspense } from "react"
@@ -6,12 +6,21 @@ import CircularProgress from "@mui/material/CircularProgress"
 import getQuestion from "app/questions/queries/getQuestion"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
-import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
+import DeleteButton from "app/core/components/DeleteButton"
+import deleteQuestion from "app/questions/mutations/deleteQuestion"
 
 const Content = () => {
   const questionId = useParam("id", "number")
   const [question] = useQuery(getQuestion, questionId)
+  const router = useRouter()
+
+  const onDeleteQuestion = async () => {
+    if (questionId !== undefined) {
+      await deleteQuestion(questionId)
+      router.push("/questions")
+    }
+  }
 
   return (
     <Box>
@@ -23,9 +32,7 @@ const Content = () => {
               <EditIcon />
             </IconButton>
           </Link>
-          <IconButton color="secondary">
-            <DeleteIcon />
-          </IconButton>
+          <DeleteButton name="question" onSubmit={onDeleteQuestion} />
         </h1>
       </Box>
       <p>{question.status}</p>
