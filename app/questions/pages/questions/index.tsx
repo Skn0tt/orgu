@@ -1,10 +1,10 @@
-import { BlitzPage, useQuery } from "blitz"
+import { BlitzPage, useQuery, Link } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"
 import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
-import QuestionForm from "../../components/QuestionForm"
+import Button from "@mui/material/Button"
 
 const QuestionsList = () => {
   const [questions] = useQuery(getQuestions, null)
@@ -25,8 +25,13 @@ const QuestionsList = () => {
 const Questions: BlitzPage = () => {
   return (
     <Box>
-      <h1>Questions</h1>
-      <QuestionForm />
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Questions</h1>
+        <Link href="/questions/new" passHref>
+          <Button variant="contained">New Question</Button>
+        </Link>
+      </Box>
+
       <Suspense fallback={<CircularProgress />}>
         <QuestionsList />
       </Suspense>
