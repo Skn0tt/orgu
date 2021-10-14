@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, useParam, Link, useRouter } from "blitz"
+import { BlitzPage, useQuery, useParam, Link, useRouter, useMutation } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import { Suspense } from "react"
@@ -10,16 +10,27 @@ import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
 import deletePerson from "app/questions/mutations/deletePerson"
+import AnswerForm from "app/questions/components/AnswerForm"
+import { UpdateAnswer } from "app/questions/types"
+import updateAnswer from "app/questions/mutations/updateAnswer"
 
 const Content = () => {
-  const personId = useParam("id", "number")
+  const personId = useParam("id", "number")!
   const [person] = useQuery(getPerson, personId)
+  const [updateAnswerMutation] = useMutation(updateAnswer)
   const router = useRouter()
 
   const onDeletePerson = async () => {
-    if (personId !== undefined) {
-      await deletePerson(personId)
-      router.push("/questions")
+    await deletePerson(personId)
+    router.push("/persons")
+  }
+
+  const onEditAnswer = async (question: UpdateAnswer) => {
+    try {
+      const createdAnswer = await updateAnswerMutation(question)
+      router.reload()
+    } catch (e: any) {
+      console.log(e)
     }
   }
 
@@ -43,14 +54,7 @@ const Content = () => {
           </h3>
           {question.answers.map((answer) =>
             answer.personId === person.id ? (
-              <TextField
-                fullWidth
-                label="Answer"
-                variant="outlined"
-                multiline
-                rows={3}
-                value={answer.description}
-              />
+              <AnswerForm initialValues={answer} onSubmit={onEditAnswer} />
             ) : (
               <Box key={answer.id}>{answer.description}</Box>
             )

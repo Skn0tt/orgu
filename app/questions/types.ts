@@ -38,3 +38,9 @@ export const CreateAnswerSchema = z.object({
 })
 
 export type CreateAnswer = z.TypeOf<typeof CreateAnswerSchema>
+
+export const UpdateAnswerSchema = CreateAnswerSchema.extend({
+  id: id,
+})
+
+export type UpdateAnswer = z.TypeOf<typeof UpdateAnswerSchema>

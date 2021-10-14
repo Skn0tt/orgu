@@ -1,7 +1,7 @@
-import { BlitzPage, useQuery, useParam, Link, useRouter } from "blitz"
+import { BlitzPage, useQuery, useParam, Link, useRouter, useMutation } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import getQuestion from "app/questions/queries/getQuestion"
 import Button from "@mui/material/Button"
@@ -9,16 +9,27 @@ import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
 import deleteQuestion from "app/questions/mutations/deleteQuestion"
+import AnswerForm from "app/questions/components/AnswerForm"
+import createAnswer from "app/questions/mutations/createAnswer"
+import { CreateAnswer } from "app/questions/types"
 
 const Content = () => {
-  const questionId = useParam("id", "number")
+  const questionId = useParam("id", "number")!
   const [question] = useQuery(getQuestion, questionId)
+  const [createQuestionMutation] = useMutation(createAnswer)
   const router = useRouter()
 
   const onDeleteQuestion = async () => {
-    if (questionId !== undefined) {
-      await deleteQuestion(questionId)
-      router.push("/questions")
+    await deleteQuestion(questionId)
+    router.push("/questions")
+  }
+
+  const onCreateAnswer = async (question: CreateAnswer) => {
+    try {
+      const createdAnswer = await createQuestionMutation(question)
+      router.reload()
+    } catch (e: any) {
+      console.log(e)
     }
   }
 
@@ -37,10 +48,11 @@ const Content = () => {
       </Box>
       <p>Status: {question.status}</p>
       <p>Assigned to: {question.assignedToPerson.name}</p>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h2>Answers</h2>
-        <Button variant="contained">New Answer</Button>
-      </Box>
+      <h2>Answers</h2>
+      <AnswerForm
+        initialValues={{ description: "", questionId: questionId, personId: 1 }}
+        onSubmit={onCreateAnswer}
+      />
 
       {question.answers.map((answer) => (
         <Box key={answer.id}>
