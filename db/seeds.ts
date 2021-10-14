@@ -60,25 +60,28 @@ const questions: SeedQuestion[] = [
 ]
 
 const seedPersons = async () => {
-  await db.person.createMany({
-    data: persons,
-  })
+  for (const person of persons) {
+    await db.person.upsert({
+      where: { id: person.id },
+      create: { description: person.description, name: person.name },
+      update: {},
+    })
+  }
 }
 
 const seedQuestions = async () => {
-  questions.forEach(
-    async (question) =>
-      await db.question.create({
-        data: {
-          ...question,
-          answers: {
-            createMany: {
-              data: question.answers,
-            },
+  for (const question of questions) {
+    await db.question.create({
+      data: {
+        ...question,
+        answers: {
+          createMany: {
+            data: question.answers,
           },
         },
-      })
-  )
+      },
+    })
+  }
 }
 
 // This seed function is executed when you run `blitz db seed`

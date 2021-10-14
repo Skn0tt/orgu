@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, useRouter } from "blitz"
+import { BlitzPage, useQuery, useRouter, Link } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getPersons from "app/questions/queries/getPersons"
@@ -10,6 +10,7 @@ import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
 import { CardActionArea } from "@mui/material"
 import { Person } from "db"
+import Button from "@mui/material/Button"
 
 const PersonCard = ({ person }: { person: Person }) => {
   const router = useRouter()
@@ -54,7 +55,12 @@ const PersonsList = () => {
 const PersonsPage: BlitzPage = () => {
   return (
     <Box>
-      <h1>People</h1>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>People</h1>
+        <Link href="/persons/new" passHref>
+          <Button variant="contained">New Person</Button>
+        </Link>
+      </Box>
       <Suspense fallback={<CircularProgress />}>
         <PersonsList />
       </Suspense>
