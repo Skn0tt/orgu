@@ -4,34 +4,22 @@ import Box from "@mui/material/Box"
 import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import getPerson from "app/questions/queries/getPerson"
-import TextField from "@mui/material/TextField"
 import React from "react"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
 import deletePerson from "app/questions/mutations/deletePerson"
-import AnswerForm from "app/questions/components/AnswerForm"
-import { UpdateAnswer } from "app/questions/types"
-import updateAnswer from "app/questions/mutations/updateAnswer"
+import AnswerBox from "app/questions/components/AnswerBox"
 
 const Content = () => {
   const personId = useParam("id", "number")!
   const [person] = useQuery(getPerson, personId)
-  const [updateAnswerMutation] = useMutation(updateAnswer)
+  const [deletePersonMutation] = useMutation(deletePerson)
   const router = useRouter()
 
   const onDeletePerson = async () => {
-    await deletePerson(personId)
+    await deletePersonMutation(personId)
     router.push("/persons")
-  }
-
-  const onEditAnswer = async (question: UpdateAnswer) => {
-    try {
-      const createdAnswer = await updateAnswerMutation(question)
-      router.reload()
-    } catch (e: any) {
-      console.log(e)
-    }
   }
 
   return (
@@ -52,13 +40,11 @@ const Content = () => {
           <h3>
             {question.title} ({question.status})
           </h3>
-          {question.answers.map((answer) =>
-            answer.personId === person.id ? (
-              <AnswerForm initialValues={answer} onSubmit={onEditAnswer} />
-            ) : (
-              <Box key={answer.id}>{answer.description}</Box>
-            )
-          )}
+          {question.answers
+            .filter((answer) => answer.personId == person.id)
+            .map((answer) => (
+              <AnswerBox key={answer.id} answer={answer} />
+            ))}
         </Box>
       ))}
     </Box>

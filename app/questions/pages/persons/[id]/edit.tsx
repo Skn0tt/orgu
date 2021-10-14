@@ -27,7 +27,7 @@ const Content = () => {
   return (
     <Box>
       <h1>Edit Person</h1>
-      <PersonForm initialValues={person as UpdatePerson} onSubmit={onSubmit} />
+      <PersonForm initialValues={person} onSubmit={onSubmit} />
     </Box>
   )
 }

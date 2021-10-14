@@ -1,13 +1,15 @@
 import { Form } from "app/core/components/Form"
 import { TextField } from "app/core/components/Fields"
-import { CreatePerson, CreatePersonSchema } from "../types"
+import { CreatePerson, UpdatePerson, CreatePersonSchema } from "../types"
+
+type CreateUpdatePerson = CreatePerson | UpdatePerson
 
 export const PersonForm = ({
   initialValues,
   onSubmit,
 }: {
-  initialValues: CreatePerson
-  onSubmit: (person: CreatePerson) => void
+  initialValues: CreateUpdatePerson
+  onSubmit: (person: CreateUpdatePerson) => void
 }) => {
   return (
     <Form
@@ -17,7 +19,7 @@ export const PersonForm = ({
       onSubmit={onSubmit}
     >
       <TextField name="name" label="Name" />
-      <TextField name="description" label="Description" />
+      <TextField name="description" label="Description" type="textarea" />
     </Form>
   )
 }

@@ -1,13 +1,15 @@
 import { Form } from "app/core/components/Form"
 import { TextField, Select } from "app/core/components/Fields"
-import { CreateQuestion, CreateQuestionSchema } from "../types"
+import { CreateQuestion, UpdateQuestion, CreateQuestionSchema } from "../types"
+
+type CreateUpdateQuestion = CreateQuestion | UpdateQuestion
 
 export const QuestionForm = ({
   initialValues,
   onSubmit,
 }: {
-  initialValues: CreateQuestion
-  onSubmit: (question: CreateQuestion) => void
+  initialValues: CreateUpdateQuestion
+  onSubmit: (question: CreateUpdateQuestion) => void
 }) => {
   return (
     <Form

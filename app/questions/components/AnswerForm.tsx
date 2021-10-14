@@ -1,25 +1,18 @@
 import { Box } from "@mui/material"
-import DeleteButton from "app/core/components/DeleteButton"
 import { TextField } from "app/core/components/Fields"
 import { Form } from "app/core/components/Form"
-import { useRouter } from "blitz"
 import React from "react"
-import deleteAnswer from "../mutations/deleteAnswer"
-import { CreateAnswer, CreateAnswerSchema } from "../types"
+import { CreateAnswer, CreateAnswerSchema, UpdateAnswer } from "../types"
+
+type CreateUpdateAnswer = CreateAnswer | UpdateAnswer
 
 export const AnswerForm = ({
   initialValues,
   onSubmit,
 }: {
-  initialValues: CreateAnswer
-  onSubmit: (answer: CreateAnswer) => void
+  initialValues: CreateUpdateAnswer
+  onSubmit: (answer: CreateUpdateAnswer) => void
 }) => {
-  const router = useRouter()
-  const onDeletePerson = async () => {
-    // await deleteAnswer(initialValues.id)
-    router.reload()
-  }
-
   return (
     <Box>
       <Form
@@ -28,10 +21,9 @@ export const AnswerForm = ({
         initialValues={initialValues}
         onSubmit={onSubmit}
       >
-        <TextField name="description" label="Description" />
-        <TextField name="personId" label="Person Id" type="number" />
+        <TextField name="description" label="Description" type="textarea" />
+        <TextField name="personId" label="From person with ID" type="number" />
       </Form>
-      <DeleteButton name={"answer"} onSubmit={() => {}} />
     </Box>
   )
 }

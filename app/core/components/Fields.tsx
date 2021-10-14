@@ -9,17 +9,17 @@ import MuiSelect from "@mui/material/Select"
 interface TextFieldProps extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
   name: string
   label: string
-  type?: "text" | "password" | "email" | "number"
+  type?: "text" | "password" | "email" | "number" | "textarea"
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ name, label, ...props }, ref) => {
+  ({ name, label, type, ...props }, ref) => {
     const {
       input,
       meta: { error, submitError, submitting },
     } = useField(name, {
       parse:
-        props.type === "number"
+        type === "number"
           ? (Number as any)
           : // Converting `""` to `null` ensures empty values will be set to null in the DB
             (v) => (v === "" ? null : v),
@@ -29,7 +29,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
 
     return (
       <MuiTextField
-        type={props.type ?? "text"}
+        type={type === "textarea" || type === undefined ? "text" : type}
+        multiline={type === "textarea"}
+        rows={10}
         name={input.name}
         value={input.value}
         onChange={input.onChange}

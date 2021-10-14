@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { Answer as PrismaAnswer, Person as PrismaPerson } from "db"
 
 const id = z.number().int().positive()
 
@@ -44,3 +45,7 @@ export const UpdateAnswerSchema = CreateAnswerSchema.extend({
 })
 
 export type UpdateAnswer = z.TypeOf<typeof UpdateAnswerSchema>
+
+export interface Answer extends PrismaAnswer {
+  person: PrismaPerson
+}
