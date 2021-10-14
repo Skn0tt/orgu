@@ -7,7 +7,14 @@ export default async function getQuestion(questionId: number | undefined) {
   }
   const question = await db.question.findFirst({
     where: { id: questionId },
-    include: { answers: true },
+    include: {
+      assignedToPerson: true,
+      answers: {
+        include: {
+          person: true,
+        },
+      },
+    },
   })
   if (question === null) {
     throw new NotFoundError()

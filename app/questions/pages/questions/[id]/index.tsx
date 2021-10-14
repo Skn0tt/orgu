@@ -35,7 +35,8 @@ const Content = () => {
           <DeleteButton name="question" onSubmit={onDeleteQuestion} />
         </h1>
       </Box>
-      <p>{question.status}</p>
+      <p>Status: {question.status}</p>
+      <p>Assigned to: {question.assignedToPerson.name}</p>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Answers</h2>
         <Button variant="contained">New Answer</Button>
@@ -43,7 +44,7 @@ const Content = () => {
 
       {question.answers.map((answer) => (
         <Box key={answer.id}>
-          <h3>{answer.personId}</h3>
+          <h3>{answer.person.name}</h3>
           <p>{answer.description}</p>
         </Box>
       ))}
