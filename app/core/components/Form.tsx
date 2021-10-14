@@ -4,6 +4,7 @@ import { z } from "zod"
 import { validateZodSchema } from "blitz"
 export { FORM_ERROR } from "final-form"
 import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -13,6 +14,7 @@ export interface FormProps<S extends z.ZodType<any, any>>
   submitText?: string
   schema?: S
   onSubmit: FinalFormProps<z.infer<S>>["onSubmit"]
+  onCancel?: () => void
   initialValues?: FinalFormProps<z.infer<S>>["initialValues"]
 }
 
@@ -21,6 +23,7 @@ export function Form<S extends z.ZodType<any, any>>({
   submitText,
   schema,
   initialValues,
+  onCancel,
   onSubmit,
   ...props
 }: FormProps<S>) {
@@ -41,14 +44,21 @@ export function Form<S extends z.ZodType<any, any>>({
           )}
 
           {submitText && (
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={submitting || invalid}
-              sx={{ mt: 2 }}
-            >
-              {submitText}
-            </Button>
+            <Box sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={submitting || invalid}
+                sx={{ mr: 1 }}
+              >
+                {submitText}
+              </Button>
+              {onCancel && (
+                <Button variant="contained" type="button" onClick={onCancel}>
+                  Cancel
+                </Button>
+              )}
+            </Box>
           )}
         </form>
       )}

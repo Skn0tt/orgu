@@ -7,9 +7,11 @@ type CreateUpdateQuestion = CreateQuestion | UpdateQuestion
 export const QuestionForm = ({
   initialValues,
   onSubmit,
+  onCancel,
 }: {
   initialValues: CreateUpdateQuestion
   onSubmit: (question: CreateUpdateQuestion) => void
+  onCancel: () => void
 }) => {
   return (
     <Form
@@ -17,6 +19,7 @@ export const QuestionForm = ({
       schema={CreateQuestionSchema}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
       <TextField name="assignedToPersonId" label="Assigned to Person with Id" type="number" />

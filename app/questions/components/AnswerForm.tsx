@@ -9,9 +9,11 @@ type CreateUpdateAnswer = CreateAnswer | UpdateAnswer
 export const AnswerForm = ({
   initialValues,
   onSubmit,
+  onCancel,
 }: {
   initialValues: CreateUpdateAnswer
   onSubmit: (answer: CreateUpdateAnswer) => void
+  onCancel?: () => void
 }) => {
   return (
     <Box>
@@ -20,6 +22,7 @@ export const AnswerForm = ({
         schema={CreateAnswerSchema}
         initialValues={initialValues}
         onSubmit={onSubmit}
+        onCancel={onCancel}
       >
         <TextField name="description" label="Description" type="textarea" />
         <TextField name="personId" label="From person with ID" type="number" />

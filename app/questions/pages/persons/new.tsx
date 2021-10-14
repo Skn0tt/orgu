@@ -28,6 +28,7 @@ const NewPersonPage: BlitzPage = () => {
           description: "",
         }}
         onSubmit={onSubmit}
+        onCancel={() => router.push("/persons")}
       />
     </Box>
   )

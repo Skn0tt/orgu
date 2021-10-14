@@ -7,9 +7,11 @@ type CreateUpdatePerson = CreatePerson | UpdatePerson
 export const PersonForm = ({
   initialValues,
   onSubmit,
+  onCancel,
 }: {
   initialValues: CreateUpdatePerson
   onSubmit: (person: CreateUpdatePerson) => void
+  onCancel: () => void
 }) => {
   return (
     <Form
@@ -17,6 +19,7 @@ export const PersonForm = ({
       schema={CreatePersonSchema}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      onCancel={onCancel}
     >
       <TextField name="name" label="Name" />
       <TextField name="description" label="Description" type="textarea" />

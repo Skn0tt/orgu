@@ -29,6 +29,7 @@ const NewQuestionPage: BlitzPage = () => {
           assignedToPersonId: 1,
         }}
         onSubmit={onSubmit}
+        onCancel={() => router.push("/questions")}
       />
     </Box>
   )

@@ -26,7 +26,11 @@ const AnswerBox = ({ answer }: { answer: Answer }) => {
   return (
     <Box key={answer.id}>
       {inUpdateMode ? (
-        <AnswerForm initialValues={answer} onSubmit={onUpdateAnswer} />
+        <AnswerForm
+          initialValues={answer}
+          onSubmit={onUpdateAnswer}
+          onCancel={() => setInUpdateMode(false)}
+        />
       ) : (
         <Box>
           <h3>

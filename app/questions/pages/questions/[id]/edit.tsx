@@ -10,7 +10,7 @@ import getQuestion from "app/questions/queries/getQuestion"
 import updateQuestion from "app/questions/mutations/updateQuestion"
 
 const Content = () => {
-  const questionId = useParam("id", "number")
+  const questionId = useParam("id", "number")!
   const [question] = useQuery(getQuestion, questionId)
   const [updateQuestionMutation] = useMutation(updateQuestion)
   const router = useRouter()
@@ -27,7 +27,11 @@ const Content = () => {
   return (
     <Box>
       <h1>Edit Question</h1>
-      <QuestionForm initialValues={question as UpdateQuestion} onSubmit={onSubmit} />
+      <QuestionForm
+        initialValues={question as UpdateQuestion}
+        onSubmit={onSubmit}
+        onCancel={() => router.push("/questions/" + questionId)}
+      />
     </Box>
   )
 }
