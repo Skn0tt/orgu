@@ -28,7 +28,14 @@ const Content = () => {
     <Box>
       <h1>Edit Question</h1>
       <QuestionForm
-        initialValues={question as UpdateQuestion}
+        initialValues={
+          {
+            ...question,
+            assignedToPersonIds: new Set(
+              question.assignments.map((assignment) => assignment.personId)
+            ),
+          } as UpdateQuestion
+        }
         onSubmit={onSubmit}
         onCancel={() => router.push("/questions/" + questionId)}
       />

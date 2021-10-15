@@ -60,20 +60,19 @@ model Token {
 }
 
 model Question {
-  id                 Int      @id @default(autoincrement())
-  title              String
-  status             String
-  assignedToPerson   Person   @relation(fields: [assignedToPersonId], references: [id], onDelete: Cascade)
-  assignedToPersonId Int
-  answers            Answer[]
+  id          Int          @id @default(autoincrement())
+  title       String
+  status      String
+  assignments Assignment[]
+  answers     Answer[]
 }
 
 model Person {
-  id                Int        @id @default(autoincrement())
-  name              String
-  description       String
-  assignedQuestions Question[]
-  answers           Answer[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  assignments Assignment[]
+  answers     Answer[]
 }
 
 model Answer {
@@ -83,4 +82,14 @@ model Answer {
   personId    Int
   question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  Int
+}
+
+model Assignment {
+  id         Int      @id @default(autoincrement())
+  person     Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  personId   Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId Int
+
+  @@unique([personId, questionId])
 }

@@ -35,16 +35,14 @@ const Content = () => {
       </h1>
       <p>{person.description}</p>
       <h2>Assigned Questions</h2>
-      {person.assignedQuestions.map((question) => (
+      {person.assignments.map(({ question }) => (
         <Box key={question.id}>
           <h3>
             {question.title} ({question.status})
           </h3>
-          {question.answers
-            .filter((answer) => answer.personId == person.id)
-            .map((answer) => (
-              <AnswerBox key={answer.id} answer={answer} />
-            ))}
+          {question.answers.map((answer) => (
+            <AnswerBox key={answer.id} answer={answer} />
+          ))}
         </Box>
       ))}
     </Box>

@@ -7,7 +7,13 @@ export default async function getPerson(personId: number | undefined) {
   }
   const person = await db.person.findFirst({
     where: { id: personId },
-    include: { assignedQuestions: { include: { answers: { include: { person: true } } } } },
+    include: {
+      assignments: {
+        include: {
+          question: { include: { answers: { where: { personId }, include: { person: true } } } },
+        },
+      },
+    },
   })
   if (person === null) {
     throw new NotFoundError()

@@ -5,8 +5,10 @@ import QuestionForm from "../../components/QuestionForm"
 import { CreateQuestion } from "app/questions/types"
 import { useMutation, useRouter } from "blitz"
 import createQuestion from "app/questions/mutations/createQuestion"
+import { Suspense } from "react"
+import CircularProgress from "@mui/material/CircularProgress"
 
-const NewQuestionPage: BlitzPage = () => {
+const Content = () => {
   const [createQuestionMutation] = useMutation(createQuestion)
   const router = useRouter()
 
@@ -26,11 +28,20 @@ const NewQuestionPage: BlitzPage = () => {
         initialValues={{
           title: "",
           status: "unanswered",
-          assignedToPersonId: 1,
+          assignedToPersonIds: new Set(),
         }}
         onSubmit={onSubmit}
         onCancel={() => router.push("/questions")}
       />
+    </Box>
+  )
+}
+const NewQuestionPage: BlitzPage = () => {
+  return (
+    <Box>
+      <Suspense fallback={<CircularProgress />}>
+        <Content />
+      </Suspense>
     </Box>
   )
 }

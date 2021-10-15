@@ -1,6 +1,7 @@
 import { Form } from "app/core/components/Form"
 import { TextField, Select } from "app/core/components/Fields"
 import { CreateQuestion, UpdateQuestion, CreateQuestionSchema } from "../types"
+import PersonSelection from "../components/PersonSelection"
 
 type CreateUpdateQuestion = CreateQuestion | UpdateQuestion
 
@@ -22,7 +23,7 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
-      <TextField name="assignedToPersonId" label="Assigned to Person with Id" type="number" />
+      <PersonSelection name="assignedToPersonIds" label="Assigned to people" />
       <Select
         name="status"
         label="Status"

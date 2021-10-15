@@ -26,7 +26,7 @@ const Content = () => {
 
   const onCreateAnswer = async (question: CreateAnswer) => {
     try {
-      const createdAnswer = await createQuestionMutation(question)
+      await createQuestionMutation(question)
       router.reload()
     } catch (e: any) {
       console.log(e)
@@ -47,7 +47,10 @@ const Content = () => {
         </h1>
       </Box>
       <p>Status: {question.status}</p>
-      <p>Assigned to: {question.assignedToPerson.name}</p>
+      <p>
+        Assigned to:{" "}
+        {question.assignments.map((assignment) => assignment.person.name).join(", ") || "nobody"}
+      </p>
 
       <h2>New Answer</h2>
       <AnswerForm

@@ -8,7 +8,11 @@ export default async function getQuestion(questionId: number | undefined) {
   const question = await db.question.findFirst({
     where: { id: questionId },
     include: {
-      assignedToPerson: true,
+      assignments: {
+        include: {
+          person: true,
+        },
+      },
       answers: {
         include: {
           person: true,

@@ -1,11 +1,11 @@
-import { CreateAnswer, CreatePerson, CreateQuestion } from "app/questions/types"
+import { CreateAnswer, CreatePerson, CreateQuestion, CreateAssignment } from "app/questions/types"
 import db from "./index"
 
 interface SeedPerson extends CreatePerson {
   id: number
 }
 
-interface SeedQuestion extends CreateQuestion {
+interface SeedQuestion extends Omit<CreateQuestion, "assignedToPersonIds"> {
   answers: Omit<CreateAnswer, "questionId">[]
 }
 
@@ -27,13 +27,11 @@ const questions: SeedQuestion[] = [
   {
     title: "Why are there so many different health insurance companies?",
     status: "unanswered",
-    assignedToPersonId: 1,
     answers: [],
   },
   {
     title: "What is your greatest success?",
     status: "ongoing",
-    assignedToPersonId: 1,
     answers: [
       {
         personId: 1,
@@ -48,7 +46,6 @@ const questions: SeedQuestion[] = [
   {
     title: "When was the AOK established?",
     status: "answered",
-    assignedToPersonId: 2,
     answers: [
       {
         personId: 2,
@@ -56,6 +53,21 @@ const questions: SeedQuestion[] = [
           "The 'Ortskrankenkassen' were founded in 1884 immediately after the introduction of statutory health insurance in 1883 by Otto von Bismarck.",
       },
     ],
+  },
+]
+
+const assignments: CreateAssignment[] = [
+  {
+    personId: 1,
+    questionId: 2,
+  },
+  {
+    personId: 2,
+    questionId: 2,
+  },
+  {
+    personId: 2,
+    questionId: 3,
   },
 ]
 
@@ -84,10 +96,17 @@ const seedQuestions = async () => {
   }
 }
 
+const seedAssignments = async () => {
+  await db.assignment.createMany({
+    data: assignments,
+  })
+}
+
 // This seed function is executed when you run `blitz db seed`
 const seed = async () => {
   await seedPersons()
   await seedQuestions()
+  await seedAssignments()
 }
 
 export default seed
