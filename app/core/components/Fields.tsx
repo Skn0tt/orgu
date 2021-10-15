@@ -20,7 +20,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     } = useField(name, {
       parse:
         type === "number"
-          ? (Number as any)
+          ? Number
           : // Converting `""` to `null` ensures empty values will be set to null in the DB
             (v) => (v === "" ? null : v),
     })

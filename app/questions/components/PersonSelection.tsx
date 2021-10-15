@@ -11,7 +11,7 @@ interface SelectProps {
 }
 
 const PersonSelection = ({ name, label }: SelectProps) => {
-  const { input, meta } = useField<Set<number>>(name)
+  const { input } = useField<Set<number>>(name)
   const [persons] = useQuery(getPersons, null)
 
   return (
@@ -23,8 +23,15 @@ const PersonSelection = ({ name, label }: SelectProps) => {
         <span key={person.id}>
           <Checkbox
             checked={input.value.has(person.id)}
-            onChange={(e) => input.value.delete(person.id)} //TODO
-            inputProps={{ "aria-label": "controlled" }}
+            onChange={() => {
+              const newValue = new Set(input.value)
+              if (input.value.has(person.id)) {
+                newValue.delete(person.id)
+              } else {
+                newValue.add(person.id)
+              }
+              input.onChange(newValue)
+            }}
           />
           {person.name}
         </span>
