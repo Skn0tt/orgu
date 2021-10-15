@@ -5,6 +5,7 @@ import PersonForm from "../../components/PersonForm"
 import { CreatePerson } from "app/questions/types"
 import { useMutation, useRouter } from "blitz"
 import createPerson from "app/questions/mutations/createPerson"
+import Typography from "@mui/material/Typography"
 
 const NewPersonPage: BlitzPage = () => {
   const [createPersonMutation] = useMutation(createPerson)
@@ -21,7 +22,9 @@ const NewPersonPage: BlitzPage = () => {
 
   return (
     <Box>
-      <h1>New Person</h1>
+      <Typography variant="h1" component="h1">
+        New Person
+      </Typography>
       <PersonForm
         initialValues={{
           name: "",

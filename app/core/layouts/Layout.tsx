@@ -22,7 +22,7 @@ const MainConatiner = styled("main")(({ theme }) => ({
 
 const Navbar = () => {
   return (
-    <AppBar position="static" id="main-menu">
+    <AppBar position="static" id="main-menu" color="primary">
       <Toolbar>
         <Box mr="auto" style={{ flex: 1 }}>
           <Link href="/" passHref>

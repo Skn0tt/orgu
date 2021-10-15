@@ -18,7 +18,7 @@ const QuestionCard = ({ question }: { question: Question }) => {
     <Card sx={{ mb: 1 }}>
       <CardActionArea onClick={() => router.push("/questions/" + question.id)}>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h3" component="h2" mt={0}>
             {question.title}
           </Typography>
           <Box>
@@ -45,9 +45,13 @@ const QuestionsPage: BlitzPage = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Questions</h1>
+        <Typography variant="h1" component="h1">
+          Questions
+        </Typography>
         <Link href="/questions/new" passHref>
-          <Button variant="contained">New Question</Button>
+          <Button variant="contained" color="secondary">
+            New Question
+          </Button>
         </Link>
       </Box>
 

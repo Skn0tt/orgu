@@ -1,6 +1,7 @@
 import { BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
 import QuestionForm from "../../components/QuestionForm"
 import { CreateQuestion } from "app/questions/types"
 import { useMutation, useRouter } from "blitz"
@@ -23,7 +24,9 @@ const Content = () => {
 
   return (
     <Box>
-      <h1>New Question</h1>
+      <Typography variant="h1" component="h1">
+        New Question
+      </Typography>
       <QuestionForm
         initialValues={{
           title: "",

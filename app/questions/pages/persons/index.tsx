@@ -7,10 +7,10 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardMedia"
-import Typography from "@mui/material/Typography"
 import { CardActionArea } from "@mui/material"
 import { Person } from "db"
 import Button from "@mui/material/Button"
+import Typography from "@mui/material/Typography"
 
 const PersonCard = ({ person }: { person: Person }) => {
   const router = useRouter()
@@ -24,10 +24,10 @@ const PersonCard = ({ person }: { person: Person }) => {
           component="img"
           image="https://www.pmidpi.com/wp-content/uploads/2015/07/person-placeholder.jpg"
           alt={person.name}
-          sx={{ width: 100 }}
+          sx={{ width: 80 }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h3" component="h2" mt={0}>
             {person.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -56,9 +56,13 @@ const PersonsPage: BlitzPage = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>People</h1>
+        <Typography variant="h1" component="h1">
+          People
+        </Typography>
         <Link href="/persons/new" passHref>
-          <Button variant="contained">New Person</Button>
+          <Button variant="contained" color="secondary">
+            New Person
+          </Button>
         </Link>
       </Box>
       <Suspense fallback={<CircularProgress />}>

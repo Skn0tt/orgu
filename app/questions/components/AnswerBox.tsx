@@ -8,6 +8,7 @@ import deleteAnswer from "../mutations/deleteAnswer"
 import { Answer, UpdateAnswer } from "../types"
 import AnswerForm from "./AnswerForm"
 import updateAnswer from "../mutations/updateAnswer"
+import Typography from "@mui/material/Typography"
 
 const AnswerBox = ({ answer }: { answer: Answer }) => {
   const [deleteAnswerMutation] = useMutation(deleteAnswer)
@@ -33,14 +34,14 @@ const AnswerBox = ({ answer }: { answer: Answer }) => {
         />
       ) : (
         <Box>
-          <h3>
+          <Typography variant="h3" component="h3">
             {answer.person.name}
             <IconButton color="secondary" onClick={() => setInUpdateMode(true)}>
               <EditIcon />
             </IconButton>
             <DeleteButton name={"answer"} onSubmit={onDeleteAnswer} />
-          </h3>
-          <p>{answer.description}</p>
+          </Typography>
+          <Typography>{answer.description}</Typography>
         </Box>
       )}
     </Box>

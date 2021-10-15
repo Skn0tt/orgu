@@ -1,11 +1,15 @@
 import { BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
+import { Typography } from "@mui/material"
 
 const Home: BlitzPage = () => {
   return (
     <Box>
-      <h1>Welcome</h1>
+      <Typography component="h1" variant="h1">
+        Welcome to Orgu!
+      </Typography>
+      <Typography>On Orgu you can manage questions and people.</Typography>
     </Box>
   )
 }

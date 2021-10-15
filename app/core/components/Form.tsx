@@ -50,6 +50,7 @@ export function Form<S extends z.ZodType<any, any>>({
                 type="submit"
                 disabled={submitting || invalid}
                 sx={{ mr: 1 }}
+                color="secondary"
               >
                 {submitText}
               </Button>

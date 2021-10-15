@@ -41,6 +41,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         label={label}
         fullWidth
         variant="outlined"
+        color="secondary"
         sx={{
           my: 1,
         }}
@@ -65,13 +66,14 @@ export const Select = ({ name, label, items }: SelectProps) => {
 
   return (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel color="secondary">{label}</InputLabel>
       <MuiSelect
         name={name}
         value={input.value}
         onChange={input.onChange}
         disabled={meta.submitting}
         label={label}
+        color="secondary"
       >
         {items.map(({ value, label }) => (
           <MenuItem key={value} value={value}>

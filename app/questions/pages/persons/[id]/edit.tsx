@@ -8,6 +8,7 @@ import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import getPerson from "app/questions/queries/getPerson"
 import updatePerson from "app/questions/mutations/updatePerson"
+import Typography from "@mui/material/Typography"
 
 const Content = () => {
   const personId = useParam("id", "number")!
@@ -26,7 +27,9 @@ const Content = () => {
 
   return (
     <Box>
-      <h1>Edit Person</h1>
+      <Typography variant="h1" component="h1">
+        Edit Person
+      </Typography>
       <PersonForm
         initialValues={person}
         onSubmit={onSubmit}

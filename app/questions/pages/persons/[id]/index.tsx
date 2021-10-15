@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
 import deletePerson from "app/questions/mutations/deletePerson"
 import AnswerBox from "app/questions/components/AnswerBox"
+import Typography from "@mui/material/Typography"
 
 const Content = () => {
   const personId = useParam("id", "number")!
@@ -24,7 +25,7 @@ const Content = () => {
 
   return (
     <Box>
-      <h1>
+      <Typography variant="h1" component="h1">
         {person.name}
         <Link href={`/persons/${personId}/edit`} passHref>
           <IconButton color="secondary">
@@ -32,14 +33,16 @@ const Content = () => {
           </IconButton>
         </Link>
         <DeleteButton name="person" onSubmit={onDeletePerson} />
-      </h1>
-      <p>{person.description}</p>
-      <h2>Assigned Questions</h2>
+      </Typography>
+      <Typography>{person.description}</Typography>
+      <Typography variant="h2" component="h2">
+        Assigned Questions
+      </Typography>
       {person.assignments.map(({ question }) => (
         <Box key={question.id}>
-          <h3>
+          <Typography variant="h3" component="h3">
             {question.title} ({question.status})
-          </h3>
+          </Typography>
           {question.answers.map((answer) => (
             <AnswerBox key={answer.id} answer={answer} />
           ))}

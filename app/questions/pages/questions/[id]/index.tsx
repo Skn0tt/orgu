@@ -12,6 +12,7 @@ import AnswerForm from "app/questions/components/AnswerForm"
 import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
+import Typography from "@mui/material/Typography"
 
 const Content = () => {
   const questionId = useParam("id", "number")!
@@ -36,7 +37,7 @@ const Content = () => {
   return (
     <Box>
       <Box>
-        <h1>
+        <Typography variant="h1" component="h1">
           {question.title}{" "}
           <Link href={`/questions/${questionId}/edit`} passHref>
             <IconButton color="secondary">
@@ -44,21 +45,29 @@ const Content = () => {
             </IconButton>
           </Link>
           <DeleteButton name="question" onSubmit={onDeleteQuestion} />
-        </h1>
+        </Typography>
       </Box>
-      <p>Status: {question.status}</p>
-      <p>
+      <Typography>Status: {question.status}</Typography>
+      <Typography>
         Assigned to:{" "}
         {question.assignments.map((assignment) => assignment.person.name).join(", ") || "nobody"}
-      </p>
+      </Typography>
 
-      <h2>New Answer</h2>
+      <Typography variant="h2" component="h2">
+        New Answer
+      </Typography>
       <AnswerForm
         initialValues={{ description: "", questionId: questionId, personId: 1 }}
         onSubmit={onCreateAnswer}
       />
 
-      {question.answers.length ? <h2>Answers</h2> : ""}
+      {question.answers.length ? (
+        <Typography variant="h2" component="h2">
+          Answers
+        </Typography>
+      ) : (
+        ""
+      )}
       {question.answers.map((answer) => (
         <AnswerBox key={answer.id} answer={answer} />
       ))}

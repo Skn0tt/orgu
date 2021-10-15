@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import Checkbox from "@mui/material/Checkbox"
 import { useQuery } from "blitz"
 import getPersons from "../queries/getPersons"
+import Typography from "@mui/material/Typography"
 
 interface SelectProps {
   name: string
@@ -15,7 +16,9 @@ const PersonSelection = ({ name, label }: SelectProps) => {
 
   return (
     <Box>
-      <h3>{label}</h3>
+      <Typography variant="h3" component="h3">
+        {label}
+      </Typography>
       {persons.map((person) => (
         <span key={person.id}>
           <Checkbox
