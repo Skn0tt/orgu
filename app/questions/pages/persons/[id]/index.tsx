@@ -11,6 +11,7 @@ import DeleteButton from "app/core/components/DeleteButton"
 import deletePerson from "app/questions/mutations/deletePerson"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
+import Markdown from "app/core/components/Markdown"
 
 const Content = () => {
   const personId = useParam("id", "number")!
@@ -34,7 +35,7 @@ const Content = () => {
         </Link>
         <DeleteButton name="person" onSubmit={onDeletePerson} />
       </Typography>
-      <Typography>{person.description}</Typography>
+      <Markdown value={person.description} />
       <Typography variant="h2" component="h2">
         Assigned Questions
       </Typography>
