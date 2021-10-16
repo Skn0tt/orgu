@@ -1,7 +1,7 @@
 import * as z from "zod"
 import { Answer as PrismaAnswer, Person as PrismaPerson, Assignment as PrismaAssignment } from "db"
 
-const id = z.number().int().positive()
+export const id = z.number().int().positive()
 
 export const CreatePersonSchema = z.object({
   name: z.string(),

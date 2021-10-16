@@ -82,6 +82,8 @@ model Answer {
   personId    Int
   question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  Int
+
+  @@unique([personId, questionId])
 }
 
 model Assignment {

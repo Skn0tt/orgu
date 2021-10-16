@@ -1,7 +1,7 @@
 import { useMutation, useRouter } from "blitz"
 import Box from "@mui/system/Box"
 import DeleteButton from "app/core/components/DeleteButton"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import deleteAnswer from "../mutations/deleteAnswer"
@@ -9,6 +9,8 @@ import { Answer, UpdateAnswer } from "../types"
 import AnswerForm from "./AnswerForm"
 import updateAnswer from "../mutations/updateAnswer"
 import Typography from "@mui/material/Typography"
+import { TextField } from "@mui/material"
+import Markdown from "app/core/components/Markdown"
 
 const AnswerBox = ({ answer }: { answer: Answer }) => {
   const [deleteAnswerMutation] = useMutation(deleteAnswer)
@@ -47,4 +49,31 @@ const AnswerBox = ({ answer }: { answer: Answer }) => {
     </Box>
   )
 }
+export const PersonAnswerBox = ({
+  description,
+  setDescription,
+  inUpdateMode,
+}: {
+  description: string
+  setDescription: (v: string) => void
+  inUpdateMode: boolean
+}) => {
+  return (
+    <Box>
+      {inUpdateMode ? (
+        <TextField
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          fullWidth
+          multiline
+        />
+      ) : (
+        <Box sx={{ ml: "15px" }}>
+          <Markdown value={description} />
+        </Box>
+      )}
+    </Box>
+  )
+}
+
 export default AnswerBox

@@ -2,7 +2,7 @@ import { BlitzPage, useQuery, Link, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"
-import { Suspense, useState } from "react"
+import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import Button from "@mui/material/Button"
 import { Question } from "db"
@@ -11,7 +11,6 @@ import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import Chip from "@mui/material/Chip"
-import Markdown from "app/core/components/Markdown"
 
 const QuestionCard = ({ question }: { question: Question }) => {
   const router = useRouter()
@@ -43,7 +42,6 @@ const QuestionsList = () => {
 }
 
 const QuestionsPage: BlitzPage = () => {
-  const [value, setValue] = useState("")
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -56,8 +54,6 @@ const QuestionsPage: BlitzPage = () => {
           </Button>
         </Link>
       </Box>
-      <textarea value={value} onChange={(e) => setValue(e.target.value)}></textarea>
-      <Markdown value={value} />
 
       <Suspense fallback={<CircularProgress />}>
         <QuestionsList />
