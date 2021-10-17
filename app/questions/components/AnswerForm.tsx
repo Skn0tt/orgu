@@ -3,6 +3,7 @@ import { TextField } from "app/core/components/Fields"
 import { Form } from "app/core/components/Form"
 import React from "react"
 import { CreateAnswer, CreateAnswerSchema, UpdateAnswer } from "../types"
+import PersonSelection from "./PersonSelection"
 
 type CreateUpdateAnswer = CreateAnswer | UpdateAnswer
 
@@ -25,7 +26,7 @@ export const AnswerForm = ({
         onCancel={onCancel}
       >
         <TextField name="description" label="Description" type="textarea" />
-        <TextField name="personId" label="From person with ID" type="number" />
+        <PersonSelection name={"personId"} label={"From person"} allowMultiple={false} />
       </Form>
     </Box>
   )
