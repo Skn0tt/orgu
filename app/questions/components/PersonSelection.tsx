@@ -32,7 +32,7 @@ const PersonSelectionSingleSelect = (
   // on change
   const onChange = (event, value) => {
     // for single choice, value is a single boxOption
-    if (value === null) input.onChange(null)
+    if (value === null) input.onChange(0)
     else input.onChange(value.id)
   }
 
