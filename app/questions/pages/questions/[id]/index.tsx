@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, useParam, Link, useRouter, useMutation } from "blitz"
+import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import React, { Suspense } from "react"
@@ -22,7 +22,7 @@ const Content = () => {
 
   const onDeleteQuestion = async () => {
     await deleteQuestion(questionId)
-    router.push("/questions")
+    await router.push("/questions")
   }
 
   const onCreateAnswer = async (question: CreateAnswer) => {

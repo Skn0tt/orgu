@@ -1,9 +1,8 @@
-import { BlitzPage } from "blitz"
+import { BlitzPage, useMutation, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import PersonForm from "../../components/PersonForm"
 import { CreatePerson } from "app/questions/types"
-import { useMutation, useRouter } from "blitz"
 import createPerson from "app/questions/mutations/createPerson"
 import Typography from "@mui/material/Typography"
 
@@ -14,7 +13,7 @@ const NewPersonPage: BlitzPage = () => {
   const onSubmit = async (person: CreatePerson) => {
     try {
       const createdPerson = await createPersonMutation(person)
-      router.push("/persons/" + createdPerson.id)
+      await router.push("/persons/" + createdPerson.id)
     } catch (e: any) {
       console.log(e)
     }

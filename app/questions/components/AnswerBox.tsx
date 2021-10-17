@@ -1,7 +1,7 @@
 import { useMutation, useRouter } from "blitz"
 import Box from "@mui/system/Box"
 import DeleteButton from "app/core/components/DeleteButton"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import deleteAnswer from "../mutations/deleteAnswer"

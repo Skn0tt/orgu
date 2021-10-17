@@ -1,10 +1,9 @@
-import { BlitzPage } from "blitz"
+import { BlitzPage, useMutation, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import QuestionForm from "../../components/QuestionForm"
 import { CreateQuestion } from "app/questions/types"
-import { useMutation, useRouter } from "blitz"
 import createQuestion from "app/questions/mutations/createQuestion"
 import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
@@ -16,7 +15,7 @@ const Content = () => {
   const onSubmit = async (question: CreateQuestion) => {
     try {
       const createdQuestion = await createQuestionMutation(question)
-      router.push("/questions/" + createdQuestion.id)
+      await router.push("/questions/" + createdQuestion.id)
     } catch (e: any) {
       console.log(e)
     }

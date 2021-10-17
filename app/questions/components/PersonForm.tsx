@@ -1,6 +1,6 @@
 import { Form } from "app/core/components/Form"
 import { TextField } from "app/core/components/Fields"
-import { CreatePerson, UpdatePerson, CreatePersonSchema } from "../types"
+import { CreatePerson, CreatePersonSchema, UpdatePerson } from "../types"
 
 type CreateUpdatePerson = CreatePerson | UpdatePerson
 

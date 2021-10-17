@@ -1,6 +1,6 @@
 import { Form } from "app/core/components/Form"
-import { TextField, Select } from "app/core/components/Fields"
-import { CreateQuestion, UpdateQuestion, CreateQuestionSchema } from "../types"
+import { Select, TextField } from "app/core/components/Fields"
+import { CreateQuestion, CreateQuestionSchema, UpdateQuestion } from "../types"
 import PersonSelection from "../components/PersonSelection"
 
 type CreateUpdateQuestion = CreateQuestion | UpdateQuestion

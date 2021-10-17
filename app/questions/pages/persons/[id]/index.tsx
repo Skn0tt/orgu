@@ -1,10 +1,9 @@
-import { BlitzPage, useQuery, useParam, Link, useRouter, useMutation } from "blitz"
+import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import { Suspense, useState } from "react"
+import React, { Suspense, useState } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import getPerson from "app/questions/queries/getPerson"
-import React from "react"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
@@ -38,7 +37,7 @@ const Content = () => {
 
   const onDeletePerson = async () => {
     await deletePersonMutation(personId)
-    router.push("/persons")
+    await router.push("/persons")
   }
 
   return (

@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { Answer as PrismaAnswer, Person as PrismaPerson, Assignment as PrismaAssignment } from "db"
+import { Answer as PrismaAnswer, Assignment as PrismaAssignment, Person as PrismaPerson } from "db"
 
 export const id = z.number().int().positive()
 
