@@ -1,7 +1,7 @@
 import { useMutation, useRouter } from "blitz"
 import Box from "@mui/system/Box"
 import DeleteButton from "app/core/components/DeleteButton"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import deleteAnswer from "../mutations/deleteAnswer"
@@ -11,8 +11,15 @@ import updateAnswer from "../mutations/updateAnswer"
 import Typography from "@mui/material/Typography"
 import { TextField } from "@mui/material"
 import Markdown from "app/core/components/Markdown"
+import { Person } from "db"
 
-const AnswerBox = ({ answer }: { answer: Answer }) => {
+const AnswerBox = ({
+  answer,
+  canSelectPerson,
+}: {
+  answer: Answer
+  canSelectPerson?: (person: Person) => boolean
+}) => {
   const [deleteAnswerMutation] = useMutation(deleteAnswer)
   const [updateAnswerMutation] = useMutation(updateAnswer)
   const [inUpdateMode, setInUpdateMode] = useState<boolean>(false)
@@ -33,6 +40,7 @@ const AnswerBox = ({ answer }: { answer: Answer }) => {
           initialValues={answer}
           onSubmit={onUpdateAnswer}
           onCancel={() => setInUpdateMode(false)}
+          canSelectPerson={canSelectPerson}
         />
       ) : (
         <Box>

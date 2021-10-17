@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, Link, useRouter } from "blitz"
+import { BlitzPage, Link, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"

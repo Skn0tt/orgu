@@ -1,4 +1,4 @@
-import { BlitzPage, useQuery, useParam, Link, useRouter, useMutation } from "blitz"
+import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import React, { Suspense } from "react"
@@ -13,6 +13,7 @@ import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
+import { Person } from "db"
 
 const Content = () => {
   const questionId = useParam("id", "number")!
@@ -20,9 +21,14 @@ const Content = () => {
   const [createQuestionMutation] = useMutation(createAnswer)
   const router = useRouter()
 
+  const existingAnswerIds = new Set(question.answers.map((ans) => ans.personId))
+  const canSelectPerson = (person: Person) => {
+    return !existingAnswerIds.has(person.id)
+  }
+
   const onDeleteQuestion = async () => {
     await deleteQuestion(questionId)
-    router.push("/questions")
+    await router.push("/questions")
   }
 
   const onCreateAnswer = async (question: CreateAnswer) => {
@@ -57,8 +63,9 @@ const Content = () => {
         New Answer
       </Typography>
       <AnswerForm
-        initialValues={{ description: "", questionId: questionId, personId: 1 }}
+        initialValues={{ description: "", questionId: questionId, personId: 0 }}
         onSubmit={onCreateAnswer}
+        canSelectPerson={canSelectPerson}
       />
 
       {question.answers.length ? (
@@ -69,7 +76,11 @@ const Content = () => {
         ""
       )}
       {question.answers.map((answer) => (
-        <AnswerBox key={answer.id} answer={answer} />
+        <AnswerBox
+          key={answer.id}
+          answer={answer}
+          canSelectPerson={(person) => canSelectPerson(person) || person.id === answer.personId}
+        />
       ))}
     </Box>
   )

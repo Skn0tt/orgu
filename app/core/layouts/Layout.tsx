@@ -6,7 +6,7 @@ import Button from "@mui/material/Button"
 import Toolbar from "@mui/material/Toolbar"
 import { styled } from "@mui/material/styles"
 
-const MainConatiner = styled("main")(({ theme }) => ({
+const MainContainer = styled("main")(({ theme }) => ({
   padding: theme.spacing(1),
   margin: "auto",
   [theme.breakpoints.down("sm")]: {
@@ -56,7 +56,7 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <MainConatiner>{children}</MainConatiner>
+      <MainContainer>{children}</MainContainer>
     </>
   )
 }

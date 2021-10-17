@@ -1,7 +1,6 @@
 import PersonForm from "app/questions/components/PersonForm"
 import { UpdatePerson } from "app/questions/types"
-import { useMutation, useRouter } from "blitz"
-import { BlitzPage, useQuery, useParam } from "blitz"
+import { BlitzPage, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import { Suspense } from "react"
@@ -19,7 +18,7 @@ const Content = () => {
   const onSubmit = async (person: UpdatePerson) => {
     try {
       const updatedPerson = await updatePersonMutation(person)
-      router.push("/persons/" + updatedPerson.id)
+      await router.push("/persons/" + updatedPerson.id)
     } catch (e: any) {
       console.log(e)
     }
