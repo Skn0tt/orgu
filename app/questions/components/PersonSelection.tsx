@@ -3,22 +3,31 @@ import Box from "@mui/material/Box"
 import { useQuery } from "blitz"
 import getPersons from "../queries/getPersons"
 import { Autocomplete, TextField } from "@mui/material"
+import { Person } from "db"
 
 interface SelectProps {
   name: string
   label: string
   allowMultiple?: boolean
+  canSelectPerson?: (person: Person) => boolean
 }
 
-const PersonSelectionSingleSelect = ({ name, label }: SelectProps) => {
-  const { input } = useField<number>(name)
-  const [persons] = useQuery(getPersons, null)
+interface AutocompleteOption {
+  label: string
+  id: number
+}
 
-  // create the entries and a lookup of the entries
-  const boxOptions = persons.map((person) => {
-    return { label: person.name, id: person.id }
-  })
-  const boxOptionsMap = new Map(boxOptions.map((option) => [option.id, option]))
+interface SelectOptions {
+  options: AutocompleteOption[]
+  optionMap: Map<number, AutocompleteOption>
+  getOptionDisabled: (option: AutocompleteOption) => boolean
+}
+
+const PersonSelectionSingleSelect = (
+  { name, label }: SelectProps,
+  { options, optionMap, getOptionDisabled }: SelectOptions
+) => {
+  const { input } = useField<number>(name)
 
   // on change
   const onChange = (event, value) => {
@@ -30,8 +39,9 @@ const PersonSelectionSingleSelect = ({ name, label }: SelectProps) => {
   return (
     <Box>
       <Autocomplete
-        options={boxOptions}
-        value={boxOptionsMap.get(input.value)}
+        options={options}
+        value={optionMap.get(input.value)}
+        getOptionDisabled={getOptionDisabled}
         renderInput={(params) => {
           return <TextField {...params} label={label} />
         }}
@@ -41,15 +51,11 @@ const PersonSelectionSingleSelect = ({ name, label }: SelectProps) => {
   )
 }
 
-const PersonSelectionMultiSelect = ({ name, label }: SelectProps) => {
+const PersonSelectionMultiSelect = (
+  { name, label }: SelectProps,
+  { options, optionMap, getOptionDisabled }: SelectOptions
+) => {
   const { input } = useField<Set<number>>(name)
-  const [persons] = useQuery(getPersons, null)
-
-  // create the entries and a lookup of the entries
-  const boxOptions = persons.map((person) => {
-    return { label: person.name, id: person.id }
-  })
-  const boxOptionsMap = new Map(boxOptions.map((option) => [option.id, option]))
 
   // on change
   const onChange = (event, value) => {
@@ -61,8 +67,9 @@ const PersonSelectionMultiSelect = ({ name, label }: SelectProps) => {
     <Box>
       <Autocomplete
         multiple
-        options={boxOptions}
-        value={Array.from(input.value.values()).map((id) => boxOptionsMap.get(id))}
+        options={options}
+        getOptionDisabled={getOptionDisabled}
+        value={Array.from(input.value.values()).map((id) => optionMap.get(id))}
         renderInput={(params) => {
           return <TextField {...params} label={label} />
         }}
@@ -72,10 +79,37 @@ const PersonSelectionMultiSelect = ({ name, label }: SelectProps) => {
   )
 }
 
-// Todo: allow disabling a person from picker options, e.g. if the person already has answered the question
-const PersonSelection = ({ name, label, allowMultiple = true }: SelectProps) => {
-  if (allowMultiple) return PersonSelectionMultiSelect({ name, label })
-  else return PersonSelectionSingleSelect({ name, label })
+// by default every person is accepted, unless a custom canSelectPerson is provided
+const PersonSelection = ({
+  name,
+  label,
+  allowMultiple = true,
+  canSelectPerson = () => true,
+}: SelectProps) => {
+  const [persons] = useQuery(getPersons, null)
+
+  // create the entries and a lookup of the entries and person objects
+  const options = persons.map((person: Person) => {
+    return { label: person.name, id: person.id }
+  })
+  const optionMap = new Map(options.map((option) => [option.id, option]))
+  const personMap = new Map<number, Person>(persons.map((p) => [p.id, p]))
+
+  // decide if option is disabled
+  const getOptionDisabled = (option: AutocompleteOption) => {
+    const person = personMap.get(option.id)
+    if (person === undefined) {
+      return true // always disable invalid options
+    }
+    return !canSelectPerson(person)
+  }
+
+  // create the params
+  const selectProps: SelectProps = { name, label }
+  const selectOptions: SelectOptions = { options, optionMap, getOptionDisabled }
+
+  if (allowMultiple) return PersonSelectionMultiSelect(selectProps, selectOptions)
+  else return PersonSelectionSingleSelect(selectProps, selectOptions)
 }
 
 export default PersonSelection
