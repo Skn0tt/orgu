@@ -8,43 +8,38 @@ import EditIcon from "@mui/icons-material/Edit"
 import CheckIcon from "@mui/icons-material/Check"
 import TreeItem, { TreeItemProps, useTreeItem, TreeItemContentProps } from "@mui/lab/TreeItem"
 import clsx from "clsx"
-
-export interface TagNode {
-  id: string
-  name: string
-  children?: TagNode[]
-}
+import { TagNode } from "../types"
 
 export const defaultTree: TagNode = {
-  id: "root",
+  id: 0,
   name: "Parent",
   children: [
     {
-      id: "1",
+      id: 1,
       name: "Child - 1",
+      children: [],
     },
     {
-      id: "3",
+      id: 3,
       name: "Child - 3",
       children: [
         {
-          id: "4",
+          id: 4,
           name: "Child - 4",
+          children: [],
         },
       ],
     },
   ],
 }
 
-export const updateName = (node: TagNode, id: string, updatedName: string): void => {
+export const updateName = (node: TagNode, id: number, updatedName: string): void => {
   if (node.id === id) {
     node.name = updatedName
     return
   }
-  if (node.children) {
-    for (const child of node.children) {
-      updateName(child, id, updatedName)
-    }
+  for (const child of node.children) {
+    updateName(child, id, updatedName)
   }
 }
 
@@ -56,10 +51,8 @@ export default function TagNodesTree() {
   )
 
   const renderTree = (node: TagNode, tree: TagNode, setTree: (v: TagNode) => void) => (
-    <CustomTreeItem key={node.id} nodeId={node.id} label={node.name}>
-      {Array.isArray(node.children)
-        ? node.children.map((child) => renderTree(child, tree, setTree))
-        : null}
+    <CustomTreeItem key={node.id} nodeId={node.id.toString()} label={node.name}>
+      {node.children.length ? node.children.map((child) => renderTree(child, tree, setTree)) : null}
     </CustomTreeItem>
   )
 
@@ -95,7 +88,7 @@ export default function TagNodesTree() {
               <IconButton
                 onClick={() => {
                   const treeClone = JSON.parse(JSON.stringify(tree)) // clone object in js :D - see https://stackoverflow.com/questions/122102
-                  updateName(treeClone, nodeId, updatedName)
+                  updateName(treeClone, parseInt(nodeId), updatedName)
                   setTree(treeClone)
                   setInUpdateMode(false)
                 }}
@@ -123,7 +116,7 @@ export default function TagNodesTree() {
   return (
     <TreeView
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={["root"]}
+      defaultExpanded={["0"]}
       defaultExpandIcon={<ChevronRightIcon />}
       disableSelection
     >

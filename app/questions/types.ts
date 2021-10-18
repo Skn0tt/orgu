@@ -60,3 +60,9 @@ export const CreateTagSchema = z.object({
 })
 
 export type CreateTag = z.TypeOf<typeof CreateTagSchema>
+
+export interface TagNode {
+  id: number
+  name: string
+  children: TagNode[]
+}
