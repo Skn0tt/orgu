@@ -1,4 +1,10 @@
-import { CreateAnswer, CreatePerson, CreateQuestion, CreateAssignment } from "app/questions/types"
+import {
+  CreateAnswer,
+  CreatePerson,
+  CreateQuestion,
+  CreateAssignment,
+  CreateTag,
+} from "app/questions/types"
 import db from "./index"
 
 interface SeedPerson extends CreatePerson {
@@ -7,6 +13,10 @@ interface SeedPerson extends CreatePerson {
 
 interface SeedQuestion extends Omit<CreateQuestion, "assignedToPersonIds"> {
   answers: Omit<CreateAnswer, "questionId">[]
+}
+
+interface SeedTag extends CreateTag {
+  id: number
 }
 
 const persons: SeedPerson[] = [
@@ -71,6 +81,33 @@ const assignments: CreateAssignment[] = [
   },
 ]
 
+const tags: SeedTag[] = [
+  {
+    id: 1,
+    name: "application",
+  },
+  {
+    id: 2,
+    name: "mobile",
+    parentId: 1,
+  },
+  {
+    id: 3,
+    name: "web",
+    parentId: 1,
+  },
+  {
+    id: 4,
+    name: "ios",
+    parentId: 2,
+  },
+  {
+    id: 5,
+    name: "android",
+    parentId: 2,
+  },
+]
+
 const seedPersons = async () => {
   for (const person of persons) {
     await db.person.upsert({
@@ -102,11 +139,22 @@ const seedAssignments = async () => {
   })
 }
 
+const seedTags = async () => {
+  for (const tag of tags) {
+    await db.tag.upsert({
+      where: { id: tag.id },
+      create: { name: tag.name, parentId: tag.parentId },
+      update: {},
+    })
+  }
+}
+
 // This seed function is executed when you run `blitz db seed`
 const seed = async () => {
   await seedPersons()
   await seedQuestions()
   await seedAssignments()
+  await seedTags()
 }
 
 export default seed
