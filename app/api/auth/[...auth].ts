@@ -11,8 +11,8 @@ assert(process.env.GITHUB_CLIENT_ID, "You must provide the GITHUB_CLIENT_ID env 
 assert(process.env.GITHUB_CLIENT_SECRET, "You must provide the GITHUB_CLIENT_SECRET env variable")
 
 export default passportAuth({
-  successRedirectUrl: "/",
-  errorRedirectUrl: "/questions",
+  successRedirectUrl: "/questions",
+  errorRedirectUrl: "/",
   strategies: [
     {
       strategy: new GitHubStrategy(

@@ -1,10 +1,11 @@
 import { ReactNode } from "react"
-import { Head, Link } from "blitz"
+import { Head, Link, useMutation, useSession, useRouter } from "blitz"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Toolbar from "@mui/material/Toolbar"
 import { styled } from "@mui/material/styles"
+import logoutMutation from "app/auth/mutations/logout"
 
 const MainContainer = styled("main")(({ theme }) => ({
   padding: theme.spacing(1),
@@ -21,6 +22,9 @@ const MainContainer = styled("main")(({ theme }) => ({
 }))
 
 const Navbar = () => {
+  const [logout] = useMutation(logoutMutation)
+  const session = useSession({ suspense: false })
+  const router = useRouter()
   return (
     <AppBar position="static" id="main-menu" color="primary">
       <Toolbar>
@@ -38,9 +42,24 @@ const Navbar = () => {
         <Link href="/tags" passHref>
           <Button color="inherit">Tags</Button>
         </Link>
-        <Link href="/api/auth/github" passHref>
-          <Button color="inherit">Login</Button>
-        </Link>
+        {!session.isLoading &&
+          (!session.userId ? (
+            <a href="/api/auth/github">
+              <Button color="inherit" sx={{ color: "white" }}>
+                Login
+              </Button>
+            </a>
+          ) : (
+            <Button
+              color="inherit"
+              onClick={async () => {
+                await logout()
+                router.push("/")
+              }}
+            >
+              Logout
+            </Button>
+          ))}
       </Toolbar>
     </AppBar>
   )
