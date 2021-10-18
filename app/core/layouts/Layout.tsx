@@ -38,6 +38,9 @@ const Navbar = () => {
         <Link href="/tags" passHref>
           <Button color="inherit">Tags</Button>
         </Link>
+        <Link href="/api/auth/github" passHref>
+          <Button color="inherit">Login</Button>
+        </Link>
       </Toolbar>
     </AppBar>
   )
