@@ -40,7 +40,7 @@ const PersonSelectionSingleSelect = (
     <Box>
       <Autocomplete
         options={options}
-        value={optionMap.get(input.value)}
+        value={optionMap.get(input.value) || ""}
         getOptionDisabled={getOptionDisabled}
         renderInput={(params) => {
           return <TextField {...params} label={label} />
