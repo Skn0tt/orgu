@@ -53,3 +53,16 @@ export interface Answer extends PrismaAnswer {
 export type Assignment = PrismaAssignment
 
 export interface CreateAssignment extends Omit<Assignment, "id"> {}
+
+export const CreateTagSchema = z.object({
+  name: z.string().min(1),
+  parentId: id.optional(),
+})
+
+export type CreateTag = z.TypeOf<typeof CreateTagSchema>
+
+export interface TagNode {
+  id: number
+  name: string
+  children: TagNode[]
+}

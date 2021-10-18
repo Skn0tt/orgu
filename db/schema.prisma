@@ -95,3 +95,11 @@ model Assignment {
 
   @@unique([personId, questionId])
 }
+
+model Tag {
+  id       Int    @id @default(autoincrement())
+  name     String
+  parent   Tag?   @relation("TagToTag", fields: [parentId], references: [id])
+  children Tag[]  @relation("TagToTag")
+  parentId Int?
+}
