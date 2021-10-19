@@ -2,7 +2,7 @@ import { BlitzPage, Link, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import Chip from "@mui/material/Chip"
 import { PreviewQuestion } from "app/questions/types"
+import { Autocomplete, TextField } from "@mui/material"
 
 const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
@@ -35,9 +36,21 @@ const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
 
 const QuestionsList = () => {
   const [questions] = useQuery(getQuestions, null)
+  const [searchTerm, setSearchTerm] = useState("")
+
+  // hacky search implementation:
+  const results = questions.filter((question) => {
+    return question.title.includes(searchTerm)
+  })
+
   return (
     <Box>
-      {questions.map((question) => (
+      <TextField
+        label="Search Term"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      {results.map((question) => (
         <QuestionCard key={question.id} question={question} />
       ))}
     </Box>
