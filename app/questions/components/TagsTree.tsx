@@ -9,29 +9,9 @@ import CheckIcon from "@mui/icons-material/Check"
 import TreeItem, { TreeItemProps, useTreeItem, TreeItemContentProps } from "@mui/lab/TreeItem"
 import clsx from "clsx"
 import { TagNode } from "../types"
-
-export const defaultTree: TagNode = {
-  id: 0,
-  name: "Parent",
-  children: [
-    {
-      id: 1,
-      name: "Child - 1",
-      children: [],
-    },
-    {
-      id: 3,
-      name: "Child - 3",
-      children: [
-        {
-          id: 4,
-          name: "Child - 4",
-          children: [],
-        },
-      ],
-    },
-  ],
-}
+import getTagsTree from "../queries/getTagsTree"
+import { useQuery } from "blitz"
+import getTagsArray from "../queries/getTagsArray"
 
 export const updateName = (node: TagNode, id: number, updatedName: string): void => {
   if (node.id === id) {
@@ -44,7 +24,9 @@ export const updateName = (node: TagNode, id: number, updatedName: string): void
 }
 
 export default function TagNodesTree() {
-  const [tree, setTree] = useState<TagNode>(defaultTree)
+  const [tagsTree] = useQuery(getTagsTree, null)
+  const [tagsArray] = useQuery(getTagsArray, null)
+  const [tree, setTree] = useState<TagNode>(tagsTree)
 
   const CustomTreeItem = (props: TreeItemProps) => (
     <TreeItem ContentComponent={CustomContent} {...props} />
@@ -98,14 +80,14 @@ export default function TagNodesTree() {
             </Box>
           ) : (
             <Typography>
-              {label}{" "}
-              <IconButton
+              {label}
+              {/* <IconButton
                 onClick={() => {
                   setInUpdateMode(true)
                 }}
               >
                 <EditIcon />
-              </IconButton>
+              </IconButton> */}
             </Typography>
           )}
         </Box>
@@ -116,7 +98,7 @@ export default function TagNodesTree() {
   return (
     <TreeView
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={["0"]}
+      defaultExpanded={["0", ...tagsArray.map((tag) => tag.id.toString())]}
       defaultExpandIcon={<ChevronRightIcon />}
       disableSelection
     >
