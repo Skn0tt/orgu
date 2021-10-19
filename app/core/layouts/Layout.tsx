@@ -21,6 +21,8 @@ const MainContainer = styled("main")(({ theme }) => ({
   },
 }))
 
+export const authenticationRequired = process.env.BLITZ_PUBLIC_AUTHENTICATION_REQUIRED === "true"
+
 const Navbar = () => {
   const [logout] = useMutation(logoutMutation)
   const session = useSession({ suspense: false })
@@ -33,16 +35,21 @@ const Navbar = () => {
             <Button color="inherit">Home</Button>
           </Link>
         </Box>
-        <Link href="/questions" passHref>
-          <Button color="inherit">Questions</Button>
-        </Link>
-        <Link href="/persons" passHref>
-          <Button color="inherit">People</Button>
-        </Link>
-        <Link href="/tags" passHref>
-          <Button color="inherit">Tags</Button>
-        </Link>
-        {!session.isLoading &&
+        {(!authenticationRequired || session.role === "ADMIN") && (
+          <Box>
+            <Link href="/questions" passHref>
+              <Button color="inherit">Questions</Button>
+            </Link>
+            <Link href="/persons" passHref>
+              <Button color="inherit">People</Button>
+            </Link>
+            <Link href="/tags" passHref>
+              <Button color="inherit">Tags</Button>
+            </Link>
+          </Box>
+        )}
+        {authenticationRequired &&
+          !session.isLoading &&
           (!session.userId ? (
             <a href="/api/auth/github">
               <Button color="inherit" sx={{ color: "white" }}>
