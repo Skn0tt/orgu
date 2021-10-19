@@ -4,7 +4,7 @@ import { Ctx, SessionContext } from "blitz"
 const authorize = () => {
   return function _innerAuthorize(input: unknown, ctx: Ctx) {
     const session: SessionContext = ctx.session
-    if (process.env.AUTHENTICATION_REQUIRED === "true") {
+    if (process.env.BLITZ_PUBLIC_AUTHENTICATION_REQUIRED === "true") {
       session.$authorize("ADMIN")
     }
     return {

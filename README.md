@@ -16,7 +16,7 @@ POSTGRES_DB=orgu
 GITHUB_CLIENT_ID=<your-github-client-id>
 GITHUB_CLIENT_SECRET=<your-github-client-secret>
 BASE_URL=http://localhost:3000
-AUTHENTICATION_REQUIRED=true
+BLITZ_PUBLIC_AUTHENTICATION_REQUIRED=true
 ```
 
 Create a `.env.test.local` file in the root directory with these environment variables:

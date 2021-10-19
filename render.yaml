@@ -24,7 +24,7 @@ services:
         sync: false
       - key: BASE_URL
         sync: false
-      - key: AUTHENTICATION_REQUIRED
+      - key: BLITZ_PUBLIC_AUTHENTICATION_REQUIRED
         value: true
 
 databases:
