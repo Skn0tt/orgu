@@ -1,7 +1,10 @@
 import { Form } from "app/core/components/Form"
 import { Select, TextField } from "app/core/components/Fields"
 import { CreateQuestion, CreateQuestionSchema, UpdateQuestion } from "../types"
-import PersonSelection from "../components/PersonSelection"
+import AutocompleteSelection from "../../core/components/AutocompleteSelection"
+import { useQuery } from "blitz"
+import getPersons from "../queries/getPersons"
+import { Person } from "../../../db"
 
 type CreateUpdateQuestion = CreateQuestion | UpdateQuestion
 
@@ -14,6 +17,12 @@ export const QuestionForm = ({
   onSubmit: (question: CreateUpdateQuestion) => void
   onCancel: () => void
 }) => {
+  // create the options
+  const [persons] = useQuery(getPersons, null)
+  const options = persons.map((person: Person) => {
+    return { label: person.name, id: person.id }
+  })
+
   return (
     <Form
       submitText="Submit"
@@ -23,7 +32,11 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
-      <PersonSelection name="assignedToPersonIds" label="Assigned to people" />
+      <AutocompleteSelection
+        name="assignedToPersonIds"
+        label="Assigned to people"
+        options={options}
+      />
       <Select
         name="status"
         label="Status"

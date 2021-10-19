@@ -13,18 +13,12 @@ import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
-import { Person } from "db"
 
 const Content = () => {
   const questionId = useParam("id", "number")!
   const [question] = useQuery(getQuestion, questionId)
   const [createQuestionMutation] = useMutation(createAnswer)
   const router = useRouter()
-
-  const existingAnswerIds = new Set(question.answers.map((ans) => ans.personId))
-  const canSelectPerson = (person: Person) => {
-    return !existingAnswerIds.has(person.id)
-  }
 
   const onDeleteQuestion = async () => {
     await deleteQuestion(questionId)
@@ -65,7 +59,6 @@ const Content = () => {
       <AnswerForm
         initialValues={{ description: "", questionId: questionId, personId: 0 }}
         onSubmit={onCreateAnswer}
-        canSelectPerson={canSelectPerson}
       />
 
       {question.answers.length ? (
@@ -76,11 +69,7 @@ const Content = () => {
         ""
       )}
       {question.answers.map((answer) => (
-        <AnswerBox
-          key={answer.id}
-          answer={answer}
-          canSelectPerson={(person) => canSelectPerson(person) || person.id === answer.personId}
-        />
+        <AnswerBox key={answer.id} answer={answer} />
       ))}
     </Box>
   )
