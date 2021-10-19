@@ -25,7 +25,7 @@ interface SelectPropsPrivate {
   getOptionDisabled: (option: AutocompleteOption) => boolean
 }
 
-const AutocompleteSelectionSingleSelect = (props: SelectPropsPrivate) => {
+const AutocompleteSingleSelect = (props: SelectPropsPrivate) => {
   const { input } = useField<number>(props.name)
 
   // on change
@@ -39,7 +39,7 @@ const AutocompleteSelectionSingleSelect = (props: SelectPropsPrivate) => {
     <Box>
       <Autocomplete
         options={props.options}
-        value={props.optionMap.get(input.value) ?? ""}
+        value={props.optionMap.get(input.value) ?? null}
         getOptionDisabled={props.getOptionDisabled}
         renderInput={(params) => {
           return <TextField {...params} label={props.label} />
@@ -50,7 +50,7 @@ const AutocompleteSelectionSingleSelect = (props: SelectPropsPrivate) => {
   )
 }
 
-const AutocompleteSelectionMultiSelect = (props: SelectPropsPrivate) => {
+const AutocompleteMultiSelect = (props: SelectPropsPrivate) => {
   const { input } = useField<Set<number>>(props.name)
 
   // on change
@@ -87,8 +87,8 @@ const AutocompleteSelection = ({
   const optionMap = new Map(options.map((option) => [option.id, option]))
   const props: SelectPropsPrivate = { name, label, options, optionMap, getOptionDisabled }
 
-  if (allowMultiple) return AutocompleteSelectionMultiSelect(props)
-  else return AutocompleteSelectionSingleSelect(props)
+  if (allowMultiple) return AutocompleteMultiSelect(props)
+  else return AutocompleteSingleSelect(props)
 }
 
 export default AutocompleteSelection
