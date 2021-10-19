@@ -1,7 +1,6 @@
 import { Form } from "app/core/components/Form"
-import { Select, TextField } from "app/core/components/Fields"
+import { AutocompleteMultiSelectField, Select, TextField } from "app/core/components/Fields"
 import { CreateQuestion, CreateQuestionSchema, UpdateQuestion } from "../types"
-import AutocompleteSelection from "../../core/components/AutocompleteSelection"
 import { useQuery } from "blitz"
 import getPersons from "../queries/getPersons"
 import { Person } from "../../../db"
@@ -32,7 +31,7 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
-      <AutocompleteSelection
+      <AutocompleteMultiSelectField
         name="assignedToPersonIds"
         label="Assigned to people"
         options={options}

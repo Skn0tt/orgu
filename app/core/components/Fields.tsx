@@ -11,6 +11,11 @@ import Typography from "@mui/material/Typography"
 import { IconButton } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
+import {
+  AutocompleteMultiSelect,
+  AutocompleteOption,
+  AutocompleteSingleSelect,
+} from "./AutocompleteSelection"
 
 const MarkdownPreview = ({ value }: { value: string }) => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -111,4 +116,45 @@ export const Select = ({ name, label, items }: SelectProps) => {
       </MuiSelect>
     </FormControl>
   )
+}
+
+interface AutocompleteProps {
+  name: string
+  label: string
+  options: AutocompleteOption[]
+  getOptionDisabled?: (option: AutocompleteOption) => boolean
+}
+
+export const AutocompleteSingleSelectField = ({
+  name,
+  label,
+  options,
+  getOptionDisabled = () => false,
+}: AutocompleteProps) => {
+  const { input } = useField<number>(name)
+  // const { input } = useField<Set<number>>(name)
+  return AutocompleteSingleSelect({
+    value: input.value,
+    onChange: input.onChange,
+    label,
+    options,
+    getOptionDisabled,
+  })
+}
+
+export const AutocompleteMultiSelectField = ({
+  name,
+  label,
+  options,
+  getOptionDisabled = () => false,
+}: AutocompleteProps) => {
+  const { input } = useField<Set<number>>(name)
+  // const { input } = useField<Set<number>>(name)
+  return AutocompleteMultiSelect({
+    value: input.value,
+    onChange: input.onChange,
+    label,
+    options,
+    getOptionDisabled,
+  })
 }

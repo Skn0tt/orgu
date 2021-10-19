@@ -1,15 +1,13 @@
 import { Box } from "@mui/material"
-import { TextField } from "app/core/components/Fields"
+import { AutocompleteSingleSelectField, TextField } from "app/core/components/Fields"
 import { Form } from "app/core/components/Form"
 import React from "react"
 import { CreateAnswer, CreateAnswerSchema, UpdateAnswer } from "../types"
-import AutocompleteSelection, {
-  AutocompleteOption,
-} from "../../core/components/AutocompleteSelection"
 import { useQuery } from "blitz"
 import getPersons from "../queries/getPersons"
 import { Person } from "../../../db"
 import getQuestion from "../queries/getQuestion"
+import { AutocompleteOption } from "../../core/components/AutocompleteSelection"
 
 type CreateUpdateAnswer = CreateAnswer | UpdateAnswer
 
@@ -45,11 +43,10 @@ export const AnswerForm = ({
         onCancel={onCancel}
       >
         <TextField name="description" label="Description" type="textarea" />
-        <AutocompleteSelection
+        <AutocompleteSingleSelectField
           name={"personId"}
           label={"From person"}
           options={options}
-          allowMultiple={false}
           getOptionDisabled={getOptionDisabled}
         />
       </Form>
