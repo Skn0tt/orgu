@@ -34,7 +34,7 @@ const Content = () => {
           {
             ...question,
             assignedToPersonIds: new Set(
-              question.assignments.map((assignment) => assignment.personId)
+              question.personToQuestions.map((personToQuestion) => personToQuestion.personId)
             ),
           } as UpdateQuestion
         }

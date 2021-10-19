@@ -7,7 +7,7 @@ export default resolver.pipe(resolver.zod(CreateQuestionSchema), async (question
     data: { title: question.title, status: question.status },
   })
   for (const personId of Array.from(question.assignedToPersonIds)) {
-    await db.assignment.create({
+    await db.personToQuestion.create({
       data: {
         questionId: createdQuestion.id,
         personId,

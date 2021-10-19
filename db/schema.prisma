@@ -60,20 +60,20 @@ model Token {
 }
 
 model Question {
-  id             Int             @id @default(autoincrement())
-  title          String
-  status         String
-  assignments    Assignment[]
-  answers        Answer[]
-  tagToQuestions TagToQuestion[]
+  id                Int                @id @default(autoincrement())
+  title             String
+  status            String
+  personToQuestions PersonToQuestion[]
+  answers           Answer[]
+  tagToQuestions    TagToQuestion[]
 }
 
 model Person {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String
-  assignments Assignment[]
-  answers     Answer[]
+  id                Int                @id @default(autoincrement())
+  name              String
+  description       String
+  personToQuestions PersonToQuestion[]
+  answers           Answer[]
 }
 
 model Answer {
@@ -87,7 +87,7 @@ model Answer {
   @@unique([personId, questionId])
 }
 
-model Assignment {
+model PersonToQuestion {
   id         Int      @id @default(autoincrement())
   person     Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
   personId   Int
@@ -108,8 +108,8 @@ model Tag {
 
 model TagToQuestion {
   id         Int      @id @default(autoincrement())
-  question   Question @relation(fields: [questionId], references: [id])
-  tag        Tag      @relation(fields: [tagId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
   questionId Int
   tagId      Int
 }

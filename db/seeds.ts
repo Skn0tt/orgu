@@ -2,7 +2,7 @@ import {
   CreateAnswer,
   CreatePerson,
   CreateQuestion,
-  CreateAssignment,
+  CreatePersonToQuestion,
   CreateTag,
 } from "app/questions/types"
 import db from "./index"
@@ -70,7 +70,7 @@ const questions: SeedQuestion[] = [
   },
 ]
 
-const assignments: CreateAssignment[] = [
+const personToQuestions: CreatePersonToQuestion[] = [
   {
     personId: 1,
     questionId: 2,
@@ -146,9 +146,9 @@ const seedQuestions = async () => {
   }
 }
 
-const seedAssignments = async () => {
-  await db.assignment.createMany({
-    data: assignments,
+const seedPersonToQuestions = async () => {
+  await db.personToQuestion.createMany({
+    data: personToQuestions,
   })
 }
 
@@ -167,7 +167,7 @@ const seed = async () => {
   await seedTags()
   await seedPersons()
   await seedQuestions()
-  await seedAssignments()
+  await seedPersonToQuestions()
 }
 
 export default seed

@@ -1,7 +1,7 @@
 import * as z from "zod"
 import {
   Answer as PrismaAnswer,
-  Assignment as PrismaAssignment,
+  PersonToQuestion as PrismaPersonToQuestion,
   Person as PrismaPerson,
   Question as PrismaQuestion,
   Tag as PrismaTag,
@@ -17,6 +17,8 @@ export const CreatePersonSchema = z.object({
 export interface PreviewQuestion extends PrismaQuestion {
   tags: PrismaTag[]
 }
+
+export interface Question extends PreviewQuestion {}
 
 export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 
@@ -60,9 +62,9 @@ export interface Answer extends PrismaAnswer {
   person: PrismaPerson
 }
 
-export type Assignment = PrismaAssignment
+export type PersonToQuestion = PrismaPersonToQuestion
 
-export interface CreateAssignment extends Omit<Assignment, "id"> {}
+export interface CreatePersonToQuestion extends Omit<PersonToQuestion, "id"> {}
 
 export const CreateTagSchema = z.object({
   name: z.string().min(1),

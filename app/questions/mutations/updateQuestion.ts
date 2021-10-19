@@ -7,9 +7,9 @@ export default resolver.pipe(resolver.zod(UpdateQuestionSchema), async (question
     where: { id: question.id },
     data: { title: question.title, status: question.status },
   })
-  await db.assignment.deleteMany({ where: { questionId: question.id } })
+  await db.personToQuestion.deleteMany({ where: { questionId: question.id } })
   for (const personId of Array.from(question.assignedToPersonIds)) {
-    await db.assignment.create({
+    await db.personToQuestion.create({
       data: {
         questionId: updatedQuestion.id,
         personId,

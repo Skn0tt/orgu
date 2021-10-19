@@ -50,7 +50,9 @@ const Content = () => {
       <Typography>Status: {question.status}</Typography>
       <Typography>
         Assigned to:{" "}
-        {question.assignments.map((assignment) => assignment.person.name).join(", ") || "nobody"}
+        {question.personToQuestions
+          .map((personToQuestion) => personToQuestion.person.name)
+          .join(", ") || "nobody"}
       </Typography>
 
       <Typography variant="h2" component="h2">

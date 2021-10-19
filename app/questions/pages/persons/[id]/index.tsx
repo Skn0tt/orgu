@@ -24,7 +24,7 @@ const Content = () => {
   const [inUpdateMode, setInUpdateMode] = useState<boolean>(true)
   const [answerDescriptions, setAnswerDescriptions] = useState<Map<number, string>>(
     new Map(
-      person.assignments.map(({ question }) => [
+      person.personToQuestions.map(({ question }) => [
         question.id,
         question.answers.length ? question.answers[0]!.description : "",
       ])
@@ -68,7 +68,7 @@ const Content = () => {
         </Button>
       </Typography>
       {!updatingAnswerDescriptions ? (
-        person.assignments.map(({ question }) => (
+        person.personToQuestions.map(({ question }) => (
           <Box key={question.id}>
             <Typography variant="h3" component="h3">
               <Link href={"/questions/" + question.id} passHref>
