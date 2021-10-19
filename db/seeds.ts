@@ -13,6 +13,7 @@ interface SeedPerson extends CreatePerson {
 
 interface SeedQuestion extends Omit<CreateQuestion, "assignedToPersonIds"> {
   answers: Omit<CreateAnswer, "questionId">[]
+  tagIds: Set<number>
 }
 
 interface SeedTag extends CreateTag {
@@ -38,10 +39,12 @@ const questions: SeedQuestion[] = [
     title: "Why are there so many different health insurance companies?",
     status: "unanswered",
     answers: [],
+    tagIds: new Set([]),
   },
   {
     title: "What is your greatest success?",
     status: "ongoing",
+    tagIds: new Set([3]),
     answers: [
       {
         personId: 1,
@@ -56,6 +59,7 @@ const questions: SeedQuestion[] = [
   {
     title: "When was the AOK established?",
     status: "answered",
+    tagIds: new Set([5]),
     answers: [
       {
         personId: 2,
@@ -120,9 +124,10 @@ const seedPersons = async () => {
 
 const seedQuestions = async () => {
   for (const question of questions) {
-    await db.question.create({
+    const createdQuestion = await db.question.create({
       data: {
-        ...question,
+        status: question.status,
+        title: question.title,
         answers: {
           createMany: {
             data: question.answers,
@@ -130,6 +135,14 @@ const seedQuestions = async () => {
         },
       },
     })
+    for (const tagId of Array.from(question.tagIds.values())) {
+      await db.tagToQuestion.create({
+        data: {
+          questionId: createdQuestion.id,
+          tagId,
+        },
+      })
+    }
   }
 }
 
@@ -151,10 +164,10 @@ const seedTags = async () => {
 
 // This seed function is executed when you run `blitz db seed`
 const seed = async () => {
+  await seedTags()
   await seedPersons()
   await seedQuestions()
   await seedAssignments()
-  await seedTags()
 }
 
 export default seed

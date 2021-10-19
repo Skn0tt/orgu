@@ -60,11 +60,12 @@ model Token {
 }
 
 model Question {
-  id          Int          @id @default(autoincrement())
-  title       String
-  status      String
-  assignments Assignment[]
-  answers     Answer[]
+  id             Int             @id @default(autoincrement())
+  title          String
+  status         String
+  assignments    Assignment[]
+  answers        Answer[]
+  tagToQuestions TagToQuestion[]
 }
 
 model Person {
@@ -97,9 +98,18 @@ model Assignment {
 }
 
 model Tag {
-  id       Int    @id @default(autoincrement())
-  name     String
-  parent   Tag?   @relation("TagToTag", fields: [parentId], references: [id])
-  children Tag[]  @relation("TagToTag")
-  parentId Int?
+  id             Int             @id @default(autoincrement())
+  name           String
+  parent         Tag?            @relation("TagToTag", fields: [parentId], references: [id])
+  children       Tag[]           @relation("TagToTag")
+  parentId       Int?
+  tagToQuestions TagToQuestion[]
+}
+
+model TagToQuestion {
+  id         Int      @id @default(autoincrement())
+  question   Question @relation(fields: [questionId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
+  questionId Int
+  tagId      Int
 }

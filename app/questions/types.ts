@@ -1,5 +1,11 @@
 import * as z from "zod"
-import { Answer as PrismaAnswer, Assignment as PrismaAssignment, Person as PrismaPerson } from "db"
+import {
+  Answer as PrismaAnswer,
+  Assignment as PrismaAssignment,
+  Person as PrismaPerson,
+  Question as PrismaQuestion,
+  Tag as PrismaTag,
+} from "db"
 
 export const id = z.number().int().positive()
 
@@ -7,6 +13,10 @@ export const CreatePersonSchema = z.object({
   name: z.string(),
   description: z.string(),
 })
+
+export interface PreviewQuestion extends PrismaQuestion {
+  tags: PrismaTag[]
+}
 
 export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 

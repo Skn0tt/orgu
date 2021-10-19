@@ -5,14 +5,14 @@ import getQuestions from "app/questions/queries/getQuestions"
 import { Suspense } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import Button from "@mui/material/Button"
-import { Question } from "db"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import Chip from "@mui/material/Chip"
+import { PreviewQuestion } from "app/questions/types"
 
-const QuestionCard = ({ question }: { question: Question }) => {
+const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
   return (
     <Card sx={{ mb: 1 }}>
@@ -22,7 +22,10 @@ const QuestionCard = ({ question }: { question: Question }) => {
             {question.title}
           </Typography>
           <Box>
-            <Chip label={question.status} color="secondary" size="small" />
+            <Chip label={question.status} color="primary" size="small" />
+            {question.tags.map((tag) => (
+              <Chip key={tag.id} label={tag.name} color="secondary" size="small" />
+            ))}
           </Box>
         </CardContent>
       </CardActionArea>
