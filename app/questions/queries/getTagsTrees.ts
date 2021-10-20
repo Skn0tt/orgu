@@ -16,7 +16,7 @@ const getChildren = (tags: TagWithParent[], tagId: number): TagNode[] => {
   }
 }
 
-export const constructTree = (tags: Tag[]): TagNode[] => {
+export const constructTrees = (tags: Tag[]): TagNode[] => {
   const tagsWithParent: TagWithParent[] = tags.map((tag) => {
     if (tag.parentId === null) {
       return {
@@ -32,5 +32,5 @@ export const constructTree = (tags: Tag[]): TagNode[] => {
 
 export default async function getTagsTrees(_ = null) {
   const tags = await db.tag.findMany()
-  return constructTree(tags)
+  return constructTrees(tags)
 }
