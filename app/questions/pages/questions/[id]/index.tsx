@@ -49,11 +49,9 @@ const Content = () => {
       </Box>
       <Typography>Status: {question.status}</Typography>
       <Typography>
-        Assigned to:{" "}
-        {question.personToQuestions
-          .map((personToQuestion) => personToQuestion.person.name)
-          .join(", ") || "nobody"}
+        Assigned to: {question.persons.map((person) => person.name).join(", ") || "nobody"}
       </Typography>
+      <Typography>Tags: {question.tags.map((tag) => tag.name).join(", ")}</Typography>
 
       <Typography variant="h2" component="h2">
         New Answer

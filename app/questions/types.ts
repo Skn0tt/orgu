@@ -18,7 +18,12 @@ export interface PreviewQuestion extends PrismaQuestion {
   tags: PrismaTag[]
 }
 
-export interface Question extends PreviewQuestion {}
+export interface Question extends PreviewQuestion {
+  persons: PrismaPerson[]
+  answers: (Answer & {
+    person: PrismaPerson
+  })[]
+}
 
 export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 

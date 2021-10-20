@@ -1,11 +1,12 @@
 import db from "db"
 import { NotFoundError } from "blitz"
+import { Question } from "../types"
 
 export default async function getQuestion(questionId: number | undefined) {
   if (questionId === undefined) {
     throw new NotFoundError()
   }
-  const question = await db.question.findFirst({
+  const prismaQuestion = await db.question.findFirst({
     where: { id: questionId },
     include: {
       personToQuestions: {
@@ -18,10 +19,20 @@ export default async function getQuestion(questionId: number | undefined) {
           person: true,
         },
       },
+      tagToQuestions: {
+        include: {
+          tag: true,
+        },
+      },
     },
   })
-  if (question === null) {
+  if (prismaQuestion === null) {
     throw new NotFoundError()
+  }
+  const question: Question = {
+    ...prismaQuestion,
+    tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => tagToQuestion.tag),
+    persons: prismaQuestion.personToQuestions.map((personToQuestion) => personToQuestion.person),
   }
   return question
 }
