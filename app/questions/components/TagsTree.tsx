@@ -9,9 +9,9 @@ import CheckIcon from "@mui/icons-material/Check"
 import TreeItem, { TreeItemProps, useTreeItem, TreeItemContentProps } from "@mui/lab/TreeItem"
 import clsx from "clsx"
 import { TagNode } from "../types"
-import getTagsTree from "../queries/getTagsTree"
+import getTagsTree from "../queries/getTagsTrees"
 import { useQuery } from "blitz"
-import getTagsArray from "../queries/getTagsArray"
+import getTagsMap from "../queries/getTagsMap"
 
 export const updateName = (node: TagNode, id: number, updatedName: string): void => {
   if (node.id === id) {
@@ -25,8 +25,8 @@ export const updateName = (node: TagNode, id: number, updatedName: string): void
 
 export default function TagNodesTree() {
   const [tagsTree] = useQuery(getTagsTree, null)
-  const [tagsArray] = useQuery(getTagsArray, null)
-  const [tree, setTree] = useState<TagNode>(tagsTree)
+  const [tagsMap] = useQuery(getTagsMap, null)
+  const [tree, setTree] = useState<TagNode>(tagsTree[0]!)
 
   const CustomTreeItem = (props: TreeItemProps) => (
     <TreeItem ContentComponent={CustomContent} {...props} />
@@ -98,7 +98,7 @@ export default function TagNodesTree() {
   return (
     <TreeView
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={["0", ...tagsArray.map((tag) => tag.id.toString())]}
+      defaultExpanded={["0", ...Array.from(tagsMap.values()).map((tag) => tag.id.toString())]}
       defaultExpandIcon={<ChevronRightIcon />}
       disableSelection
     >

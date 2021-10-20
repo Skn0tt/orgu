@@ -3,7 +3,7 @@ import {
   CreatePerson,
   CreateQuestion,
   CreatePersonToQuestion,
-  CreateTag,
+  Tag,
 } from "app/questions/types"
 import db from "./index"
 
@@ -14,10 +14,6 @@ interface SeedPerson extends CreatePerson {
 interface SeedQuestion extends Omit<CreateQuestion, "assignedToPersonIds"> {
   answers: Omit<CreateAnswer, "questionId">[]
   tagIds: Set<number>
-}
-
-interface SeedTag extends CreateTag {
-  id: number
 }
 
 const persons: SeedPerson[] = [
@@ -85,10 +81,11 @@ const personToQuestions: CreatePersonToQuestion[] = [
   },
 ]
 
-const tags: SeedTag[] = [
+export const tags: Tag[] = [
   {
     id: 1,
     name: "application",
+    parentId: null,
   },
   {
     id: 2,
@@ -109,6 +106,11 @@ const tags: SeedTag[] = [
     id: 5,
     name: "android",
     parentId: 2,
+  },
+  {
+    id: 6,
+    name: "python",
+    parentId: null,
   },
 ]
 

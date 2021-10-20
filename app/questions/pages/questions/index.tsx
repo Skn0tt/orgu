@@ -11,7 +11,8 @@ import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import Chip from "@mui/material/Chip"
 import { PreviewQuestion } from "app/questions/types"
-import { Autocomplete, TextField } from "@mui/material"
+import { TextField } from "@mui/material"
+import { TagsSelection } from "app/questions/components/TagsSelection"
 
 const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
@@ -58,6 +59,8 @@ const QuestionsList = () => {
 }
 
 const QuestionsPage: BlitzPage = () => {
+  const [tagIds, setTagIds] = useState<Set<number>>(new Set([1]))
+
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -72,6 +75,7 @@ const QuestionsPage: BlitzPage = () => {
       </Box>
 
       <Suspense fallback={<CircularProgress />}>
+        <TagsSelection tagIds={tagIds} setTagIds={setTagIds} />
         <QuestionsList />
       </Suspense>
     </Box>

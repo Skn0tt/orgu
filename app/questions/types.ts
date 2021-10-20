@@ -83,3 +83,5 @@ export interface TagNode {
   name: string
   children: TagNode[]
 }
+
+export type Tag = PrismaTag

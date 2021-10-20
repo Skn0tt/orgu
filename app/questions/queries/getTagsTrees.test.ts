@@ -1,6 +1,6 @@
 import { Tag } from "db"
 import { TagNode } from "../types"
-import { constructTree } from "./getTagsTree"
+import { constructTree } from "./getTagsTrees"
 
 describe("constructTree", () => {
   const tags: Tag[] = [
