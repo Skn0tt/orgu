@@ -38,7 +38,7 @@ const QuestionStatusEnum = z.enum(["answered", "unanswered", "ongoing"])
 export const CreateQuestionSchema = z.object({
   title: z.string().min(1),
   status: QuestionStatusEnum,
-  assignedToPersonIds: z.set(id),
+  personIds: z.set(id),
 })
 
 export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>

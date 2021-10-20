@@ -33,7 +33,7 @@ const Content = () => {
         initialValues={
           {
             ...question,
-            assignedToPersonIds: new Set(question.persons.map((person) => person.id)),
+            personIds: new Set(question.persons.map((person) => person.id)),
           } as UpdateQuestion
         }
         onSubmit={onSubmit}

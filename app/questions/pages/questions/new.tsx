@@ -27,11 +27,13 @@ const Content = () => {
         New Question
       </Typography>
       <QuestionForm
-        initialValues={{
-          title: "",
-          status: "unanswered",
-          assignedToPersonIds: new Set(),
-        }}
+        initialValues={
+          {
+            title: "",
+            status: "unanswered",
+            personIds: new Set(),
+          } as CreateQuestion
+        }
         onSubmit={onSubmit}
         onCancel={() => router.push("/questions")}
       />

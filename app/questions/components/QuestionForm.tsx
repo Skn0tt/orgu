@@ -31,11 +31,7 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
-      <AutocompleteMultiSelectField
-        name="assignedToPersonIds"
-        label="Assigned to people"
-        options={options}
-      />
+      <AutocompleteMultiSelectField name="personIds" label="Assigned to people" options={options} />
       <Select
         name="status"
         label="Status"

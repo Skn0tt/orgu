@@ -11,7 +11,7 @@ interface SeedPerson extends CreatePerson {
   id: number
 }
 
-interface SeedQuestion extends Omit<CreateQuestion, "assignedToPersonIds"> {
+interface SeedQuestion extends Omit<CreateQuestion, "personIds"> {
   answers: Omit<CreateAnswer, "questionId">[]
   tagIds: Set<number>
 }

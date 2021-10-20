@@ -41,7 +41,7 @@ const QuestionsList = () => {
 
   // hacky search implementation:
   const results = questions.filter((question) => {
-    return question.title.includes(searchTerm)
+    return question.title.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
   return (
@@ -59,7 +59,7 @@ const QuestionsList = () => {
 }
 
 const QuestionsPage: BlitzPage = () => {
-  const [tagIds, setTagIds] = useState<Set<number>>(new Set([1]))
+  const [tagIds, setTagIds] = useState<Set<number>>(new Set())
 
   return (
     <Box>
