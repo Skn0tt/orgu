@@ -39,6 +39,7 @@ export const CreateQuestionSchema = z.object({
   title: z.string().min(1),
   status: QuestionStatusEnum,
   personIds: z.set(id),
+  tagIds: z.set(id),
 })
 
 export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>

@@ -3,7 +3,7 @@ import React from "react"
 import TreeView from "@mui/lab/TreeView"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
-import { Checkbox, FormControlLabel, Typography } from "@mui/material"
+import { Checkbox, FormControlLabel } from "@mui/material"
 import TreeItem, { TreeItemProps, useTreeItem, TreeItemContentProps } from "@mui/lab/TreeItem"
 import clsx from "clsx"
 import { Tag, TagNode } from "../types"
@@ -60,8 +60,7 @@ export const TagsSelection = ({
 
   const CustomContent = React.forwardRef(function CustomContent(props: TreeItemContentProps, ref) {
     const { classes, className, label, nodeId, icon: iconProp, expansionIcon, displayIcon } = props
-    const { disabled, expanded, selected, focused, handleExpansion, handleSelection } =
-      useTreeItem(nodeId)
+    const { disabled, expanded, selected, handleExpansion, handleSelection } = useTreeItem(nodeId)
     const icon = iconProp || expansionIcon || displayIcon
 
     const handleExpansionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

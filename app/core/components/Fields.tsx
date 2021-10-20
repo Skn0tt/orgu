@@ -12,6 +12,7 @@ import { IconButton } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import { AutocompleteSelect, AutocompleteOption } from "./AutocompleteSelection"
+import { TagsSelection } from "app/questions/components/TagsSelection"
 
 const MarkdownPreview = ({ value }: { value: string }) => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -128,7 +129,6 @@ export const AutocompleteSingleSelectField = ({
   getOptionDisabled = () => false,
 }: AutocompleteProps) => {
   const { input } = useField<number>(name)
-  // const { input } = useField<Set<number>>(name)
   return AutocompleteSelect({
     value: input.value,
     onChange: input.onChange,
@@ -146,7 +146,6 @@ export const AutocompleteMultiSelectField = ({
   getOptionDisabled = () => false,
 }: AutocompleteProps) => {
   const { input } = useField<Set<number>>(name)
-  // const { input } = useField<Set<number>>(name)
   return AutocompleteSelect({
     value: input.value,
     onChange: input.onChange,
@@ -154,5 +153,13 @@ export const AutocompleteMultiSelectField = ({
     options,
     getOptionDisabled,
     multiple: true,
+  })
+}
+
+export const TagsSelectionField = ({ name, label }: { name: string; label: string }) => {
+  const { input } = useField<Set<number>>(name)
+  return TagsSelection({
+    tagIds: input.value,
+    setTagIds: input.onChange,
   })
 }

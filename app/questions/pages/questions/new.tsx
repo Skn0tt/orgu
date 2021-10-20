@@ -32,6 +32,7 @@ const Content = () => {
             title: "",
             status: "unanswered",
             personIds: new Set(),
+            tagIds: new Set(),
           } as CreateQuestion
         }
         onSubmit={onSubmit}

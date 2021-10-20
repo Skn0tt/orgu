@@ -18,10 +18,11 @@ const Content = () => {
   const questionId = useParam("id", "number")!
   const [question] = useQuery(getQuestion, questionId)
   const [createQuestionMutation] = useMutation(createAnswer)
+  const [deleteQuestionMutation] = useMutation(deleteQuestion)
   const router = useRouter()
 
   const onDeleteQuestion = async () => {
-    await deleteQuestion(questionId)
+    await deleteQuestionMutation(questionId)
     await router.push("/questions")
   }
 

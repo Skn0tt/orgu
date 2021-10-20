@@ -6,13 +6,30 @@ export default resolver.pipe(resolver.zod(CreateQuestionSchema), async (question
   const createdQuestion = await db.question.create({
     data: { title: question.title, status: question.status },
   })
-  for (const personId of Array.from(question.personIds)) {
+  await createPersonToQuestions(question.personIds, createdQuestion.id)
+  await createTagToQuestions(question.tagIds, createdQuestion.id)
+
+  return createdQuestion
+})
+
+export const createTagToQuestions = async (tagIds: Set<number>, questionId: number) => {
+  for (const tagId of Array.from(tagIds)) {
+    await db.tagToQuestion.create({
+      data: {
+        questionId,
+        tagId,
+      },
+    })
+  }
+}
+
+export const createPersonToQuestions = async (personIds: Set<number>, questionId: number) => {
+  for (const personId of Array.from(personIds)) {
     await db.personToQuestion.create({
       data: {
-        questionId: createdQuestion.id,
+        questionId,
         personId,
       },
     })
   }
-  return createdQuestion
-})
+}

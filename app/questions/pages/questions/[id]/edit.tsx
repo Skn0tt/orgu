@@ -34,6 +34,7 @@ const Content = () => {
           {
             ...question,
             personIds: new Set(question.persons.map((person) => person.id)),
+            tagIds: new Set(question.tags.map((tag) => tag.id)),
           } as UpdateQuestion
         }
         onSubmit={onSubmit}
