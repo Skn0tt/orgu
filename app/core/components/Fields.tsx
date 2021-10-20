@@ -11,11 +11,7 @@ import Typography from "@mui/material/Typography"
 import { IconButton } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
-import {
-  AutocompleteMultiSelect,
-  AutocompleteOption,
-  AutocompleteSingleSelect,
-} from "./AutocompleteSelection"
+import { AutocompleteSelect, AutocompleteOption } from "./AutocompleteSelection"
 
 const MarkdownPreview = ({ value }: { value: string }) => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -133,12 +129,13 @@ export const AutocompleteSingleSelectField = ({
 }: AutocompleteProps) => {
   const { input } = useField<number>(name)
   // const { input } = useField<Set<number>>(name)
-  return AutocompleteSingleSelect({
+  return AutocompleteSelect({
     value: input.value,
     onChange: input.onChange,
     label,
     options,
     getOptionDisabled,
+    multiple: false,
   })
 }
 
@@ -150,11 +147,12 @@ export const AutocompleteMultiSelectField = ({
 }: AutocompleteProps) => {
   const { input } = useField<Set<number>>(name)
   // const { input } = useField<Set<number>>(name)
-  return AutocompleteMultiSelect({
+  return AutocompleteSelect({
     value: input.value,
     onChange: input.onChange,
     label,
     options,
     getOptionDisabled,
+    multiple: true,
   })
 }

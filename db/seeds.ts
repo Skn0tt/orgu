@@ -44,7 +44,7 @@ const questions: SeedQuestion[] = [
   {
     title: "What is your greatest success?",
     status: "ongoing",
-    tagIds: new Set([3]),
+    tagIds: new Set([1, 3]),
     answers: [
       {
         personId: 1,
@@ -59,7 +59,7 @@ const questions: SeedQuestion[] = [
   {
     title: "When was the AOK established?",
     status: "answered",
-    tagIds: new Set([5]),
+    tagIds: new Set([1, 2, 5]),
     answers: [
       {
         personId: 2,

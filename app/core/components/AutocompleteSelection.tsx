@@ -6,78 +6,55 @@ export interface AutocompleteOption {
   id: number
 }
 
-interface SingleSelectProps {
-  value: number
-  onChange // todo: add type
+interface SelectProps {
+  value: number | Set<number>
+  onChange: (v: number | Set<number>) => void
   label: string
   options: AutocompleteOption[]
-  getOptionDisabled?: (option: AutocompleteOption) => boolean
-}
-interface MultiSelectProps {
-  value: Set<number>
-  onChange // todo: add type
-  label: string
-  options: AutocompleteOption[]
+  multiple: boolean
   getOptionDisabled?: (option: AutocompleteOption) => boolean
 }
 
-export const AutocompleteSingleSelect = ({
+export const AutocompleteSelect = ({
   value,
   onChange,
   label,
   options,
+  multiple,
   getOptionDisabled = () => false,
-}: SingleSelectProps) => {
+}: SelectProps) => {
   const optionMap = new Map(options.map((option) => [option.id, option]))
-
-  // on change
-  const onChangeAutocomplete = (event, value) => {
-    // for single choice, value is a single options
-    if (value === null) onChange(0)
-    else onChange(value.id)
-  }
 
   return (
     <Box>
       <Autocomplete
+        multiple={multiple}
         options={options}
-        value={optionMap.get(value) ?? null}
+        value={
+          multiple
+            ? Array.from((value as Set<number>).values()).map((id) => optionMap.get(id))
+            : optionMap.get(value as number) ?? null
+        }
         getOptionDisabled={getOptionDisabled}
         renderInput={(params) => {
-          return <TextField {...params} label={label} />
+          return <TextField {...params} label={label} color="secondary" />
         }}
-        onChange={onChangeAutocomplete}
-      />
-    </Box>
-  )
-}
-
-export const AutocompleteMultiSelect = ({
-  value,
-  onChange,
-  label,
-  options,
-  getOptionDisabled = () => false,
-}: MultiSelectProps) => {
-  const optionMap = new Map(options.map((option) => [option.id, option]))
-
-  // on change
-  const onChangeComplete = (event, value) => {
-    // for multiple, value is an array of the selected options
-    onChange(new Set(value.map((entry) => entry.id)))
-  }
-
-  return (
-    <Box>
-      <Autocomplete
-        multiple
-        options={options}
-        getOptionDisabled={getOptionDisabled}
-        value={Array.from(value.values()).map((id) => optionMap.get(id))}
-        renderInput={(params) => {
-          return <TextField {...params} label={label} />
-        }}
-        onChange={onChangeComplete}
+        onChange={
+          multiple
+            ? (_event, value) => {
+                if (Array.isArray(value)) {
+                  const v = new Set(value.map((entry) => entry?.id))
+                  v.delete(undefined)
+                  onChange(v as Set<number>)
+                }
+              }
+            : (_event, value) => {
+                if (!value) onChange(0)
+                if (!Array.isArray(value) && value?.id) {
+                  onChange(value.id)
+                }
+              }
+        }
       />
     </Box>
   )
