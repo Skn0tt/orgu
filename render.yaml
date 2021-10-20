@@ -25,7 +25,7 @@ services:
       - key: BASE_URL
         sync: false
       - key: BLITZ_PUBLIC_AUTHENTICATION_REQUIRED
-        value: true
+        sync: false
 
 databases:
   - name: orgu-db
