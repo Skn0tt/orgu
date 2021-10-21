@@ -1,5 +1,5 @@
 import { Form } from "app/core/components/Form"
-import { TextField } from "app/core/components/Fields"
+import { TextField, TagsSelectionField } from "app/core/components/Fields"
 import { CreatePerson, CreatePersonSchema, UpdatePerson } from "../types"
 
 type CreateUpdatePerson = CreatePerson | UpdatePerson
@@ -23,6 +23,7 @@ export const PersonForm = ({
     >
       <TextField name="name" label="Name" />
       <TextField name="description" label="Description" type="textarea" />
+      <TagsSelectionField name="tagIds" label="Tags" />
     </Form>
   )
 }

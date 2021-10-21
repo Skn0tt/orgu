@@ -52,6 +52,7 @@ const Content = () => {
         <DeleteButton name="person" onSubmit={onDeletePerson} />
       </Typography>
       <Markdown value={person.description} />
+      <Box>{person.tags.map((tag) => tag.name).join(", ")}</Box>
       <Typography variant="h2" component="h2">
         Assigned Questions{" "}
         <Button
