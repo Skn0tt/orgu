@@ -1,7 +1,6 @@
 import * as z from "zod"
 import {
   Answer as PrismaAnswer,
-  PersonToQuestion as PrismaPersonToQuestion,
   Person as PrismaPerson,
   Question as PrismaQuestion,
   Tag as PrismaTag,
@@ -9,29 +8,42 @@ import {
 
 export const id = z.number().int().positive()
 
-export const CreatePersonSchema = z.object({
-  name: z.string(),
-  description: z.string(),
+export type Tag = PrismaTag
+
+export interface TagNode {
+  id: number
+  name: string
+  children: TagNode[]
+}
+
+export type PreviewPerson = PrismaPerson
+
+export interface Answer extends PrismaAnswer {
+  person: PreviewPerson
+}
+
+export const CreateAnswerSchema = z.object({
+  description: z.string().min(1),
+  personId: id,
+  questionId: id,
 })
 
-export interface PreviewQuestion extends PrismaQuestion {
-  tags: PrismaTag[]
-}
+export type CreateAnswer = z.TypeOf<typeof CreateAnswerSchema>
 
-export interface Question extends PreviewQuestion {
-  persons: PrismaPerson[]
-  answers: (Answer & {
-    person: PrismaPerson
-  })[]
-}
-
-export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
-
-export const UpdatePersonSchema = CreatePersonSchema.extend({
+export const UpdateAnswerSchema = CreateAnswerSchema.extend({
   id: id,
 })
 
-export type UpdatePerson = z.TypeOf<typeof UpdatePersonSchema>
+export type UpdateAnswer = z.TypeOf<typeof UpdateAnswerSchema>
+
+export interface PreviewQuestion extends PrismaQuestion {
+  tags: Tag[]
+}
+
+export interface Question extends PreviewQuestion {
+  persons: PreviewPerson[]
+  answers: Answer[]
+}
 
 const QuestionStatusEnum = z.enum(["answered", "unanswered", "ongoing"])
 
@@ -50,39 +62,21 @@ export const UpdateQuestionSchema = CreateQuestionSchema.extend({
 
 export type UpdateQuestion = z.TypeOf<typeof UpdateQuestionSchema>
 
-export const CreateAnswerSchema = z.object({
-  description: z.string().min(1),
-  personId: id,
-  questionId: id,
+export interface Person extends PreviewPerson {
+  tags: Tag[]
+  questions: Question[]
+}
+
+export const CreatePersonSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  tagIds: z.set(id),
 })
 
-export type CreateAnswer = z.TypeOf<typeof CreateAnswerSchema>
+export type CreatePerson = z.TypeOf<typeof CreatePersonSchema>
 
-export const UpdateAnswerSchema = CreateAnswerSchema.extend({
+export const UpdatePersonSchema = CreatePersonSchema.extend({
   id: id,
 })
 
-export type UpdateAnswer = z.TypeOf<typeof UpdateAnswerSchema>
-
-export interface Answer extends PrismaAnswer {
-  person: PrismaPerson
-}
-
-export type PersonToQuestion = PrismaPersonToQuestion
-
-export interface CreatePersonToQuestion extends Omit<PersonToQuestion, "id"> {}
-
-export const CreateTagSchema = z.object({
-  name: z.string().min(1),
-  parentId: id.optional(),
-})
-
-export type CreateTag = z.TypeOf<typeof CreateTagSchema>
-
-export interface TagNode {
-  id: number
-  name: string
-  children: TagNode[]
-}
-
-export type Tag = PrismaTag
+export type UpdatePerson = z.TypeOf<typeof UpdatePersonSchema>

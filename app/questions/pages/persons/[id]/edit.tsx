@@ -30,7 +30,12 @@ const Content = () => {
         Edit Person
       </Typography>
       <PersonForm
-        initialValues={person}
+        initialValues={{
+          id: person.id,
+          name: person.name,
+          description: person.description,
+          tagIds: new Set(person.tags.map((tag) => tag.id)),
+        }}
         onSubmit={onSubmit}
         onCancel={() => router.push("/persons/" + personId)}
       />

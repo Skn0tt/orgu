@@ -74,6 +74,7 @@ model Person {
   description       String
   personToQuestions PersonToQuestion[]
   answers           Answer[]
+  tagToPersons      TagToPerson[]
 }
 
 model Answer {
@@ -104,6 +105,7 @@ model Tag {
   children       Tag[]           @relation("TagToTag")
   parentId       Int?
   tagToQuestions TagToQuestion[]
+  tagToPersons   TagToPerson[]
 }
 
 model TagToQuestion {
@@ -112,4 +114,12 @@ model TagToQuestion {
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
   questionId Int
   tagId      Int
+}
+
+model TagToPerson {
+  id       Int    @id @default(autoincrement())
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  personId Int
+  tagId    Int
 }

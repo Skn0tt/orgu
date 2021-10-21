@@ -1,5 +1,5 @@
-import db, { Tag } from "db"
-import { TagNode } from "../types"
+import db from "db"
+import { TagNode, Tag } from "../types"
 
 interface TagWithParent extends Tag {
   parentId: number

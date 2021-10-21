@@ -1,5 +1,4 @@
-import { Tag } from "db"
-import { TagNode } from "../types"
+import { Tag, TagNode } from "../types"
 import { constructTrees } from "./getTagsTrees"
 
 describe("constructTrees", () => {

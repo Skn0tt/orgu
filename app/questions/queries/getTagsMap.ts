@@ -1,4 +1,5 @@
-import db, { Tag } from "db"
+import db from "db"
+import { Tag } from "../types"
 
 export default async function getTagsMap(_ = null) {
   const prismaTags = await db.tag.findMany()

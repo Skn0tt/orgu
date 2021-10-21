@@ -1,85 +1,15 @@
-import {
-  CreateAnswer,
-  CreatePerson,
-  CreateQuestion,
-  CreatePersonToQuestion,
-  Tag,
-} from "app/questions/types"
+import { createPerson } from "app/questions/mutations/createPerson"
+import { createQuestion } from "app/questions/mutations/createQuestion"
+import { CreateAnswer, CreatePerson, CreateQuestion, Tag } from "app/questions/types"
 import db from "./index"
 
 interface SeedPerson extends CreatePerson {
   id: number
 }
 
-interface SeedQuestion extends Omit<CreateQuestion, "personIds"> {
+interface SeedQuestion extends CreateQuestion {
   answers: Omit<CreateAnswer, "questionId">[]
-  tagIds: Set<number>
 }
-
-const persons: SeedPerson[] = [
-  {
-    id: 1,
-    name: "Joe Campbell",
-    description: "At vero eos et accusam et justo duo dolores et ea rebum.",
-  },
-  {
-    id: 2,
-    name: "Emma Müller",
-    description:
-      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-  },
-]
-
-const questions: SeedQuestion[] = [
-  {
-    title: "Why are there so many different health insurance companies?",
-    status: "unanswered",
-    answers: [],
-    tagIds: new Set([]),
-  },
-  {
-    title: "What is your greatest success?",
-    status: "ongoing",
-    tagIds: new Set([1, 3]),
-    answers: [
-      {
-        personId: 1,
-        description: "I have founded a successful company.",
-      },
-      {
-        personId: 2,
-        description: "I traveled around the world.",
-      },
-    ],
-  },
-  {
-    title: "When was the AOK established?",
-    status: "answered",
-    tagIds: new Set([1, 2, 5]),
-    answers: [
-      {
-        personId: 2,
-        description:
-          "The 'Ortskrankenkassen' were founded in 1884 immediately after the introduction of statutory health insurance in 1883 by Otto von Bismarck.",
-      },
-    ],
-  },
-]
-
-const personToQuestions: CreatePersonToQuestion[] = [
-  {
-    personId: 1,
-    questionId: 2,
-  },
-  {
-    personId: 2,
-    questionId: 2,
-  },
-  {
-    personId: 2,
-    questionId: 3,
-  },
-]
 
 export const tags: Tag[] = [
   {
@@ -114,45 +44,60 @@ export const tags: Tag[] = [
   },
 ]
 
-const seedPersons = async () => {
-  for (const person of persons) {
-    await db.person.upsert({
-      where: { id: person.id },
-      create: { description: person.description, name: person.name },
-      update: {},
-    })
-  }
-}
+const persons: SeedPerson[] = [
+  {
+    id: 1,
+    name: "Joe Campbell",
+    description: "At vero eos et accusam et justo duo dolores et ea rebum.",
+    tagIds: new Set([1, 3]),
+  },
+  {
+    id: 2,
+    name: "Emma Müller",
+    description:
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+    tagIds: new Set([1, 2, 4, 6]),
+  },
+]
 
-const seedQuestions = async () => {
-  for (const question of questions) {
-    const createdQuestion = await db.question.create({
-      data: {
-        status: question.status,
-        title: question.title,
-        answers: {
-          createMany: {
-            data: question.answers,
-          },
-        },
+const questions: SeedQuestion[] = [
+  {
+    title: "Why are there so many different health insurance companies?",
+    status: "unanswered",
+    answers: [],
+    tagIds: new Set(),
+    personIds: new Set(),
+  },
+  {
+    title: "What is your greatest success?",
+    status: "ongoing",
+    tagIds: new Set([1, 3]),
+    personIds: new Set([1, 2]),
+    answers: [
+      {
+        personId: 1,
+        description: "I have founded a successful company.",
       },
-    })
-    for (const tagId of Array.from(question.tagIds.values())) {
-      await db.tagToQuestion.create({
-        data: {
-          questionId: createdQuestion.id,
-          tagId,
-        },
-      })
-    }
-  }
-}
-
-const seedPersonToQuestions = async () => {
-  await db.personToQuestion.createMany({
-    data: personToQuestions,
-  })
-}
+      {
+        personId: 2,
+        description: "I traveled around the world.",
+      },
+    ],
+  },
+  {
+    title: "When was the AOK established?",
+    status: "answered",
+    tagIds: new Set([1, 2, 5]),
+    personIds: new Set([2]),
+    answers: [
+      {
+        personId: 2,
+        description:
+          "The 'Ortskrankenkassen' were founded in 1884 immediately after the introduction of statutory health insurance in 1883 by Otto von Bismarck.",
+      },
+    ],
+  },
+]
 
 const seedTags = async () => {
   for (const tag of tags) {
@@ -164,12 +109,28 @@ const seedTags = async () => {
   }
 }
 
+const seedPersons = async () => {
+  for (const person of persons) {
+    await createPerson(person)
+  }
+}
+
+const seedQuestions = async () => {
+  for (const question of questions) {
+    const createdQuestion = await createQuestion(question)
+    await db.answer.createMany({
+      data: question.answers.map((answer) => {
+        return { ...answer, questionId: createdQuestion.id }
+      }),
+    })
+  }
+}
+
 // This seed function is executed when you run `blitz db seed`
 const seed = async () => {
   await seedTags()
   await seedPersons()
   await seedQuestions()
-  await seedPersonToQuestions()
 }
 
 export default seed

@@ -28,6 +28,7 @@ const NewPersonPage: BlitzPage = () => {
         initialValues={{
           name: "",
           description: "",
+          tagIds: new Set(),
         }}
         onSubmit={onSubmit}
         onCancel={() => router.push("/persons")}
