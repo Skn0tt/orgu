@@ -7,7 +7,6 @@ import {
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
 } from "blitz"
-import LoginForm from "app/auth/components/LoginForm"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "app/constants/theme"
@@ -28,9 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
   )
 }
 
-function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
+function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />
+    return (
+      <ErrorComponent statusCode={error.statusCode} title="Sorry, you are not authenticated." />
+    )
   } else if (error instanceof AuthorizationError) {
     return (
       <ErrorComponent
