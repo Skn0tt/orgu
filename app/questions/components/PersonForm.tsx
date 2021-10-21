@@ -23,7 +23,7 @@ export const PersonForm = ({
     >
       <TextField name="name" label="Name" />
       <TextField name="description" label="Description" type="textarea" />
-      <TagsSelectionField name="tagIds" label="Tags" />
+      <TagsSelectionField name="tagIds" label="Tags" cascade={false} />
     </Form>
   )
 }

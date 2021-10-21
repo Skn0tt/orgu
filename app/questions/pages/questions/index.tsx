@@ -75,7 +75,7 @@ const QuestionsPage: BlitzPage = () => {
       </Box>
 
       <Suspense fallback={<CircularProgress />}>
-        <TagsSelection tagIds={tagIds} setTagIds={setTagIds} />
+        <TagsSelection tagIds={tagIds} setTagIds={setTagIds} cascade={false} />
         <QuestionsList />
       </Suspense>
     </Box>

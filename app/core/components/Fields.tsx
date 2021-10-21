@@ -156,10 +156,19 @@ export const AutocompleteMultiSelectField = ({
   })
 }
 
-export const TagsSelectionField = ({ name, label }: { name: string; label: string }) => {
+export const TagsSelectionField = ({
+  name,
+  label,
+  cascade,
+}: {
+  name: string
+  label: string
+  cascade: boolean
+}) => {
   const { input } = useField<Set<number>>(name)
   return TagsSelection({
     tagIds: input.value,
     setTagIds: input.onChange,
+    cascade: cascade,
   })
 }

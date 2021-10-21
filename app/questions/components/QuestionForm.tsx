@@ -37,7 +37,7 @@ export const QuestionForm = ({
     >
       <TextField name="title" label="Title" />
       <AutocompleteMultiSelectField name="personIds" label="Assigned to people" options={options} />
-      <TagsSelectionField name="tagIds" label="Tags" />
+      <TagsSelectionField name="tagIds" label="Tags" cascade={true} />
       <Select
         name="status"
         label="Status"

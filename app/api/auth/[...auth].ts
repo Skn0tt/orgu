@@ -27,19 +27,19 @@ export default passportAuth({
           profile: any,
           done: (err: Error | null, data?: { publicData: PublicData }) => void
         ) => {
-          const email = profile.emails && profile.emails[0]?.value
+          const authId = profile.id
 
-          if (!email) {
-            return done(new Error("GitHub OAuth response doesn't have email."))
+          if (!authId) {
+            return done(new Error("GitHub OAuth response doesn't have an id."))
           }
 
           const user = await db.user.upsert({
-            where: { email },
+            where: { authId },
             create: {
-              email,
+              authId,
               name: profile.displayName,
             },
-            update: { email },
+            update: { authId },
           })
 
           const publicData = {

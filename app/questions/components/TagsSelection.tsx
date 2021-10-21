@@ -41,9 +41,11 @@ export const getChildTagIds = (tagsMap: Map<number, Tag>, tagId: number): Set<nu
 export const TagsSelection = ({
   tagIds,
   setTagIds,
+  cascade,
 }: {
   tagIds: Set<number>
   setTagIds: (v: Set<number>) => void
+  cascade: boolean
 }) => {
   const [tagsTrees] = useQuery(getTagsTrees, null)
   const [tagsMap] = useQuery(getTagsMap, null)
@@ -104,12 +106,16 @@ export const TagsSelection = ({
               const newTagIds = new Set(tagIds.values())
               if (tagIds.has(selectedTagId)) {
                 newTagIds.delete(selectedTagId)
-                const childTagIds = getChildTagIds(tagsMap, selectedTagId)
-                childTagIds.forEach((childTagId) => newTagIds.delete(childTagId))
+                if (cascade) {
+                  const childTagIds = getChildTagIds(tagsMap, selectedTagId)
+                  childTagIds.forEach((childTagId) => newTagIds.delete(childTagId))
+                }
               } else {
                 newTagIds.add(selectedTagId)
-                const parentTagIds = getParentTagIds(tagsMap, selectedTagId)
-                parentTagIds.forEach((parentTagId) => newTagIds.add(parentTagId))
+                if (cascade) {
+                  const parentTagIds = getParentTagIds(tagsMap, selectedTagId)
+                  parentTagIds.forEach((parentTagId) => newTagIds.add(parentTagId))
+                }
               }
               setTagIds(newTagIds)
             }
