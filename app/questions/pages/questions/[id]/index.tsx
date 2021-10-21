@@ -13,6 +13,7 @@ import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
 
 const Content = () => {
   const questionId = useParam("id", "number")!
@@ -54,13 +55,19 @@ const Content = () => {
       </Typography>
       <Typography>Tags: {question.tags.map((tag) => tag.name).join(", ")}</Typography>
 
-      <Typography variant="h2" component="h2">
-        New Answer
-      </Typography>
-      <AnswerForm
-        initialValues={{ description: "", questionId: questionId, personId: 0 }}
-        onSubmit={onCreateAnswer}
-      />
+      <Accordion>
+        <AccordionSummary>
+          <Typography variant="h3" component="h3">
+            New Answer
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <AnswerForm
+            initialValues={{ description: "", questionId: questionId, personId: 0 }}
+            onSubmit={onCreateAnswer}
+          />
+        </AccordionDetails>
+      </Accordion>
 
       {question.answers.length ? (
         <Typography variant="h2" component="h2">
