@@ -1,3 +1,4 @@
+import { resolver } from "blitz"
 import db from "db"
 import { TagNode, Tag } from "../types"
 
@@ -30,7 +31,11 @@ export const constructTrees = (tags: Tag[]): TagNode[] => {
   return getChildren(tagsWithParent, 0)
 }
 
-export default async function getTagsTrees(_ = null) {
+export const getTagsTree = async () => {
   const tags = await db.tag.findMany()
   return constructTrees(tags)
 }
+
+export default resolver.pipe(async () => {
+  return await getTagsTree()
+})

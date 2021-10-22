@@ -71,7 +71,7 @@ const questions: SeedQuestion[] = [
   {
     title: "What is your greatest success?",
     status: "ongoing",
-    tagIds: new Set([1, 3]),
+    tagIds: new Set([1, 3, 6]),
     personIds: new Set([1, 2]),
     answers: [
       {

@@ -53,9 +53,11 @@ const QuestionPage: BlitzPage = () => {
       <Typography>
         Status: <StatusChip status={question.status} />
       </Typography>
-      <Typography>
-        Assigned to: {question.persons.map((person) => person.name).join(", ") || "nobody"}
-      </Typography>
+      {!!question.persons.length && (
+        <Typography>
+          Assigned to: {question.persons.map((person) => person.name).join(", ")}
+        </Typography>
+      )}
       {!!question.tags.length && (
         <Typography>
           Tags: <TagsList tags={question.tags} />

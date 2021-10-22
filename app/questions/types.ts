@@ -14,6 +14,13 @@ export interface TagWithIsLeaf extends Tag {
   isLeaf: boolean
 }
 
+export const TagIdWithIsLeafSchema = z.object({
+  id: id,
+  isLeaf: z.boolean(),
+})
+
+export type TagIdWithIsLeaf = z.TypeOf<typeof TagIdWithIsLeafSchema>
+
 export interface TagNode {
   id: number
   name: string
@@ -54,16 +61,11 @@ export interface Question extends PreviewQuestion {
   answers: Answer[]
 }
 
-export const TagIdWithIsLeaf = z.object({
-  id: id,
-  isLeaf: z.boolean(),
-})
-
 export const CreateQuestionSchema = z.object({
   title: z.string().min(1),
   status: QuestionStatusSchema,
   personIds: z.set(id),
-  tagIds: z.set(TagIdWithIsLeaf),
+  tagIds: z.set(id),
 })
 
 export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>

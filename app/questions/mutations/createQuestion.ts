@@ -1,6 +1,7 @@
 import { resolver } from "blitz"
 import db from "db"
-import { CreateQuestion, CreateQuestionSchema } from "../types"
+import { getTagsMap } from "../queries/getTagsMap"
+import { CreateQuestion, CreateQuestionSchema, TagIdWithIsLeaf } from "../types"
 
 export default resolver.pipe(resolver.zod(CreateQuestionSchema), async (question) => {
   return await createQuestion(question)
@@ -16,11 +17,23 @@ export const createQuestion = async (question: CreateQuestion) => {
 }
 
 export const createTagToQuestions = async (tagIds: Set<number>, questionId: number) => {
-  for (const tagId of Array.from(tagIds)) {
+  const tagsMap = await getTagsMap()
+  const tagIdisLeafMap: Map<number, boolean> = new Map(
+    Array.from(tagIds.values()).map((tagId) => [tagId, true])
+  )
+  for (const tagId of Array.from(tagIds.values())) {
+    const parentId = tagsMap.get(tagId)?.parentId
+    if (parentId) {
+      tagIdisLeafMap.set(parentId, false)
+    }
+  }
+
+  for (const [tagId, isLeaf] of Array.from(tagIdisLeafMap.entries())) {
     await db.tagToQuestion.create({
       data: {
         questionId,
         tagId,
+        isLeaf,
       },
     })
   }
