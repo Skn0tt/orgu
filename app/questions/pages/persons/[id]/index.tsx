@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography"
 import Markdown from "app/core/components/Markdown"
 import Button from "@mui/material/Button"
 import updateAnswerDescriptions from "app/questions/mutations/updateAnswerDescriptions"
+import StatusChip from "app/questions/components/StatusChip"
+import TagsList from "app/questions/components/TagsList"
 
 const PersonPage: BlitzPage = () => {
   const personId = useParam("id", "number")!
@@ -52,7 +54,16 @@ const PersonPage: BlitzPage = () => {
         <DeleteButton name="person" onSubmit={onDeletePerson} />
       </Typography>
       <Markdown value={person.description} />
-      <Box>{person.tags.map((tag) => tag.name).join(", ")}</Box>
+      {!!person.tags.length && (
+        <Box>
+          Assigned Tags:{" "}
+          <TagsList
+            tags={person.tags.map((tag) => {
+              return { ...tag, isLeaf: true }
+            })}
+          />
+        </Box>
+      )}
       <Typography variant="h2" component="h2">
         Assigned Questions{" "}
         <Button
@@ -84,8 +95,9 @@ const PersonPage: BlitzPage = () => {
                 >
                   {question.title}
                 </Box>
-              </Link>{" "}
-              ({question.status})
+              </Link>
+              <StatusChip status={question.status} />
+              <TagsList tags={question.tags} />
             </Typography>
             <PersonAnswerBox
               description={answerDescriptions.get(question.id)!}
