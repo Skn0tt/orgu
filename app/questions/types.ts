@@ -10,6 +10,10 @@ export const id = z.number().int().positive()
 
 export type Tag = PrismaTag
 
+export interface TagWithIsLeaf extends Tag {
+  isLeaf: boolean
+}
+
 export interface TagNode {
   id: number
   name: string
@@ -36,8 +40,13 @@ export const UpdateAnswerSchema = CreateAnswerSchema.extend({
 
 export type UpdateAnswer = z.TypeOf<typeof UpdateAnswerSchema>
 
+const QuestionStatusSchema = z.enum(["answered", "unanswered", "ongoing"])
+
+export type QuestionStatus = z.TypeOf<typeof QuestionStatusSchema>
+
 export interface PreviewQuestion extends PrismaQuestion {
-  tags: Tag[]
+  status: QuestionStatus
+  tags: TagWithIsLeaf[]
 }
 
 export interface Question extends PreviewQuestion {
@@ -45,13 +54,16 @@ export interface Question extends PreviewQuestion {
   answers: Answer[]
 }
 
-const QuestionStatusEnum = z.enum(["answered", "unanswered", "ongoing"])
+export const TagIdWithIsLeaf = z.object({
+  id: id,
+  isLeaf: z.boolean(),
+})
 
 export const CreateQuestionSchema = z.object({
   title: z.string().min(1),
-  status: QuestionStatusEnum,
+  status: QuestionStatusSchema,
   personIds: z.set(id),
-  tagIds: z.set(id),
+  tagIds: z.set(TagIdWithIsLeaf),
 })
 
 export type CreateQuestion = z.TypeOf<typeof CreateQuestionSchema>

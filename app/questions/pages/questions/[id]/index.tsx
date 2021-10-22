@@ -13,6 +13,8 @@ import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
+import TagsList from "app/questions/components/TagsList"
+import StatusChip from "app/questions/components/StatusChip"
 
 const QuestionPage: BlitzPage = () => {
   const questionId = useParam("id", "number")!
@@ -48,11 +50,17 @@ const QuestionPage: BlitzPage = () => {
           <DeleteButton name="question" onSubmit={onDeleteQuestion} />
         </Typography>
       </Box>
-      <Typography>Status: {question.status}</Typography>
+      <Typography>
+        Status: <StatusChip status={question.status} />
+      </Typography>
       <Typography>
         Assigned to: {question.persons.map((person) => person.name).join(", ") || "nobody"}
       </Typography>
-      <Typography>Tags: {question.tags.map((tag) => tag.name).join(", ")}</Typography>
+      {!!question.tags.length && (
+        <Typography>
+          Tags: <TagsList tags={question.tags} />
+        </Typography>
+      )}
 
       <Accordion>
         <AccordionSummary>

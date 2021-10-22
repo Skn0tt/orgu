@@ -1,6 +1,6 @@
 import db from "db"
 import { NotFoundError } from "blitz"
-import { Question } from "../types"
+import { Question, QuestionStatus } from "../types"
 
 export default async function getQuestion(questionId: number | undefined) {
   if (questionId === undefined) {
@@ -31,7 +31,10 @@ export default async function getQuestion(questionId: number | undefined) {
   }
   const question: Question = {
     ...prismaQuestion,
-    tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => tagToQuestion.tag),
+    status: prismaQuestion.status as QuestionStatus,
+    tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => {
+      return { ...tagToQuestion.tag, isLeaf: tagToQuestion.isLeaf }
+    }),
     persons: prismaQuestion.personToQuestions.map((personToQuestion) => personToQuestion.person),
   }
   return question

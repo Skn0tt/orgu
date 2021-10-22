@@ -8,10 +8,11 @@ import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
-import Chip from "@mui/material/Chip"
 import { PreviewQuestion } from "app/questions/types"
 import { TextField } from "@mui/material"
 import { TagsSelection } from "app/questions/components/TagsSelection"
+import TagsList from "app/questions/components/TagsList"
+import StatusChip from "app/questions/components/StatusChip"
 
 const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
@@ -23,10 +24,8 @@ const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
             {question.title}
           </Typography>
           <Box>
-            <Chip label={question.status} color="primary" size="small" />
-            {question.tags.map((tag) => (
-              <Chip key={tag.id} label={tag.name} color="secondary" size="small" />
-            ))}
+            <StatusChip status={question.status} />
+            <TagsList tags={question.tags} />
           </Box>
         </CardContent>
       </CardActionArea>

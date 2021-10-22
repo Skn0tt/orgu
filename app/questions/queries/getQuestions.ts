@@ -1,7 +1,7 @@
 import authorize from "app/auth/utils/authorize"
 import { resolver } from "blitz"
 import db from "db"
-import { PreviewQuestion } from "../types"
+import { PreviewQuestion, QuestionStatus } from "../types"
 
 export default resolver.pipe(authorize(), async () => {
   const prismaQuestions = await db.question.findMany({
@@ -17,7 +17,10 @@ export default resolver.pipe(authorize(), async () => {
   const questions: PreviewQuestion[] = prismaQuestions.map((prismaQuestion) => {
     return {
       ...prismaQuestion,
-      tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => tagToQuestion.tag),
+      status: prismaQuestion.status as QuestionStatus,
+      tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => {
+        return { ...tagToQuestion.tag, isLeaf: tagToQuestion.isLeaf }
+      }),
     }
   })
   return questions

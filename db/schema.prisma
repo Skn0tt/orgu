@@ -114,12 +114,14 @@ model TagToQuestion {
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
   questionId Int
   tagId      Int
+  isLeaf     Boolean  @default(false)
 }
 
 model TagToPerson {
-  id       Int    @id @default(autoincrement())
-  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
-  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  id       Int     @id @default(autoincrement())
+  person   Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  tag      Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
   personId Int
   tagId    Int
+  isLeaf   Boolean @default(false)
 }
