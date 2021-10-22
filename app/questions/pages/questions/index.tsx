@@ -2,8 +2,7 @@ import { BlitzPage, Link, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getQuestions from "app/questions/queries/getQuestions"
-import { Suspense, useState } from "react"
-import CircularProgress from "@mui/material/CircularProgress"
+import { useState } from "react"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
@@ -74,10 +73,8 @@ const QuestionsPage: BlitzPage = () => {
         </Link>
       </Box>
 
-      <Suspense fallback={<CircularProgress />}>
-        <TagsSelection tagIds={tagIds} setTagIds={setTagIds} cascade={false} />
-        <QuestionsList />
-      </Suspense>
+      <TagsSelection tagIds={tagIds} setTagIds={setTagIds} cascade={false} />
+      <QuestionsList />
     </Box>
   )
 }

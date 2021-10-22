@@ -2,8 +2,6 @@ import { BlitzPage, Link, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
 import getPersons from "app/questions/queries/getPersons"
-import { Suspense } from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardMedia"
@@ -65,9 +63,7 @@ const PersonsPage: BlitzPage = () => {
           </Button>
         </Link>
       </Box>
-      <Suspense fallback={<CircularProgress />}>
-        <PersonsList />
-      </Suspense>
+      <PersonsList />
     </Box>
   )
 }

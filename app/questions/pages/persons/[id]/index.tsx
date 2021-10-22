@@ -1,7 +1,7 @@
 import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import React, { Suspense, useState } from "react"
+import React, { useState } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import getPerson from "app/questions/queries/getPerson"
 import IconButton from "@mui/material/IconButton"
@@ -14,7 +14,7 @@ import Markdown from "app/core/components/Markdown"
 import Button from "@mui/material/Button"
 import updateAnswerDescriptions from "app/questions/mutations/updateAnswerDescriptions"
 
-const Content = () => {
+const PersonPage: BlitzPage = () => {
   const personId = useParam("id", "number")!
   const [person] = useQuery(getPerson, personId)
   const [deletePersonMutation] = useMutation(deletePerson)
@@ -101,16 +101,6 @@ const Content = () => {
       ) : (
         <CircularProgress />
       )}
-    </Box>
-  )
-}
-
-const PersonPage: BlitzPage = () => {
-  return (
-    <Box>
-      <Suspense fallback={<CircularProgress />}>
-        <Content />
-      </Suspense>
     </Box>
   )
 }

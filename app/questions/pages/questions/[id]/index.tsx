@@ -1,8 +1,7 @@
 import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import React, { Suspense } from "react"
-import CircularProgress from "@mui/material/CircularProgress"
+import React from "react"
 import getQuestion from "app/questions/queries/getQuestion"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
@@ -15,7 +14,7 @@ import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
 
-const Content = () => {
+const QuestionPage: BlitzPage = () => {
   const questionId = useParam("id", "number")!
   const [question] = useQuery(getQuestion, questionId)
   const [createQuestionMutation] = useMutation(createAnswer)
@@ -79,16 +78,6 @@ const Content = () => {
       {question.answers.map((answer) => (
         <AnswerBox key={answer.id} answer={answer} />
       ))}
-    </Box>
-  )
-}
-
-const QuestionPage: BlitzPage = () => {
-  return (
-    <Box>
-      <Suspense fallback={<CircularProgress />}>
-        <Content />
-      </Suspense>
     </Box>
   )
 }

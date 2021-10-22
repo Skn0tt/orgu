@@ -6,6 +6,8 @@ import Button from "@mui/material/Button"
 import Toolbar from "@mui/material/Toolbar"
 import { styled } from "@mui/material/styles"
 import logoutMutation from "app/auth/mutations/logout"
+import { Suspense } from "react"
+import CircularProgress from "@mui/material/CircularProgress"
 
 const MainContainer = styled("main")(({ theme }) => ({
   padding: theme.spacing(1),
@@ -82,7 +84,9 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <MainContainer>{children}</MainContainer>
+      <Suspense fallback={<CircularProgress />}>
+        <MainContainer>{children}</MainContainer>
+      </Suspense>
     </>
   )
 }

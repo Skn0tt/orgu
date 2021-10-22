@@ -3,13 +3,11 @@ import { UpdatePerson } from "app/questions/types"
 import { BlitzPage, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import { Suspense } from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 import getPerson from "app/questions/queries/getPerson"
 import updatePerson from "app/questions/mutations/updatePerson"
 import Typography from "@mui/material/Typography"
 
-const Content = () => {
+const EditPersonPage: BlitzPage = () => {
   const personId = useParam("id", "number")!
   const [person] = useQuery(getPerson, personId)
   const [updatePersonMutation] = useMutation(updatePerson)
@@ -39,16 +37,6 @@ const Content = () => {
         onSubmit={onSubmit}
         onCancel={() => router.push("/persons/" + personId)}
       />
-    </Box>
-  )
-}
-
-const EditPersonPage: BlitzPage = () => {
-  return (
-    <Box>
-      <Suspense fallback={<CircularProgress />}>
-        <Content />
-      </Suspense>
     </Box>
   )
 }

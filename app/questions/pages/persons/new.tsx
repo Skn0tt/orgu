@@ -5,10 +5,8 @@ import PersonForm from "../../components/PersonForm"
 import { CreatePerson } from "app/questions/types"
 import createPerson from "app/questions/mutations/createPerson"
 import Typography from "@mui/material/Typography"
-import { Suspense } from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 
-const Content = () => {
+const NewPersonPage: BlitzPage = () => {
   const [createPersonMutation] = useMutation(createPerson)
   const router = useRouter()
 
@@ -35,16 +33,6 @@ const Content = () => {
         onSubmit={onSubmit}
         onCancel={() => router.push("/persons")}
       />
-    </Box>
-  )
-}
-
-const NewPersonPage: BlitzPage = () => {
-  return (
-    <Box>
-      <Suspense fallback={<CircularProgress />}>
-        <Content />
-      </Suspense>
     </Box>
   )
 }
