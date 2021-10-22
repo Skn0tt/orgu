@@ -21,14 +21,14 @@ export const createTagToQuestions = async (tagIds: Set<number>, questionId: numb
   const tagIdisLeafMap: Map<number, boolean> = new Map(
     Array.from(tagIds.values()).map((tagId) => [tagId, true])
   )
-  for (const tagId of Array.from(tagIds.values())) {
+  for (const tagId of tagIds.values()) {
     const parentId = tagsMap.get(tagId)?.parentId
     if (parentId) {
       tagIdisLeafMap.set(parentId, false)
     }
   }
 
-  for (const [tagId, isLeaf] of Array.from(tagIdisLeafMap.entries())) {
+  for (const [tagId, isLeaf] of tagIdisLeafMap.entries()) {
     await db.tagToQuestion.create({
       data: {
         questionId,
@@ -40,7 +40,7 @@ export const createTagToQuestions = async (tagIds: Set<number>, questionId: numb
 }
 
 export const createPersonToQuestions = async (personIds: Set<number>, questionId: number) => {
-  for (const personId of Array.from(personIds)) {
+  for (const personId of personIds) {
     await db.personToQuestion.create({
       data: {
         questionId,

@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import { PreviewQuestion } from "app/questions/types"
 import { TextField } from "@mui/material"
-import { TagsSelection } from "app/questions/components/TagsSelection"
+import TagsSelection from "app/questions/components/TagsSelection"
 import TagsList from "app/questions/components/TagsList"
 import StatusChip from "app/questions/components/StatusChip"
 

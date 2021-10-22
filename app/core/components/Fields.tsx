@@ -12,7 +12,7 @@ import { IconButton } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import { AutocompleteSelect, AutocompleteOption } from "./AutocompleteSelection"
-import { TagsSelection } from "app/questions/components/TagsSelection"
+import TagsSelection from "app/questions/components/TagsSelection"
 
 const MarkdownPreview = ({ value }: { value: string }) => {
   const [visible, setVisible] = useState<boolean>(false)

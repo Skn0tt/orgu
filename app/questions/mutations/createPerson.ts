@@ -7,7 +7,7 @@ export default resolver.pipe(resolver.zod(CreatePersonSchema), async (person) =>
 })
 
 export const createTagToPerson = async (tagIds: Set<number>, personId: number) => {
-  for (const tagId of Array.from(tagIds)) {
+  for (const tagId of tagIds) {
     await db.tagToPerson.create({
       data: {
         personId,

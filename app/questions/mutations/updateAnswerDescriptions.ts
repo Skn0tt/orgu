@@ -10,7 +10,7 @@ const Request = z.object({
 
 export default resolver.pipe(resolver.zod(Request), async ({ answerDescriptions, personId }) => {
   try {
-    for (const [questionId, description] of Array.from(answerDescriptions.entries())) {
+    for (const [questionId, description] of answerDescriptions.entries()) {
       const answer = await db.answer.findFirst({ where: { personId, questionId } })
       if (answer) {
         if (description) {

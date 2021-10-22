@@ -10,6 +10,10 @@ import { Tag, TagNode } from "../types"
 import getTagsTrees from "../queries/getTagsTrees"
 import { useQuery } from "blitz"
 import getTagsMap from "../queries/getTagsMap"
+import { AutocompleteOption } from "app/core/components/AutocompleteSelection"
+import Autocomplete from "@mui/material/Autocomplete"
+import TextField from "@mui/material/TextField"
+import { difference } from "app/utils/set"
 
 export const getParentTagIds = (tagsMap: Map<number, Tag>, tagId: number): Set<number> => {
   const parentIds: Set<number> = new Set()
@@ -28,7 +32,7 @@ export const getChildTagIds = (tagsMap: Map<number, Tag>, tagId: number): Set<nu
   while (remainingTags.length) {
     const remainingTag = remainingTags.pop()!
     childIds.add(remainingTag.id)
-    for (const tag of Array.from(tagsMap.values())) {
+    for (const tag of tagsMap.values()) {
       if (tag.parentId === remainingTag.id) {
         remainingTags.push(tag)
       }
@@ -38,15 +42,12 @@ export const getChildTagIds = (tagsMap: Map<number, Tag>, tagId: number): Set<nu
   return childIds
 }
 
-export const TagsSelection = ({
-  tagIds,
-  setTagIds,
-  cascade,
-}: {
+interface TagsSelectProps {
   tagIds: Set<number>
-  setTagIds: (v: Set<number>) => void
-  cascade: boolean
-}) => {
+  onSelectOperation: (v: SelectOperation) => void
+}
+
+export const TagsTreeSelection = ({ tagIds, onSelectOperation }: TagsSelectProps) => {
   const [tagsTrees] = useQuery(getTagsTrees, null)
   const [tagsMap] = useQuery(getTagsMap, null)
 
@@ -102,22 +103,12 @@ export const TagsSelection = ({
           multiSelect
           onNodeSelect={(event, nodeIds) => {
             if (nodeIds.length === 1) {
-              const selectedTagId = parseInt(nodeIds[0]!)
-              const newTagIds = new Set(tagIds.values())
-              if (tagIds.has(selectedTagId)) {
-                newTagIds.delete(selectedTagId)
-                if (cascade) {
-                  const childTagIds = getChildTagIds(tagsMap, selectedTagId)
-                  childTagIds.forEach((childTagId) => newTagIds.delete(childTagId))
-                }
+              const tagId = parseInt(nodeIds[0]!)
+              if (tagIds.has(tagId)) {
+                onSelectOperation({ tagId, operation: "deselect" })
               } else {
-                newTagIds.add(selectedTagId)
-                if (cascade) {
-                  const parentTagIds = getParentTagIds(tagsMap, selectedTagId)
-                  parentTagIds.forEach((parentTagId) => newTagIds.add(parentTagId))
-                }
+                onSelectOperation({ tagId, operation: "select" })
               }
-              setTagIds(newTagIds)
             }
           }}
         >
@@ -127,3 +118,88 @@ export const TagsSelection = ({
     </Box>
   )
 }
+
+const TagsAutocomplete = ({ tagIds, onSelectOperation }: TagsSelectProps) => {
+  const [tagsMap] = useQuery(getTagsMap, null)
+  const options: AutocompleteOption[] = Array.from(tagsMap.values()).map((tag) => {
+    return { id: tag.id, label: tag.name }
+  })
+  const optionMap = new Map(options.map((option) => [option.id, option]))
+
+  return (
+    <Autocomplete
+      multiple
+      options={options}
+      value={Array.from(tagIds.values()).map((id) => optionMap.get(id))}
+      renderInput={(params) => {
+        return <TextField {...params} label="Tags" color="secondary" />
+      }}
+      isOptionEqualToValue={(option, value) => {
+        return option?.id === value?.id
+      }}
+      onChange={(_event, values) => {
+        if (Array.isArray(values)) {
+          const newTagIds = new Set(values.map((entry) => entry?.id))
+          newTagIds.delete(undefined)
+
+          if (difference(tagIds, newTagIds).size === 1) {
+            onSelectOperation({
+              tagId: Array.from(difference(tagIds, newTagIds))[0]!,
+              operation: "deselect",
+            })
+          }
+          if (difference(newTagIds, tagIds).size === 1) {
+            onSelectOperation({
+              tagId: Array.from(difference(newTagIds, tagIds))[0]!,
+              operation: "select",
+            })
+          }
+        }
+      }}
+    />
+  )
+}
+
+interface SelectOperation {
+  tagId: number
+  operation: "select" | "deselect"
+}
+
+const TagsSelection = ({
+  tagIds,
+  setTagIds,
+  cascade,
+}: {
+  tagIds: Set<number>
+  setTagIds: (v: Set<number>) => void
+  cascade: boolean
+}) => {
+  const [tagsMap] = useQuery(getTagsMap, null)
+
+  const onSelectOperation = ({ tagId, operation }: SelectOperation) => {
+    const newTagIds = new Set(tagIds.values())
+    if (operation === "deselect") {
+      newTagIds.delete(tagId)
+      if (cascade) {
+        const childTagIds = getChildTagIds(tagsMap, tagId)
+        childTagIds.forEach((childTagId) => newTagIds.delete(childTagId))
+      }
+    } else {
+      newTagIds.add(tagId)
+      if (cascade) {
+        const parentTagIds = getParentTagIds(tagsMap, tagId)
+        parentTagIds.forEach((parentTagId) => newTagIds.add(parentTagId))
+      }
+    }
+    setTagIds(newTagIds)
+  }
+
+  return (
+    <Box>
+      <TagsAutocomplete tagIds={tagIds} onSelectOperation={onSelectOperation} />
+      <TagsTreeSelection tagIds={tagIds} onSelectOperation={onSelectOperation} />
+    </Box>
+  )
+}
+
+export default TagsSelection
