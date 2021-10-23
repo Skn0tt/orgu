@@ -1,8 +1,9 @@
 import { resolver } from "blitz"
 import db from "db"
 import { CreatePerson, CreatePersonSchema } from "../types"
+import authorize from "app/auth/utils/authorize"
 
-export default resolver.pipe(resolver.zod(CreatePersonSchema), async (person) => {
+export default resolver.pipe(authorize(), resolver.zod(CreatePersonSchema), async (person) => {
   return await createPerson(person)
 })
 

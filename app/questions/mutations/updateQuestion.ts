@@ -2,8 +2,9 @@ import { resolver } from "blitz"
 import db from "db"
 import { UpdateQuestionSchema } from "../types"
 import { createPersonToQuestions, createTagToQuestions } from "./createQuestion"
+import authorize from "app/auth/utils/authorize"
 
-export default resolver.pipe(resolver.zod(UpdateQuestionSchema), async (question) => {
+export default resolver.pipe(authorize(), resolver.zod(UpdateQuestionSchema), async (question) => {
   const updatedQuestion = await db.question.update({
     where: { id: question.id },
     data: { title: question.title, status: question.status },

@@ -7,8 +7,9 @@ import db, {
   Tag,
   Prisma,
 } from "db"
-import { NotFoundError } from "blitz"
+import { NotFoundError, resolver } from "blitz"
 import { Question, QuestionStatus } from "../types"
+import authorize from "app/auth/utils/authorize"
 
 export type PrismaQuestion = PrismaFlatQuestion & {
   personToQuestions: (PersonToQuestion & {
@@ -52,7 +53,7 @@ export const questionInclude: Prisma.QuestionInclude = {
   },
 }
 
-export default async function getQuestion(questionId: number | undefined) {
+export default resolver.pipe(authorize(), async (questionId: number | undefined) => {
   if (questionId === undefined) {
     throw new NotFoundError()
   }
@@ -65,4 +66,4 @@ export default async function getQuestion(questionId: number | undefined) {
   }
   const question = prismaQuestionToQuestion(prismaQuestion)
   return question
-}
+})

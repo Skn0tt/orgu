@@ -1,9 +1,10 @@
 import { resolver } from "blitz"
 import db from "db"
 import { getTagsMap } from "../queries/getTagsMap"
-import { CreateQuestion, CreateQuestionSchema, TagIdWithIsLeaf } from "../types"
+import { CreateQuestion, CreateQuestionSchema } from "../types"
+import authorize from "app/auth/utils/authorize"
 
-export default resolver.pipe(resolver.zod(CreateQuestionSchema), async (question) => {
+export default resolver.pipe(authorize(), resolver.zod(CreateQuestionSchema), async (question) => {
   return await createQuestion(question)
 })
 

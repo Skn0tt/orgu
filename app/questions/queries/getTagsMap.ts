@@ -1,3 +1,4 @@
+import authorize from "app/auth/utils/authorize"
 import { resolver } from "blitz"
 import db from "db"
 import { Tag } from "../types"
@@ -10,6 +11,6 @@ export const getTagsMap = async () => {
   return tagsMap
 }
 
-export default resolver.pipe(async () => {
+export default resolver.pipe(authorize(), async () => {
   return await getTagsMap()
 })

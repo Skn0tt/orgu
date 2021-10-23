@@ -1,10 +1,11 @@
 import db from "db"
-import { NotFoundError } from "blitz"
+import { NotFoundError, resolver } from "blitz"
 import { Person } from "../types"
 import { intersection } from "app/utils/set"
 import { PrismaQuestion, prismaQuestionToQuestion, questionInclude } from "./getQuestion"
+import authorize from "app/auth/utils/authorize"
 
-export default async function getPerson(personId: number | undefined) {
+export default resolver.pipe(authorize(), async (personId: number | undefined) => {
   if (personId === undefined) {
     throw new NotFoundError()
   }
@@ -59,4 +60,4 @@ export default async function getPerson(personId: number | undefined) {
   person.questions = [...person.questions, ...filteredQuestions]
 
   return person
-}
+})

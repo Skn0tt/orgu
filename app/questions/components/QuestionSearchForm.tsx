@@ -39,7 +39,7 @@ const QuestionSearchForm = ({
         cascade={false}
       />
       <TextField
-        label="Search Term"
+        label="Text Search"
         value={searchParams.text}
         fullWidth
         onChange={(e) => setSearchParams({ ...searchParams, text: e.target.value })}
