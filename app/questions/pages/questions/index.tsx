@@ -9,10 +9,12 @@ import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
 import { PreviewQuestion } from "app/questions/types"
-import { TextField } from "@mui/material"
-import TagsSelection from "app/questions/components/TagsSelection"
 import TagsList from "app/questions/components/TagsList"
 import StatusChip from "app/questions/components/StatusChip"
+import QuestionSearchForm, {
+  QuestionSearchParams,
+} from "app/questions/components/QuestionSearchForm"
+import { intersection } from "app/utils/set"
 
 const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
@@ -33,22 +35,19 @@ const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   )
 }
 
-const QuestionsList = () => {
+const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams }) => {
   const [questions] = useQuery(getQuestions, null)
-  const [searchTerm, setSearchTerm] = useState("")
 
-  // hacky search implementation:
   const results = questions.filter((question) => {
-    return question.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const leafTagIds = new Set(question.tags.filter((tag) => tag.isLeaf).map((tag) => tag.id))
+    return (
+      question.title.toLowerCase().includes(searchParams.text.toLowerCase()) &&
+      (intersection(leafTagIds, searchParams.tagIds).size || !searchParams.tagIds.size)
+    )
   })
 
   return (
     <Box>
-      <TextField
-        label="Search Term"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
       {results.map((question) => (
         <QuestionCard key={question.id} question={question} />
       ))}
@@ -57,7 +56,10 @@ const QuestionsList = () => {
 }
 
 const QuestionsPage: BlitzPage = () => {
-  const [tagIds, setTagIds] = useState<Set<number>>(new Set())
+  const [searchParams, setSearchParams] = useState<QuestionSearchParams>({
+    text: "",
+    tagIds: new Set(),
+  })
 
   return (
     <Box>
@@ -71,9 +73,8 @@ const QuestionsPage: BlitzPage = () => {
           </Button>
         </Link>
       </Box>
-
-      <TagsSelection tagIds={tagIds} setTagIds={setTagIds} cascade={false} />
-      <QuestionsList />
+      <QuestionSearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
+      <QuestionsList searchParams={searchParams} />
     </Box>
   )
 }
