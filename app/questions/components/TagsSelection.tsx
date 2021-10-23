@@ -1,9 +1,18 @@
 import Box from "@mui/material/Box"
-import React from "react"
+import React, { useState } from "react"
 import TreeView from "@mui/lab/TreeView"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
-import { Checkbox, FormControlLabel } from "@mui/material"
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  IconButton,
+  Typography,
+} from "@mui/material"
 import TreeItem, { TreeItemProps, useTreeItem, TreeItemContentProps } from "@mui/lab/TreeItem"
 import clsx from "clsx"
 import { Tag, TagNode } from "../types"
@@ -14,6 +23,51 @@ import { AutocompleteOption } from "app/core/components/AutocompleteSelection"
 import Autocomplete from "@mui/material/Autocomplete"
 import TextField from "@mui/material/TextField"
 import { difference } from "app/utils/set"
+import CheckIcon from "@mui/icons-material/Check"
+
+const ScrollDialog = ({
+  children,
+  onClose = () => {},
+}: {
+  children: React.ReactNode
+  onClose?: () => void
+}) => {
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    onClose()
+    setOpen(false)
+  }
+
+  return (
+    <span>
+      <Button color="secondary" variant="contained" type="button" onClick={handleOpen}>
+        Tree
+      </Button>
+      <Dialog open={open} onClose={handleClose} scroll="paper" fullWidth maxWidth="md">
+        <DialogTitle>
+          <Typography>Tags</Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 10,
+              top: 10,
+            }}
+          >
+            <CheckIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>{children}</DialogContent>
+      </Dialog>
+    </span>
+  )
+}
 
 export const getParentTagIds = (tagsMap: Map<number, Tag>, tagId: number): Set<number> => {
   const parentIds: Set<number> = new Set()
@@ -128,6 +182,7 @@ const TagsAutocomplete = ({ tagIds, onSelectOperation }: TagsSelectProps) => {
 
   return (
     <Autocomplete
+      sx={{ flex: 1, mr: 1 }}
       multiple
       options={options}
       value={Array.from(tagIds.values()).map((id) => optionMap.get(id))}
@@ -195,9 +250,11 @@ const TagsSelection = ({
   }
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
       <TagsAutocomplete tagIds={tagIds} onSelectOperation={onSelectOperation} />
-      <TagsTreeSelection tagIds={tagIds} onSelectOperation={onSelectOperation} />
+      <ScrollDialog>
+        <TagsTreeSelection tagIds={tagIds} onSelectOperation={onSelectOperation} />
+      </ScrollDialog>
     </Box>
   )
 }
