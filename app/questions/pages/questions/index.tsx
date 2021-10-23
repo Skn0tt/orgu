@@ -8,7 +8,7 @@ import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import CardActionArea from "@mui/material/CardActionArea"
-import { PreviewQuestion } from "app/questions/types"
+import { PreviewQuestion, QuestionStatus } from "app/questions/types"
 import TagsList from "app/questions/components/TagsList"
 import StatusChip from "app/questions/components/StatusChip"
 import QuestionSearchForm, {
@@ -42,7 +42,8 @@ const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams })
     const leafTagIds = new Set(question.tags.filter((tag) => tag.isLeaf).map((tag) => tag.id))
     return (
       question.title.toLowerCase().includes(searchParams.text.toLowerCase()) &&
-      (intersection(leafTagIds, searchParams.tagIds).size || !searchParams.tagIds.size)
+      (intersection(leafTagIds, searchParams.tagIds).size || !searchParams.tagIds.size) &&
+      (searchParams.statuses.has(question.status) || !searchParams.statuses.size)
     )
   })
 
@@ -59,6 +60,7 @@ const QuestionsPage: BlitzPage = () => {
   const [searchParams, setSearchParams] = useState<QuestionSearchParams>({
     text: "",
     tagIds: new Set(),
+    statuses: new Set<QuestionStatus>(),
   })
 
   return (
