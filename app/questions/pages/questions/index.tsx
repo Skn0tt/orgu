@@ -49,9 +49,9 @@ const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams })
 
   return (
     <Box>
-      {results.map((question) => (
-        <QuestionCard key={question.id} question={question} />
-      ))}
+      {results.length
+        ? results.map((question) => <QuestionCard key={question.id} question={question} />)
+        : "No questions found."}
     </Box>
   )
 }

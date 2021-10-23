@@ -71,12 +71,17 @@ const Navbar = () => {
   )
 }
 
-type LayoutProps = {
+const Layout = ({
+  title,
+  children,
+  isHome = false,
+}: {
   title?: string
+  isHome?: boolean
   children: ReactNode
-}
+}) => {
+  const session = useSession({ suspense: false })
 
-const Layout = ({ title, children }: LayoutProps) => {
   return (
     <>
       <Head>
@@ -84,9 +89,15 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Suspense fallback={<CircularProgress />}>
-        <MainContainer>{children}</MainContainer>
-      </Suspense>
+      <MainContainer>
+        <Suspense fallback={<CircularProgress />}>
+          {isHome || !authenticationRequired || session.role === "ADMIN" ? (
+            children
+          ) : (
+            <Box>You are not authenticated or authorized to access this page.</Box>
+          )}
+        </Suspense>
+      </MainContainer>
     </>
   )
 }
