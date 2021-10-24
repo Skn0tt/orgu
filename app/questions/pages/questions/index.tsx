@@ -40,11 +40,24 @@ const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams })
 
   const results = questions.filter((question) => {
     const leafTagIds = new Set(question.tags.filter((tag) => tag.isLeaf).map((tag) => tag.id))
-    return (
-      question.title.toLowerCase().includes(searchParams.text.toLowerCase()) &&
-      (intersection(leafTagIds, searchParams.tagIds).size || !searchParams.tagIds.size) &&
-      (searchParams.statuses.has(question.status) || !searchParams.statuses.size)
-    )
+    const textExpression = question.title.toLowerCase().includes(searchParams.text.toLowerCase())
+    const tagIdsExpression = intersection(leafTagIds, searchParams.tagIds).size
+    const statusesExpression = searchParams.statuses.has(question.status)
+    console.log(textExpression, tagIdsExpression, statusesExpression)
+    if (searchParams.logicalOperator === "AND") {
+      return (
+        textExpression &&
+        (tagIdsExpression || !searchParams.tagIds.size) &&
+        (statusesExpression || !searchParams.statuses.size)
+      )
+    } else {
+      return (
+        textExpression &&
+        (tagIdsExpression ||
+          statusesExpression ||
+          (!searchParams.tagIds.size && !searchParams.statuses.size))
+      )
+    }
   })
 
   return (
@@ -61,6 +74,7 @@ const QuestionsPage: BlitzPage = () => {
     text: "",
     tagIds: new Set(),
     statuses: new Set<QuestionStatus>(),
+    logicalOperator: "OR",
   })
 
   return (
