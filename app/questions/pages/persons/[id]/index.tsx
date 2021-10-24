@@ -15,6 +15,11 @@ import Button from "@mui/material/Button"
 import updateAnswerDescriptions from "app/questions/mutations/updateAnswerDescriptions"
 import StatusChip from "app/questions/components/StatusChip"
 import TagsList from "app/questions/components/TagsList"
+import QuestionSearchForm, {
+  QuestionSearchParams,
+} from "app/questions/components/QuestionSearchForm"
+import { QuestionStatus } from "app/questions/types"
+import { filterQuestions } from "../../questions"
 
 const PersonPage: BlitzPage = () => {
   const personId = useParam("id", "number")!
@@ -42,6 +47,14 @@ const PersonPage: BlitzPage = () => {
     await router.push("/persons")
   }
 
+  const [searchParams, setSearchParams] = useState<QuestionSearchParams>({
+    text: "",
+    tagIds: new Set(person.tags.map((tag) => tag.id)),
+    statuses: new Set<QuestionStatus>(),
+    personIds: new Set([person.id]),
+    logicalOperator: "OR",
+  })
+
   return (
     <Box>
       <Typography variant="h1" component="h1">
@@ -65,7 +78,7 @@ const PersonPage: BlitzPage = () => {
         </Box>
       )}
       <Typography variant="h2" component="h2">
-        Assigned Questions{" "}
+        Questions{" "}
         <Button
           onClick={async () => {
             if (inUpdateMode) {
@@ -79,8 +92,15 @@ const PersonPage: BlitzPage = () => {
           {inUpdateMode ? "Save" : "Edit"}
         </Button>
       </Typography>
+      <QuestionSearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
+
       {!updatingAnswerDescriptions ? (
-        person.questions.map((question) => (
+        filterQuestions(
+          searchParams,
+          person.questions.map((question) => {
+            return { ...question, personIds: new Set(question.persons.map((person) => person.id)) }
+          })
+        ).map((question) => (
           <Box key={question.id}>
             <Typography variant="h3" component="h3">
               <Link href={"/questions/" + question.id} passHref>

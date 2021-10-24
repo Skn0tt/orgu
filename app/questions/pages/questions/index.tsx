@@ -35,10 +35,11 @@ const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   )
 }
 
-const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams }) => {
-  const [questions] = useQuery(getQuestions, null)
-
-  const results = questions.filter((question) => {
+export const filterQuestions = (
+  searchParams: QuestionSearchParams,
+  questions: PreviewQuestion[]
+) => {
+  return questions.filter((question) => {
     const leafTagIds = new Set(question.tags.filter((tag) => tag.isLeaf).map((tag) => tag.id))
     const textExpression = question.title.toLowerCase().includes(searchParams.text.toLowerCase())
     const tagIdsExpression = intersection(leafTagIds, searchParams.tagIds).size
@@ -63,11 +64,18 @@ const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams })
       )
     }
   })
+}
+
+const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams }) => {
+  const [questions] = useQuery(getQuestions, null)
+  const filteredQuestions = filterQuestions(searchParams, questions)
 
   return (
     <Box>
-      {results.length
-        ? results.map((question) => <QuestionCard key={question.id} question={question} />)
+      {filteredQuestions.length
+        ? filteredQuestions.map((question) => (
+            <QuestionCard key={question.id} question={question} />
+          ))
         : "No questions found."}
     </Box>
   )
@@ -79,7 +87,7 @@ const QuestionsPage: BlitzPage = () => {
     tagIds: new Set(),
     statuses: new Set<QuestionStatus>(),
     personIds: new Set(),
-    logicalOperator: "OR",
+    logicalOperator: "AND",
   })
 
   return (
