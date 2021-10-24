@@ -18,7 +18,7 @@ import TagsList from "app/questions/components/TagsList"
 import QuestionSearchForm, {
   QuestionSearchParams,
 } from "app/questions/components/QuestionSearchForm"
-import { PreviewQuestion, QuestionStatus } from "app/questions/types"
+import { Answer, PreviewQuestion, QuestionStatus } from "app/questions/types"
 import { filterQuestions } from "../../questions"
 import { Card, CardContent, Divider } from "@mui/material"
 
@@ -78,7 +78,7 @@ const PersonPage: BlitzPage = () => {
     new Map(
       person.questions.map((question) => [
         question.id,
-        question.answers.length ? question.answers[0]!.description : "",
+        question.answers.filter((answer) => answer.personId === person.id)[0]?.description ?? "",
       ])
     )
   )
