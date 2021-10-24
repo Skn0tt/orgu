@@ -1,7 +1,7 @@
 import { BlitzPage, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Box from "@mui/material/Box"
-import React from "react"
+import React, { useState } from "react"
 import getQuestion from "app/questions/queries/getQuestion"
 import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
@@ -12,7 +12,7 @@ import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
 import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Divider, TextField } from "@mui/material"
 import TagsList from "app/questions/components/TagsList"
 import StatusChip from "app/questions/components/StatusChip"
 
@@ -36,6 +36,8 @@ const QuestionPage: BlitzPage = () => {
       console.log(e)
     }
   }
+
+  const [searchText, setSearchText] = useState<string>("")
 
   return (
     <Box>
@@ -64,7 +66,9 @@ const QuestionPage: BlitzPage = () => {
         </Typography>
       )}
 
-      <Accordion>
+      <Divider sx={{ mt: 0.5, mb: 3 }} />
+
+      <Accordion disableGutters>
         <AccordionSummary>
           <Typography variant="h3" component="h3">
             New Answer
@@ -78,16 +82,34 @@ const QuestionPage: BlitzPage = () => {
         </AccordionDetails>
       </Accordion>
 
+      <Divider sx={{ mt: 0.5, mb: 3 }} />
+
       {question.answers.length ? (
-        <Typography variant="h2" component="h2">
-          Answers
-        </Typography>
+        <Box>
+          <Typography variant="h2" component="h2">
+            Answers
+          </Typography>
+          <TextField
+            label="Text Search"
+            value={searchText}
+            fullWidth
+            onChange={(e) => setSearchText(e.target.value)}
+            sx={{ mb: 1, mr: 1 }}
+            color="secondary"
+          />
+        </Box>
       ) : (
         ""
       )}
-      {question.answers.map((answer) => (
-        <AnswerBox key={answer.id} answer={answer} />
-      ))}
+      {question.answers
+        .filter(
+          (answer) =>
+            answer.description.toLowerCase().includes(searchText.toLowerCase()) ||
+            answer.person.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        .map((answer) => (
+          <AnswerBox key={answer.id} answer={answer} />
+        ))}
     </Box>
   )
 }
