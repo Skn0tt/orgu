@@ -5,10 +5,9 @@ import {
   TextField,
   TagsSelectionField,
 } from "app/core/components/Fields"
-import { CreateQuestion, CreateQuestionSchema, UpdateQuestion } from "../types"
+import { CreateQuestion, CreateQuestionSchema, UpdateQuestion, PreviewPerson } from "../types"
 import { useQuery } from "blitz"
 import getPersons from "../queries/getPersons"
-import { Person } from "../../../db"
 
 type CreateUpdateQuestion = CreateQuestion | UpdateQuestion
 
@@ -21,9 +20,8 @@ export const QuestionForm = ({
   onSubmit: (question: CreateUpdateQuestion) => void
   onCancel: () => void
 }) => {
-  // create the options
   const [persons] = useQuery(getPersons, null)
-  const options = persons.map((person: Person) => {
+  const personOptions = persons.map((person: PreviewPerson) => {
     return { label: person.name, id: person.id }
   })
 
@@ -36,7 +34,11 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
-      <AutocompleteMultiSelectField name="personIds" label="Assigned to people" options={options} />
+      <AutocompleteMultiSelectField
+        name="personIds"
+        label="Assigned to people"
+        options={personOptions}
+      />
       <TagsSelectionField name="tagIds" label="Tags" cascade={true} />
       <Select
         name="status"

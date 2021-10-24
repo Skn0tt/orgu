@@ -91,7 +91,9 @@ const Layout = ({
       <Navbar />
       <MainContainer>
         <Suspense fallback={<CircularProgress />}>
-          {isHome || !authenticationRequired || session.role === "ADMIN" ? (
+          {session.isLoading ? (
+            <CircularProgress />
+          ) : isHome || !authenticationRequired || session.role === "ADMIN" ? (
             children
           ) : (
             <Box>You are not authenticated or authorized to access this page.</Box>

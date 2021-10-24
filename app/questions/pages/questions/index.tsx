@@ -43,19 +43,23 @@ const QuestionsList = ({ searchParams }: { searchParams: QuestionSearchParams })
     const textExpression = question.title.toLowerCase().includes(searchParams.text.toLowerCase())
     const tagIdsExpression = intersection(leafTagIds, searchParams.tagIds).size
     const statusesExpression = searchParams.statuses.has(question.status)
-    console.log(textExpression, tagIdsExpression, statusesExpression)
+    const personsExpression = intersection(question.personIds, searchParams.personIds).size
     if (searchParams.logicalOperator === "AND") {
       return (
         textExpression &&
         (tagIdsExpression || !searchParams.tagIds.size) &&
-        (statusesExpression || !searchParams.statuses.size)
+        (statusesExpression || !searchParams.statuses.size) &&
+        (personsExpression || !searchParams.personIds.size)
       )
     } else {
       return (
         textExpression &&
         (tagIdsExpression ||
           statusesExpression ||
-          (!searchParams.tagIds.size && !searchParams.statuses.size))
+          personsExpression ||
+          (!searchParams.tagIds.size &&
+            !searchParams.statuses.size &&
+            !searchParams.personIds.size))
       )
     }
   })
@@ -74,6 +78,7 @@ const QuestionsPage: BlitzPage = () => {
     text: "",
     tagIds: new Set(),
     statuses: new Set<QuestionStatus>(),
+    personIds: new Set(),
     logicalOperator: "OR",
   })
 

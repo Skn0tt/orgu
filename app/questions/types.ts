@@ -54,9 +54,10 @@ export type QuestionStatus = z.TypeOf<typeof QuestionStatusSchema>
 export interface PreviewQuestion extends PrismaQuestion {
   status: QuestionStatus
   tags: TagWithIsLeaf[]
+  personIds: Set<number>
 }
 
-export interface Question extends PreviewQuestion {
+export interface Question extends Omit<PreviewQuestion, "personIds"> {
   persons: PreviewPerson[]
   answers: Answer[]
 }
