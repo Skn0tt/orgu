@@ -18,8 +18,53 @@ import TagsList from "app/questions/components/TagsList"
 import QuestionSearchForm, {
   QuestionSearchParams,
 } from "app/questions/components/QuestionSearchForm"
-import { QuestionStatus } from "app/questions/types"
+import { PreviewQuestion, QuestionStatus } from "app/questions/types"
 import { filterQuestions } from "../../questions"
+import { Card, CardContent, Divider } from "@mui/material"
+
+const QuestionCard = ({
+  question,
+  inUpdateMode,
+  description,
+  setDescription,
+}: {
+  question: PreviewQuestion
+  inUpdateMode: boolean
+  description: string
+  setDescription: (string) => void
+}) => {
+  return (
+    <Card key={question.id} sx={{ mb: 1 }}>
+      <CardContent>
+        <Typography variant="h3" component="h3">
+          <Link href={"/questions/" + question.id} passHref>
+            <Box
+              component="span"
+              sx={{
+                ":hover": {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                },
+                mr: 1,
+              }}
+            >
+              {question.title}
+            </Box>
+          </Link>
+          <StatusChip status={question.status} />
+          <TagsList tags={question.tags} />
+        </Typography>
+
+        <Divider sx={{ mt: 1.5, mb: 1.5, borderBottomWidth: 5, borderColor: "#333" }} />
+        <PersonAnswerBox
+          description={description}
+          setDescription={setDescription}
+          inUpdateMode={inUpdateMode}
+        />
+      </CardContent>
+    </Card>
+  )
+}
 
 const PersonPage: BlitzPage = () => {
   const personId = useParam("id", "number")!
@@ -77,6 +122,7 @@ const PersonPage: BlitzPage = () => {
           />
         </Box>
       )}
+      <Divider sx={{ mt: 2, mb: 4 }} />
       <Typography variant="h2" component="h2">
         Questions{" "}
         <Button
@@ -93,43 +139,25 @@ const PersonPage: BlitzPage = () => {
         </Button>
       </Typography>
       <QuestionSearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
-
+      <Divider sx={{ mt: 2, mb: 2 }} />
       {!updatingAnswerDescriptions ? (
         filterQuestions(
           searchParams,
           person.questions.map((question) => {
             return { ...question, personIds: new Set(question.persons.map((person) => person.id)) }
           })
-        ).map((question) => (
-          <Box key={question.id}>
-            <Typography variant="h3" component="h3">
-              <Link href={"/questions/" + question.id} passHref>
-                <Box
-                  component="span"
-                  sx={{
-                    ":hover": {
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    },
-                  }}
-                >
-                  {question.title}
-                </Box>
-              </Link>
-              <StatusChip status={question.status} />
-              <TagsList tags={question.tags} />
-            </Typography>
-            <PersonAnswerBox
-              description={answerDescriptions.get(question.id)!}
-              setDescription={(value: string) => {
-                const newAnswerDescriptions = new Map(answerDescriptions.entries())
-                newAnswerDescriptions.set(question.id, value)
-                setAnswerDescriptions(newAnswerDescriptions)
-              }}
-              inUpdateMode={inUpdateMode}
-            />
-          </Box>
-        ))
+        ).map((question) =>
+          QuestionCard({
+            question,
+            inUpdateMode,
+            description: answerDescriptions.get(question.id)!,
+            setDescription: (value: string) => {
+              const newAnswerDescriptions = new Map(answerDescriptions.entries())
+              newAnswerDescriptions.set(question.id, value)
+              setAnswerDescriptions(newAnswerDescriptions)
+            },
+          })
+        )
       ) : (
         <CircularProgress />
       )}
