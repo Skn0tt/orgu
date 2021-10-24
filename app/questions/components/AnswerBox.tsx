@@ -9,10 +9,10 @@ import { Answer, UpdateAnswer } from "../types"
 import AnswerForm from "./AnswerForm"
 import updateAnswer from "../mutations/updateAnswer"
 import Typography from "@mui/material/Typography"
-import { TextField } from "@mui/material"
+import { Card, CardContent, TextField } from "@mui/material"
 import Markdown from "app/core/components/Markdown"
 
-const AnswerBox = ({ answer }: { answer: Answer }) => {
+const AnswerCard = ({ answer }: { answer: Answer }) => {
   const [deleteAnswerMutation] = useMutation(deleteAnswer)
   const [updateAnswerMutation] = useMutation(updateAnswer)
   const [inUpdateMode, setInUpdateMode] = useState<boolean>(false)
@@ -27,26 +27,50 @@ const AnswerBox = ({ answer }: { answer: Answer }) => {
   }
 
   return (
-    <Box key={answer.id}>
+    <Card key={answer.id} sx={{ mb: 1 }}>
       {inUpdateMode ? (
-        <AnswerForm
-          initialValues={answer}
-          onSubmit={onUpdateAnswer}
-          onCancel={() => setInUpdateMode(false)}
-        />
+        <CardContent>
+          <AnswerForm
+            initialValues={answer}
+            onSubmit={onUpdateAnswer}
+            onCancel={() => setInUpdateMode(false)}
+          />
+        </CardContent>
       ) : (
         <Box>
-          <Typography variant="h3" component="h3">
-            {answer.person.name}
-            <IconButton color="secondary" onClick={() => setInUpdateMode(true)}>
-              <EditIcon />
-            </IconButton>
-            <DeleteButton name={"answer"} onSubmit={onDeleteAnswer} />
-          </Typography>
-          <Typography>{answer.description}</Typography>
+          <CardContent
+            sx={{
+              pt: 0,
+              ":last-child": {
+                paddingBottom: 2,
+              },
+            }}
+          >
+            <Markdown value={answer.description} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Box />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  backgroundColor: "background.default",
+                  borderRadius: 8,
+                  pl: 3,
+                  pr: 1,
+                }}
+              >
+                <Typography align={"center"}>{answer.person.name}</Typography>
+                <IconButton color="secondary" onClick={() => setInUpdateMode(true)}>
+                  <EditIcon />
+                </IconButton>
+                <DeleteButton name={"answer"} onSubmit={onDeleteAnswer} />
+              </Box>
+            </Box>
+          </CardContent>
         </Box>
       )}
-    </Box>
+    </Card>
   )
 }
 export const PersonAnswerBox = ({
@@ -76,4 +100,4 @@ export const PersonAnswerBox = ({
   )
 }
 
-export default AnswerBox
+export default AnswerCard
