@@ -1,4 +1,4 @@
-import { useMutation, useRouter } from "blitz"
+import { useMutation, useRouter, Link } from "blitz"
 import Box from "@mui/system/Box"
 import DeleteButton from "app/core/components/DeleteButton"
 import React, { useState } from "react"
@@ -60,7 +60,19 @@ const AnswerCard = ({ answer }: { answer: Answer }) => {
                   pr: 1,
                 }}
               >
-                <Typography align={"center"}>{answer.person.name}</Typography>
+                <Link href={("/persons/" + answer.personId) as string} passHref>
+                  <Typography
+                    align={"center"}
+                    sx={{
+                      ":hover": {
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    {answer.person.name}
+                  </Typography>
+                </Link>
                 <IconButton color="secondary" onClick={() => setInUpdateMode(true)}>
                   <EditIcon />
                 </IconButton>
