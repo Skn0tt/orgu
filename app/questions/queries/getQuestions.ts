@@ -12,6 +12,7 @@ export default resolver.pipe(authorize(), async () => {
         },
       },
       personToQuestions: true,
+      answers: true,
     },
   })
 
@@ -22,9 +23,10 @@ export default resolver.pipe(authorize(), async () => {
       tags: prismaQuestion.tagToQuestions.map((tagToQuestion) => {
         return { ...tagToQuestion.tag, isLeaf: tagToQuestion.isLeaf }
       }),
-      personIds: new Set(
+      assignedPersonIds: new Set(
         prismaQuestion.personToQuestions.map((personToQuestion) => personToQuestion.personId)
       ),
+      answerPersonIds: new Set(prismaQuestion.answers.map((answer) => answer.personId)),
     }
   })
   return questions

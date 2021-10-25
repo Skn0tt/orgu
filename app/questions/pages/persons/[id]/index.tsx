@@ -144,7 +144,11 @@ const PersonPage: BlitzPage = () => {
         filterQuestions(
           searchParams,
           person.questions.map((question) => {
-            return { ...question, personIds: new Set(question.persons.map((person) => person.id)) }
+            return {
+              ...question,
+              assignedPersonIds: new Set(question.persons.map((person) => person.id)),
+              answerPersonIds: new Set(question.answers.map((answer) => answer.personId)),
+            }
           })
         ).map((question) =>
           QuestionCard({
