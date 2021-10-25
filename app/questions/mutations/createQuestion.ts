@@ -10,7 +10,7 @@ export default resolver.pipe(authorize(), resolver.zod(CreateQuestionSchema), as
 
 export const createQuestion = async (question: CreateQuestion) => {
   const createdQuestion = await db.question.create({
-    data: { title: question.title, status: question.status },
+    data: { title: question.title, status: question.status, description: question.description },
   })
   await createPersonToQuestions(question.personIds, createdQuestion.id)
   await createTagToQuestions(question.tagIds, createdQuestion.id)

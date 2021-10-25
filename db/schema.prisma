@@ -62,6 +62,7 @@ model Token {
 model Question {
   id                Int                @id @default(autoincrement())
   title             String
+  description       String             @default("")
   status            String
   personToQuestions PersonToQuestion[]
   answers           Answer[]

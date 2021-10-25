@@ -63,6 +63,7 @@ const persons: SeedPerson[] = [
 const questions: SeedQuestion[] = [
   {
     title: "Why are there so many different health insurance companies?",
+    description: "There is really no point in all this inefficiency",
     status: "unanswered",
     answers: [],
     tagIds: new Set(),
@@ -70,6 +71,7 @@ const questions: SeedQuestion[] = [
   },
   {
     title: "What is your greatest success?",
+    description: "And don't say \"I don't know\" :)",
     status: "ongoing",
     tagIds: new Set([1, 3, 6]),
     personIds: new Set([1, 2]),
@@ -86,6 +88,7 @@ const questions: SeedQuestion[] = [
   },
   {
     title: "When was the AOK established?",
+    description: "Hint: judging by the ePA probably in 5 BC",
     status: "answered",
     tagIds: new Set([1, 2, 5]),
     personIds: new Set([2]),
