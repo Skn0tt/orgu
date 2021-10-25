@@ -10,7 +10,7 @@ const Home: BlitzPage = () => {
   return (
     <Box>
       <Typography component="h1" variant="h1">
-        Welcome to Orgu{session.userId ? `, ${session.githubUsername}!` : "!"}
+        Welcome to Orgu{session.userId ? `, ${session.githubDisplayName}!` : "!"}
       </Typography>
       <Typography>On Orgu you can manage questions and people.</Typography>
       <Typography mt={2}>
