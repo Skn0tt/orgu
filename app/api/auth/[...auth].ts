@@ -46,7 +46,7 @@ export default passportAuth({
             userId: user.id,
             role: user.role as Role,
             source: "github",
-            githubUsername: profile.username as string,
+            githubDisplayName: user.name as string,
           }
           done(null, { publicData } as VerifyCallbackResult)
         }

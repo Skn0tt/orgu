@@ -14,7 +14,7 @@ import StatusChip from "app/questions/components/StatusChip"
 import QuestionSearchForm, {
   QuestionSearchParams,
 } from "app/questions/components/QuestionSearchForm"
-import { intersection } from "app/utils/set"
+import { intersection, union } from "app/utils/set"
 
 const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
@@ -44,7 +44,10 @@ export const filterQuestions = (
     const textExpression = question.title.toLowerCase().includes(searchParams.text.toLowerCase())
     const tagIdsExpression = intersection(leafTagIds, searchParams.tagIds).size
     const statusesExpression = searchParams.statuses.has(question.status)
-    const personsExpression = intersection(question.personIds, searchParams.personIds).size
+    const personsExpression = intersection(
+      union(question.assignedPersonIds, question.answerPersonIds),
+      searchParams.personIds
+    ).size
     if (searchParams.logicalOperator === "AND") {
       return (
         textExpression &&
