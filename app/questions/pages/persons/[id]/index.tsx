@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteButton from "app/core/components/DeleteButton"
 import deletePerson from "app/questions/mutations/deletePerson"
-import { PersonAnswerBox } from "app/questions/components/AnswerBox"
+import { PersonAnswerBox } from "app/questions/components/AnswerCard"
 import Typography from "@mui/material/Typography"
 import Markdown from "app/core/components/Markdown"
 import Button from "@mui/material/Button"
@@ -18,11 +18,11 @@ import TagsList from "app/questions/components/TagsList"
 import QuestionSearchForm, {
   QuestionSearchParams,
 } from "app/questions/components/QuestionSearchForm"
-import { Answer, PreviewQuestion, QuestionStatus } from "app/questions/types"
+import { PreviewQuestion, QuestionStatus } from "app/questions/types"
 import { filterQuestions } from "../../questions"
 import { Card, CardContent, Divider } from "@mui/material"
 
-const QuestionCard = ({
+const QuestionWithAnswerCard = ({
   question,
   inUpdateMode,
   description,
@@ -34,9 +34,15 @@ const QuestionCard = ({
   setDescription: (string) => void
 }) => {
   return (
-    <Card key={question.id} sx={{ mb: 1 }}>
-      <CardContent>
-        <Typography variant="h3" component="h3">
+    <Card key={question.id} sx={{ mb: 1, borderRadius: 2 }}>
+      <CardContent
+        sx={{
+          ":last-child": {
+            padding: 1.5,
+          },
+        }}
+      >
+        <Typography variant="h3" component="h3" sx={{ mt: 0, mb: 0.5 }}>
           <Link href={"/questions/" + question.id} passHref>
             <Box
               component="span"
@@ -55,7 +61,11 @@ const QuestionCard = ({
           <TagsList tags={question.tags} />
         </Typography>
 
-        <Divider sx={{ mt: 1.5, mb: 1.5, borderBottomWidth: 5, borderColor: "#333" }} />
+        <Box sx={{ ml: 1, mb: 1 }}>
+          <Markdown value={question.description ?? ""} />
+        </Box>
+
+        <Divider sx={{ mt: 0, mb: 1.5, borderBottomWidth: 4, borderColor: "#333" }} />
         <PersonAnswerBox
           description={description}
           setDescription={setDescription}
@@ -102,18 +112,32 @@ const PersonPage: BlitzPage = () => {
 
   return (
     <Box>
-      <Typography variant="h1" component="h1">
-        {person.name}
-        <Link href={`/persons/${personId}/edit`} passHref>
-          <IconButton color="secondary">
-            <EditIcon />
-          </IconButton>
-        </Link>
-        <DeleteButton name="person" onSubmit={onDeletePerson} />
-      </Typography>
-      <Markdown value={person.description} />
+      <Box
+        sx={{
+          border: 0.2,
+          backgroundColor: "readonlyField.background",
+          borderColor: "readonlyField.background",
+          borderRadius: 2,
+          padding: 1,
+          mb: 1,
+        }}
+      >
+        <Typography variant="h1" component="h1" sx={{ mb: 0, mt: 0 }}>
+          {person.name}
+          <Link href={`/persons/${personId}/edit`} passHref>
+            <IconButton color="secondary">
+              <EditIcon />
+            </IconButton>
+          </Link>
+          <DeleteButton name="person" onSubmit={onDeletePerson} />
+        </Typography>
+
+        <Divider sx={{ mt: 0.5, mb: 0.5 }} />
+        <Markdown value={person.description} />
+      </Box>
+
       {!!person.tags.length && (
-        <Box>
+        <Box sx={{ ml: 0.5 }}>
           Assigned Tags:{" "}
           <TagsList
             tags={person.tags.map((tag) => {
@@ -151,7 +175,7 @@ const PersonPage: BlitzPage = () => {
             }
           })
         ).map((question) =>
-          QuestionCard({
+          QuestionWithAnswerCard({
             question,
             inUpdateMode,
             description: answerDescriptions.get(question.id)!,
