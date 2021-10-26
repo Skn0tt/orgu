@@ -52,7 +52,7 @@ const QuestionPage: BlitzPage = () => {
           <DeleteButton name="question" onSubmit={onDeleteQuestion} />
         </Typography>
       </Box>
-      <Typography>
+      <Typography component="span">
         Status: <StatusChip status={question.status} />
       </Typography>
       {!!question.persons.length && (
