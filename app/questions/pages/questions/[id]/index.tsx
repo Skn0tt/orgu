@@ -42,7 +42,7 @@ const QuestionPage: BlitzPage = () => {
   return (
     <Box>
       <Box>
-        <Typography variant="h1" component="h1">
+        <Typography variant="h1" component="h1" sx={{ mb: 0 }}>
           {question.title}{" "}
           <Link href={`/questions/${questionId}/edit`} passHref>
             <IconButton color="secondary">
@@ -65,6 +65,14 @@ const QuestionPage: BlitzPage = () => {
           Tags: <TagsList tags={question.tags} />
         </Typography>
       )}
+      <TextField
+        fullWidth
+        multiline
+        label="Description"
+        value={question.description}
+        onChange={() => {}}
+        sx={{ mt: 2 }}
+      />
 
       <Divider sx={{ mt: 0.5, mb: 3 }} />
 

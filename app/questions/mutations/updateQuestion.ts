@@ -7,7 +7,7 @@ import authorize from "app/auth/utils/authorize"
 export default resolver.pipe(authorize(), resolver.zod(UpdateQuestionSchema), async (question) => {
   const updatedQuestion = await db.question.update({
     where: { id: question.id },
-    data: { title: question.title, status: question.status },
+    data: { title: question.title, description: question.description, status: question.status },
   })
   // delete and create new tuples instead of finding out which ones changed
   await db.personToQuestion.deleteMany({ where: { questionId: question.id } })

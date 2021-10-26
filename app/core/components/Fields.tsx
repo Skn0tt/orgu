@@ -25,7 +25,7 @@ const MarkdownPreview = ({ value }: { value: string }) => {
         </IconButton>
       </Typography>
       {visible && (
-        <Box sx={{ border: "1px solid #666", padding: "10px", borderRadius: "4px" }}>
+        <Box sx={{ border: "1px solid #666", padding: "10px", borderRadius: "4px", mb: 2 }}>
           <Markdown value={value} />
         </Box>
       )}
