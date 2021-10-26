@@ -39,6 +39,7 @@ export const QuestionForm = ({
         name="personIds"
         label="Assigned to people"
         options={personOptions}
+        sx={{ mb: 1 }}
       />
       <TagsSelectionField name="tagIds" label="Tags" cascade={true} />
       <Select

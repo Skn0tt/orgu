@@ -120,6 +120,7 @@ interface AutocompleteProps {
   label: string
   options: AutocompleteOption[]
   getOptionDisabled?: (option: AutocompleteOption) => boolean
+  sx?
 }
 
 export const AutocompleteSingleSelectField = ({
@@ -127,6 +128,7 @@ export const AutocompleteSingleSelectField = ({
   label,
   options,
   getOptionDisabled = () => false,
+  sx,
 }: AutocompleteProps) => {
   const { input } = useField<number>(name)
   return AutocompleteSelect({
@@ -136,6 +138,7 @@ export const AutocompleteSingleSelectField = ({
     options,
     getOptionDisabled,
     multiple: false,
+    sx,
   })
 }
 
@@ -144,6 +147,7 @@ export const AutocompleteMultiSelectField = ({
   label,
   options,
   getOptionDisabled = () => false,
+  sx,
 }: AutocompleteProps) => {
   const { input } = useField<Set<number>>(name)
   return AutocompleteSelect({
@@ -153,6 +157,7 @@ export const AutocompleteMultiSelectField = ({
     options,
     getOptionDisabled,
     multiple: true,
+    sx,
   })
 }
 
