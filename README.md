@@ -60,3 +60,11 @@ sudo docker exec -it orgu_db_1 psql -U postgres
 ```
 cat data.sql | sudo docker exec -i orgu_db_1 psql -U postgres orgu
 ```
+
+## Production Render Postgres
+
+### Create Backup
+
+```
+PGPASSWORD=<your-pg-password> pg_dump -h frankfurt-postgres.render.com -U orgu_db_ch20_user orgu_db_ch20 --data-only --schema=public > db/backup/production_data.sql
+```
