@@ -34,10 +34,12 @@ export const QuestionForm = ({
       onCancel={onCancel}
     >
       <TextField name="title" label="Title" />
+      <TextField name="description" label="Description" />
       <AutocompleteMultiSelectField
         name="personIds"
         label="Assigned to people"
         options={personOptions}
+        sx={{ mb: 1 }}
       />
       <TagsSelectionField name="tagIds" label="Tags" cascade={true} />
       <Select

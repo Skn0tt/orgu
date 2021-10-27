@@ -27,7 +27,7 @@ const AnswerCard = ({ answer }: { answer: Answer }) => {
   }
 
   return (
-    <Card key={answer.id} sx={{ mb: 1 }}>
+    <Card key={answer.id} sx={{ mb: 1, pt: 1, borderRadius: 3 }}>
       {inUpdateMode ? (
         <CardContent>
           <AnswerForm
@@ -42,7 +42,9 @@ const AnswerCard = ({ answer }: { answer: Answer }) => {
             sx={{
               pt: 0,
               ":last-child": {
-                paddingBottom: 2,
+                paddingBottom: 1,
+                paddingRight: 1,
+                paddingLeft: 1.5,
               },
             }}
           >
@@ -104,7 +106,7 @@ export const PersonAnswerBox = ({
           multiline
         />
       ) : (
-        <Box sx={{ ml: "15px" }}>
+        <Box sx={{ ml: 0 }}>
           <Markdown value={description} />
         </Box>
       )}

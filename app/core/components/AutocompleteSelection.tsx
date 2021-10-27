@@ -13,6 +13,7 @@ interface SelectProps {
   options: AutocompleteOption[]
   multiple: boolean
   getOptionDisabled?: (option: AutocompleteOption) => boolean
+  sx?
 }
 
 export const AutocompleteSelect = ({
@@ -22,11 +23,12 @@ export const AutocompleteSelect = ({
   options,
   multiple,
   getOptionDisabled = () => false,
+  sx = {},
 }: SelectProps) => {
   const optionMap = new Map(options.map((option) => [option.id, option]))
 
   return (
-    <Box>
+    <Box sx={sx}>
       <Autocomplete
         multiple={multiple}
         options={options}

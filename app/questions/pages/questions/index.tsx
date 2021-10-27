@@ -20,8 +20,12 @@ const QuestionCard = ({ question }: { question: PreviewQuestion }) => {
   const router = useRouter()
   return (
     <Card sx={{ mb: 1 }}>
-      <CardActionArea onClick={() => router.push("/questions/" + question.id)}>
-        <CardContent>
+      <CardActionArea onClick={() => router.push("/questions/" + question.id)} sx={{}}>
+        <CardContent
+          sx={{
+            padding: 1.5,
+          }}
+        >
           <Typography variant="h3" component="h2" mt={0}>
             {question.title}
           </Typography>

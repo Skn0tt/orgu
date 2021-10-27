@@ -65,7 +65,7 @@ export interface Question extends Omit<PreviewQuestion, "assignedPersonIds" | "a
 
 export const CreateQuestionSchema = z.object({
   title: z.string().min(1),
-  description: z.string(),
+  description: z.string().optional(),
   status: QuestionStatusSchema,
   personIds: z.set(id),
   tagIds: z.set(id),

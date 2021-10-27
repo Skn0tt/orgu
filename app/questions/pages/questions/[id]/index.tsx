@@ -10,11 +10,12 @@ import deleteQuestion from "app/questions/mutations/deleteQuestion"
 import AnswerForm from "app/questions/components/AnswerForm"
 import createAnswer from "app/questions/mutations/createAnswer"
 import { CreateAnswer } from "app/questions/types"
-import AnswerBox from "app/questions/components/AnswerBox"
 import Typography from "@mui/material/Typography"
 import { Accordion, AccordionDetails, AccordionSummary, Divider, TextField } from "@mui/material"
 import TagsList from "app/questions/components/TagsList"
 import StatusChip from "app/questions/components/StatusChip"
+import Markdown from "../../../../core/components/Markdown"
+import AnswerCard from "app/questions/components/AnswerCard"
 
 const QuestionPage: BlitzPage = () => {
   const questionId = useParam("id", "number")!
@@ -41,8 +42,17 @@ const QuestionPage: BlitzPage = () => {
 
   return (
     <Box>
-      <Box>
-        <Typography variant="h1" component="h1">
+      <Box
+        sx={{
+          border: 0.2,
+          backgroundColor: "readonlyField.background",
+          borderColor: "readonlyField.background",
+          borderRadius: 2,
+          padding: 1,
+          mb: 1,
+        }}
+      >
+        <Typography variant="h1" component="h1" sx={{ mb: 0, mt: 0 }}>
           {question.title}{" "}
           <Link href={`/questions/${questionId}/edit`} passHref>
             <IconButton color="secondary">
@@ -51,6 +61,9 @@ const QuestionPage: BlitzPage = () => {
           </Link>
           <DeleteButton name="question" onSubmit={onDeleteQuestion} />
         </Typography>
+
+        <Divider sx={{ mt: 0.5, mb: 0.5 }} />
+        <Markdown value={question.description ?? ""} />
       </Box>
       <Typography component="span">
         Status: <StatusChip status={question.status} />
@@ -108,7 +121,7 @@ const QuestionPage: BlitzPage = () => {
             answer.person.name.toLowerCase().includes(searchText.toLowerCase())
         )
         .map((answer) => (
-          <AnswerBox key={answer.id} answer={answer} />
+          <AnswerCard key={answer.id} answer={answer} />
         ))}
     </Box>
   )
