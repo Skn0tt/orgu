@@ -42,6 +42,7 @@
     "zod": "3.9.8"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "4.0.0-beta.5",
     "@types/passport-github2": "1.2.5",
     "@types/preview-email": "2.0.1",
     "@types/react": "17.0.27",
