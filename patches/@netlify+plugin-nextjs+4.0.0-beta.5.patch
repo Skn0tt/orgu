@@ -1,0 +1,13 @@
+diff --git a/node_modules/@netlify/plugin-nextjs/lib/templates/getHandler.js b/node_modules/@netlify/plugin-nextjs/lib/templates/getHandler.js
+index 0ffb4a3..b2cbaf6 100644
+--- a/node_modules/@netlify/plugin-nextjs/lib/templates/getHandler.js
++++ b/node_modules/@netlify/plugin-nextjs/lib/templates/getHandler.js
+@@ -150,7 +150,7 @@ const { Bridge } = require("./bridge");
+ const fetch = require('node-fetch')
+ 
+ const { builder } = require("@netlify/functions");
+-const { config }  = require("${publishDir}/required-server-files.json")
++const config  = require("${publishDir}/../.blitz.config.compiled.js")
+ let staticManifest 
+ try {
+   staticManifest = require("${publishDir}/static-manifest.json")

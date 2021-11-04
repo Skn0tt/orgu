@@ -11,7 +11,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky install",
-    "db:reset": "blitz prisma migrate reset; blitz db seed"
+    "db:reset": "blitz prisma migrate reset; blitz db seed",
+    "postinstall": "patch-package"
   },
   "prisma": {
     "schema": "db/schema.prisma"
@@ -32,8 +33,9 @@
     "@mui/lab": "5.0.0-alpha.51",
     "@mui/material": "5.0.3",
     "@prisma/client": "3.2.1",
-    "blitz": "0.41.0",
+    "blitz": "0.42.0",
     "final-form": "4.20.4",
+    "netlify-cli": "6.14.12",
     "passport-github2": "0.1.12",
     "react": "alpha",
     "react-dom": "alpha",
@@ -49,6 +51,7 @@
     "eslint": "7.32.0",
     "husky": "6.0.0",
     "lint-staged": "10.5.4",
+    "patch-package": "6.4.7",
     "prettier": "2.4.1",
     "prettier-plugin-prisma": "0.15.0",
     "pretty-quick": "3.1.1",
