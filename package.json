@@ -36,6 +36,7 @@
     "blitz": "0.42.0",
     "final-form": "4.20.4",
     "netlify-cli": "6.14.12",
+    "netlify-plugin-blitz": "0.0.1",
     "passport-github2": "0.1.12",
     "react": "alpha",
     "react-dom": "alpha",

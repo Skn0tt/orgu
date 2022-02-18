@@ -3,4 +3,4 @@
   publish=".next"
 
 [[plugins]]
-  package = "./blitz-on-netlify"
+  package = "netlify-plugin-blitz"
